@@ -1,0 +1,2392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>News → Telegram</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --bg-primary: #0d4d4d;
+      --bg-secondary: rgba(20, 60, 60, 0.8);
+      --bg-tertiary: rgba(30, 80, 80, 0.6);
+      --bg-hover: rgba(40, 100, 100, 0.5);
+      --border: rgba(100, 255, 150, 0.2);
+      --text-primary: #ffffff;
+      --text-secondary: rgba(255, 255, 255, 0.7);
+      --text-tertiary: rgba(255, 255, 255, 0.5);
+      --accent: #7fff00;
+      --accent-dim: #6adc00;
+      --accent-glow: rgba(127, 255, 0, 0.25);
+      --error: #ff4444;
+      --warning: #ffaa00;
+      --radius: 12px;
+      --shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    }
+
+    body {
+      font-family: 'Roboto', sans-serif;
+      background: linear-gradient(135deg, #0d4d4d 0%, #1a6666 50%, #7fff00 100%);
+      color: var(--text-primary);
+      overflow: hidden;
+      height: 100vh;
+      position: relative;
+    }
+    
+    body::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: radial-gradient(circle at 20% 50%, rgba(127, 255, 0, 0.1) 0%, transparent 50%),
+                  radial-gradient(circle at 80% 80%, rgba(26, 102, 102, 0.3) 0%, transparent 50%);
+      pointer-events: none;
+    }
+
+    .app {
+      display: flex;
+      height: 100vh;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      width: 240px;
+      background: rgba(13, 77, 77, 0.7);
+      backdrop-filter: blur(20px);
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      padding: 24px 0;
+      box-shadow: 4px 0 24px rgba(0, 0, 0, 0.2);
+    }
+
+    .logo {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 20px;
+      font-weight: 700;
+      padding: 0 24px 32px;
+      color: var(--accent);
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    .nav-item {
+      padding: 12px 24px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-size: 15px;
+      color: var(--text-secondary);
+      border-left: 3px solid transparent;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .nav-item:hover {
+      background: var(--bg-hover);
+      color: var(--text-primary);
+    }
+
+    .nav-item.active {
+      background: var(--bg-tertiary);
+      color: var(--text-primary);
+      border-left-color: var(--accent);
+    }
+
+    .nav-icon {
+      width: 18px;
+      height: 18px;
+      opacity: 0.6;
+    }
+
+    .nav-item.active .nav-icon {
+      opacity: 1;
+    }
+
+    /* Main Content */
+    .main {
+      flex: 1;
+      overflow-y: auto;
+      background: rgba(13, 77, 77, 0.3);
+      backdrop-filter: blur(10px);
+    }
+
+    .screen {
+      display: none;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .screen.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Header */
+    .header {
+      padding: 32px 48px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(13, 77, 77, 0.5);
+      backdrop-filter: blur(10px);
+    }
+
+    .header h1 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 28px;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+    }
+
+    .header-actions {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+
+    /* Status Badge */
+    .status {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 11px;
+      padding: 8px 16px;
+      border-radius: 20px;
+      background: rgba(20, 60, 60, 0.8);
+      border: 1px solid var(--border);
+      color: var(--text-secondary);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .status.fetching,
+    .status.generating,
+    .status.sending {
+      background: var(--accent-glow);
+      border-color: var(--accent);
+      color: var(--accent);
+      box-shadow: 0 0 20px var(--accent-glow);
+    }
+
+    .status select {
+      background: transparent;
+      border: none;
+      color: inherit;
+      font-family: inherit;
+      font-size: inherit;
+      cursor: pointer;
+      outline: none;
+      text-transform: uppercase;
+      appearance: none;
+      padding-right: 4px;
+    }
+
+    .status select option {
+      background: rgba(13, 77, 77, 0.95);
+      color: var(--text-primary);
+    }
+
+    .status-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: currentColor;
+    }
+
+    .status.fetching .status-dot,
+    .status.generating .status-dot,
+    .status.sending .status-dot {
+      animation: pulse 1.5s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.3; }
+    }
+
+    /* Button */
+    .btn {
+      font-family: 'Orbitron', sans-serif;
+      padding: 12px 24px;
+      border-radius: var(--radius);
+      border: none;
+      cursor: pointer;
+      font-size: 13px;
+      transition: all 0.3s ease;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: #0d4d4d;
+      box-shadow: 0 4px 20px rgba(127, 255, 0, 0.3);
+    }
+
+    .btn-primary:hover {
+      background: var(--accent-dim);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 30px rgba(127, 255, 0, 0.5);
+    }
+
+    .btn-secondary {
+      background: rgba(20, 60, 60, 0.8);
+      color: var(--text-primary);
+      border: 1px solid var(--border);
+      backdrop-filter: blur(10px);
+    }
+
+    .btn-secondary:hover {
+      background: rgba(30, 80, 80, 0.8);
+      border-color: var(--accent);
+      box-shadow: 0 0 20px var(--accent-glow);
+    }
+
+    .btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none !important;
+    }
+
+    /* Content */
+    .content {
+      padding: 48px;
+      max-width: 1200px;
+    }
+
+    /* Form Sections */
+    .form-section {
+      margin-bottom: 48px;
+    }
+
+    .form-section h2 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 16px;
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .form-group {
+      margin-bottom: 24px;
+    }
+
+    .form-label {
+      display: block;
+      font-size: 13px;
+      color: var(--text-secondary);
+      margin-bottom: 8px;
+      font-family: 'Orbitron', sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      font-weight: 500;
+    }
+
+    .form-input {
+      width: 100%;
+      background: rgba(20, 60, 60, 0.6);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 12px 16px;
+      color: var(--text-primary);
+      font-size: 15px;
+      font-family: 'Roboto', sans-serif;
+      transition: all 0.3s ease;
+      backdrop-filter: blur(10px);
+    }
+
+    .form-input:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px var(--accent-glow);
+      background: rgba(20, 60, 60, 0.8);
+    }
+
+    textarea.form-input {
+      resize: vertical;
+      min-height: 100px;
+      font-family: 'Roboto', sans-serif;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .help-text {
+      font-size: 12px;
+      color: var(--text-tertiary);
+      margin-top: 6px;
+      font-family: 'Roboto', sans-serif;
+    }
+
+    /* Slider */
+    .slider-container {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .slider {
+      flex: 1;
+      height: 2px;
+      background: var(--border);
+      border-radius: 2px;
+      position: relative;
+      cursor: pointer;
+    }
+
+    .slider-track {
+      height: 100%;
+      background: var(--accent);
+      border-radius: 2px;
+      position: absolute;
+      left: 0;
+      top: 0;
+    }
+
+    .slider-thumb {
+      width: 16px;
+      height: 16px;
+      background: var(--accent);
+      border-radius: 50%;
+      position: absolute;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      cursor: grab;
+      transition: transform 0.2s ease;
+    }
+
+    .slider-thumb:hover {
+      transform: translate(-50%, -50%) scale(1.2);
+    }
+
+    .slider-thumb:active {
+      cursor: grabbing;
+    }
+
+    .slider-value {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--accent);
+      min-width: 35px;
+      text-align: right;
+    }
+
+    /* Radio Group */
+    .radio-group {
+      display: flex;
+      gap: 12px;
+    }
+
+    .radio-option {
+      flex: 1;
+      padding: 12px;
+      background: rgba(20, 60, 60, 0.6);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      cursor: pointer;
+      text-align: center;
+      transition: all 0.3s ease;
+      font-size: 14px;
+      font-weight: 500;
+      backdrop-filter: blur(10px);
+    }
+
+    .radio-option:hover {
+      border-color: var(--accent);
+      background: rgba(30, 80, 80, 0.6);
+      transform: translateY(-2px);
+    }
+
+    .radio-option.active {
+      background: var(--accent-glow);
+      border-color: var(--accent);
+      color: var(--accent);
+      box-shadow: 0 0 20px var(--accent-glow);
+    }
+
+    /* Select */
+    select.form-input {
+      cursor: pointer;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L6 6L11 1' stroke='%23a0a0a0' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 16px center;
+      padding-right: 40px;
+    }
+
+    /* Articles Grid */
+    .articles-grid {
+      display: grid;
+      gap: 16px;
+      margin-top: 24px;
+      position: relative;
+      min-height: 400px;
+      padding-bottom: 0;
+      transition: padding-bottom 0.3s ease;
+    }
+
+    .articles-grid.has-selection {
+      padding-bottom: 100px;
+    }
+
+    .articles-grid:empty::before {
+      content: 'DISTRO';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: 'Orbitron', sans-serif;
+      font-size: 120px;
+      font-weight: 800;
+      color: rgba(127, 255, 0, 0.03);
+      letter-spacing: 0.2em;
+      animation: pulse-glow 4s ease-in-out infinite;
+      pointer-events: none;
+      user-select: none;
+    }
+
+    @keyframes pulse-glow {
+      0%, 100% {
+        opacity: 0.3;
+        transform: translate(-50%, -50%) scale(1);
+      }
+      50% {
+        opacity: 0.5;
+        transform: translate(-50%, -50%) scale(1.05);
+      }
+    }
+
+    .article-card {
+      background: rgba(20, 60, 60, 0.6);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+      transition: all 0.3s ease;
+      cursor: pointer;
+      position: relative;
+      backdrop-filter: blur(10px);
+    }
+
+    .article-card:hover {
+      border-color: var(--accent);
+      transform: translateY(-4px);
+      box-shadow: 0 8px 30px var(--accent-glow);
+    }
+
+    .article-card.selected {
+      border-color: var(--accent);
+      background: var(--accent-glow);
+      box-shadow: 0 8px 30px var(--accent-glow);
+    }
+
+    .article-meta {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 10px;
+      color: var(--text-tertiary);
+      margin-bottom: 8px;
+      display: flex;
+      gap: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .article-title {
+      font-size: 16px;
+      font-weight: 500;
+      margin-bottom: 8px;
+      line-height: 1.4;
+      padding-right: 100px;
+    }
+
+    .article-desc {
+      font-size: 14px;
+      color: var(--text-secondary);
+      line-height: 1.6;
+      margin-bottom: 8px;
+    }
+
+    .article-desc.collapsed {
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .article-expanded-content {
+      display: none;
+      padding-top: 12px;
+      margin-top: 12px;
+      border-top: 1px solid var(--border);
+    }
+
+    .article-expanded-content.visible {
+      display: block;
+      animation: slideDown 0.3s ease;
+    }
+
+    @keyframes slideDown {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .article-url {
+      font-family: 'Roboto', sans-serif;
+      font-size: 12px;
+      color: var(--text-tertiary);
+      margin-bottom: 12px;
+      word-break: break-all;
+    }
+
+    .article-actions {
+      display: flex;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .expand-btn {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 11px;
+      padding: 6px 12px;
+      background: rgba(30, 80, 80, 0.6);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .expand-btn:hover {
+      background: var(--accent-glow);
+      color: var(--accent);
+      border-color: var(--accent);
+    }
+
+    .expand-arrow {
+      transition: transform 0.3s ease;
+      display: inline-block;
+    }
+
+    .expand-btn.expanded .expand-arrow {
+      transform: rotate(180deg);
+    }
+
+    .read-article-btn {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 11px;
+      padding: 6px 12px;
+      background: var(--accent-glow);
+      border: 1px solid var(--accent);
+      border-radius: 6px;
+      color: var(--accent);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      text-decoration: none;
+    }
+
+    .read-article-btn:hover {
+      background: var(--accent);
+      color: #0d4d4d;
+      box-shadow: 0 4px 15px var(--accent-glow);
+      transform: translateY(-2px);
+    }
+
+    .external-icon {
+      width: 12px;
+      height: 12px;
+    }
+
+    .article-select {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      width: 20px;
+      height: 20px;
+      border: 2px solid var(--border);
+      border-radius: 4px;
+      transition: all 0.2s ease;
+      z-index: 10;
+      cursor: pointer;
+    }
+
+    .article-card:hover .article-select {
+      border-color: var(--accent);
+    }
+
+    .article-card.selected .article-select {
+      background: var(--accent);
+      border-color: var(--accent);
+    }
+
+    .article-card.selected .article-select::after {
+      content: '✓';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: var(--bg-primary);
+      font-size: 12px;
+      font-weight: bold;
+    }
+
+    /* Bottom Bar */
+    .bottom-bar {
+      position: fixed;
+      bottom: 0;
+      left: 240px;
+      right: 0;
+      background: rgba(13, 77, 77, 0.95);
+      border-top: 1px solid var(--border);
+      padding: 20px 48px;
+      display: none;
+      justify-content: space-between;
+      align-items: center;
+      backdrop-filter: blur(20px);
+      box-shadow: 0 -4px 24px rgba(0, 0, 0, 0.2);
+      z-index: 100;
+      transition: opacity 0.3s ease;
+    }
+
+    .bottom-bar.visible {
+      display: flex;
+    }
+
+    .selection-info {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 13px;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .selection-count {
+      color: var(--accent);
+      font-weight: 700;
+      font-size: 18px;
+    }
+
+    /* Two Column Layout */
+    .two-column {
+      display: grid;
+      grid-template-columns: 320px 1fr;
+      gap: 32px;
+      height: calc(100vh - 120px);
+      position: relative;
+    }
+
+    .column {
+      overflow-y: auto;
+    }
+
+    .column:first-child {
+      transition: width 0.3s ease, opacity 0.3s ease;
+    }
+
+    .column.collapsed {
+      width: 0;
+      opacity: 0;
+      overflow: hidden;
+    }
+
+    .article-list-item {
+      padding: 16px;
+      padding-left: 48px;
+      background: rgba(20, 60, 60, 0.4);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      margin-bottom: 12px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      backdrop-filter: blur(10px);
+      position: relative;
+      opacity: 0.7;
+      min-height: 90px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .article-list-item:hover {
+      border-color: var(--accent);
+      transform: translateX(4px);
+      opacity: 1;
+    }
+
+    /* Currently being edited - brightest */
+    .article-list-item.active {
+      border-color: var(--accent);
+      background: rgba(30, 80, 80, 0.8);
+      box-shadow: 0 0 20px var(--accent-glow);
+      opacity: 1;
+      border-width: 2px;
+    }
+
+    /* Selected for sending - medium highlight */
+    .article-list-item.selected-for-send {
+      border-color: rgba(127, 255, 0, 0.6);
+      background: rgba(20, 60, 60, 0.6);
+      box-shadow: 0 0 15px rgba(127, 255, 0, 0.15);
+      opacity: 0.9;
+    }
+
+    /* Selected for sending AND being edited - combine both states */
+    .article-list-item.active.selected-for-send {
+      border-color: var(--accent);
+      background: rgba(30, 80, 80, 0.8);
+      box-shadow: 0 0 25px var(--accent-glow);
+      opacity: 1;
+      border-width: 2px;
+    }
+
+    .draft-checkbox {
+      position: absolute;
+      left: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 20px;
+      height: 20px;
+      border: 2px solid var(--border);
+      border-radius: 4px;
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+
+    .article-list-item:hover .draft-checkbox {
+      border-color: var(--accent);
+    }
+
+    .article-list-item.selected-for-send .draft-checkbox {
+      background: var(--accent);
+      border-color: var(--accent);
+    }
+
+    .article-list-item.selected-for-send .draft-checkbox::after {
+      content: '✓';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: #0d4d4d;
+      font-size: 12px;
+      font-weight: bold;
+    }
+
+    .article-status {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 10px;
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      padding: 4px 8px;
+      background: rgba(127, 255, 0, 0.1);
+      border-radius: 4px;
+      display: inline-block;
+      width: fit-content;
+    }
+
+    .article-status.in-progress {
+      color: #ffaa00;
+      background: rgba(255, 170, 0, 0.1);
+    }
+
+    .article-status.needs-review {
+      color: #ff6b6b;
+      background: rgba(255, 107, 107, 0.1);
+    }
+
+    .article-status.approved {
+      color: #4ecdc4;
+      background: rgba(78, 205, 196, 0.1);
+    }
+
+    .article-status.ready {
+      color: var(--accent);
+      background: rgba(127, 255, 0, 0.15);
+    }
+
+    .draft-list-footer {
+      display: flex;
+      gap: 12px;
+      padding: 16px;
+      border-top: 1px solid var(--border);
+      flex-shrink: 0;
+      background: rgba(13, 77, 77, 0.5);
+      backdrop-filter: blur(10px);
+    }
+
+    .article-list-title {
+      font-size: 14px;
+      line-height: 1.4;
+    }
+
+    /* Editor */
+    .editor {
+      background: rgba(20, 60, 60, 0.6);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 0;
+      height: 100%;
+      backdrop-filter: blur(10px);
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+
+    .editor-header {
+      display: flex;
+      flex-direction: column;
+      padding: 20px 24px;
+      border-bottom: 1px solid var(--border);
+      flex-shrink: 0;
+      gap: 16px;
+    }
+
+    .editor-status-dropdown {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .editor-footer {
+      display: flex;
+      gap: 12px;
+      padding: 20px 24px;
+      border-top: 1px solid var(--border);
+      background: rgba(13, 77, 77, 0.8);
+      backdrop-filter: blur(10px);
+      flex-shrink: 0;
+      justify-content: flex-end;
+    }
+
+    .editor-controls {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .expand-editor-btn {
+      position: absolute;
+      top: 24px;
+      right: 24px;
+      width: 36px;
+      height: 36px;
+      background: rgba(30, 80, 80, 0.6);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      padding: 0;
+      z-index: 10;
+    }
+
+    .expand-editor-btn:hover {
+      background: var(--accent-glow);
+      color: var(--accent);
+      border-color: var(--accent);
+      transform: scale(1.1);
+    }
+
+    .editor-body {
+      padding: 24px;
+      flex: 1;
+      overflow-y: auto;
+      overflow-x: hidden;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .editor-field-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .editor-field-label {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 11px;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      font-weight: 500;
+    }
+
+    .editor-tabs {
+      display: flex;
+      gap: 8px;
+      background: rgba(13, 77, 77, 0.5);
+      padding: 6px;
+      border-radius: 10px;
+    }
+
+    .editor-tab {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 11px;
+      padding: 10px 20px;
+      border-radius: 8px;
+      background: transparent;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      border: 1px solid transparent;
+      font-weight: 500;
+    }
+
+    .editor-tab:hover {
+      background: rgba(30, 80, 80, 0.6);
+      color: var(--text-primary);
+    }
+
+    .editor-tab.active {
+      background: var(--accent);
+      color: #0d4d4d;
+      border-color: var(--accent);
+      box-shadow: 0 4px 15px rgba(127, 255, 0, 0.3);
+    }
+
+    .editor-input {
+      width: 100%;
+      background: rgba(30, 80, 80, 0.5);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      color: var(--text-primary);
+      font-size: 16px;
+      font-weight: 400;
+      padding: 14px 16px;
+      line-height: 1.4;
+      word-wrap: break-word;
+      overflow-wrap: break-word;
+      font-family: 'Roboto', sans-serif;
+      transition: all 0.3s ease;
+    }
+
+    .editor-input:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 2px var(--accent-glow);
+      background: rgba(30, 80, 80, 0.7);
+    }
+
+    .editor-url {
+      width: 100%;
+      background: rgba(30, 80, 80, 0.5);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      color: var(--text-secondary);
+      font-size: 14px;
+      font-family: 'Roboto', sans-serif;
+      padding: 14px 16px;
+      word-wrap: break-word;
+      overflow-wrap: break-word;
+      transition: all 0.3s ease;
+    }
+
+    .editor-url:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 2px var(--accent-glow);
+      background: rgba(30, 80, 80, 0.7);
+    }
+
+    .editor-content {
+      min-height: 350px;
+      flex: 1;
+      font-size: 15px;
+      line-height: 1.7;
+      resize: vertical;
+      max-height: none;
+      font-family: 'Roboto', sans-serif;
+      background: rgba(30, 80, 80, 0.5);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 14px 16px;
+      color: var(--text-primary);
+      transition: all 0.3s ease;
+    }
+
+    .editor-content:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 2px var(--accent-glow);
+      background: rgba(30, 80, 80, 0.7);
+    }
+
+    /* Telegram Preview */
+    .telegram-preview {
+      background: rgba(20, 60, 60, 0.6);
+      border: 1px solid var(--accent);
+      color: var(--text-primary);
+      padding: 24px;
+      border-radius: var(--radius);
+      font-family: 'Roboto', sans-serif;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 8px 30px var(--accent-glow);
+    }
+
+    .telegram-header {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 11px;
+      opacity: 0.7;
+      margin-bottom: 16px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--accent);
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 12px;
+    }
+
+    .telegram-text {
+      font-size: 15px;
+      line-height: 1.6;
+      white-space: pre-wrap;
+      color: var(--text-primary);
+    }
+
+    /* Modal */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.8);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      backdrop-filter: blur(4px);
+    }
+
+    .modal-overlay.visible {
+      display: flex;
+    }
+
+    .modal {
+      background: rgba(13, 77, 77, 0.95);
+      border: 1px solid var(--accent);
+      border-radius: var(--radius);
+      padding: 32px;
+      max-width: 450px;
+      width: 90%;
+      animation: modalIn 0.3s ease;
+      backdrop-filter: blur(20px);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5), 0 0 40px var(--accent-glow);
+    }
+
+    @keyframes modalIn {
+      from { opacity: 0; transform: scale(0.9) translateY(20px); }
+      to { opacity: 1; transform: scale(1) translateY(0); }
+    }
+
+    .modal h3 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 20px;
+      font-weight: 600;
+      margin-bottom: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--accent);
+    }
+
+    .modal p {
+      color: var(--text-secondary);
+      margin-bottom: 24px;
+      line-height: 1.6;
+    }
+
+    .modal-actions {
+      display: flex;
+      gap: 12px;
+      justify-content: flex-end;
+    }
+
+    /* Sent Items */
+    .sent-item {
+      background: rgba(20, 60, 60, 0.6);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+      margin-bottom: 16px;
+      backdrop-filter: blur(10px);
+      transition: all 0.3s ease;
+    }
+
+    .sent-item:hover {
+      border-color: var(--accent);
+      box-shadow: 0 4px 20px var(--accent-glow);
+    }
+
+    .sent-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: start;
+      margin-bottom: 12px;
+    }
+
+    .sent-title {
+      font-size: 16px;
+      font-weight: 500;
+      line-height: 1.4;
+      flex: 1;
+    }
+
+    .sent-time {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 11px;
+      color: var(--text-tertiary);
+      margin-left: 16px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .sent-preview {
+      font-size: 14px;
+      color: var(--text-secondary);
+      line-height: 1.6;
+      margin-bottom: 12px;
+    }
+
+    .copy-btn {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 11px;
+      padding: 8px 16px;
+      background: rgba(30, 80, 80, 0.6);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .copy-btn:hover {
+      background: var(--accent-glow);
+      color: var(--accent);
+      border-color: var(--accent);
+      box-shadow: 0 0 15px var(--accent-glow);
+    }
+
+    /* Add URL Section */
+    .add-url {
+      background: rgba(20, 60, 60, 0.6);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+      margin-bottom: 24px;
+      display: flex;
+      gap: 12px;
+      backdrop-filter: blur(10px);
+    }
+
+    .add-url input {
+      flex: 1;
+    }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--border);
+      border-radius: 4px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--text-tertiary);
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <div class="logo">DISTRO<br><span style="font-size: 11px; letter-spacing: 0.15em; opacity: 0.7; font-weight: 400;">BeatSweep</span></div>
+      <div class="nav-item" data-screen="fetch">
+        <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+        </svg>
+        Fetch News
+      </div>
+      <div class="nav-item" data-screen="drafts">
+        <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+        </svg>
+        Drafts
+      </div>
+      <div class="nav-item" data-screen="sent">
+        <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+        </svg>
+        Already Sent
+      </div>
+      <div class="nav-item active" data-screen="settings">
+        <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+        </svg>
+        Settings
+      </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main">
+      <!-- Screen 1: Settings -->
+      <div class="screen active" id="screen-settings">
+        <div class="header">
+          <h1>Settings</h1>
+        </div>
+        <div class="content">
+          <div class="form-section">
+            <h2>News Topic</h2>
+            <div class="form-group">
+              <label class="form-label">Topic or Keywords</label>
+              <input type="text" class="form-input" id="news-topic" placeholder="e.g., AI and Machine Learning, Crypto Markets, Climate Tech">
+              <div class="help-text">This will be saved for future sessions</div>
+            </div>
+          </div>
+
+          <div class="form-section">
+            <h2>Number of Articles</h2>
+            <div class="form-group">
+              <label class="form-label">Articles per Fetch</label>
+              <div class="slider-container">
+                <div class="slider" id="article-slider">
+                  <div class="slider-track" id="slider-track"></div>
+                  <div class="slider-thumb" id="slider-thumb"></div>
+                </div>
+                <div class="slider-value" id="slider-value">10</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-section">
+            <h2>Summary Style</h2>
+            <div class="form-group">
+              <label class="form-label">Length</label>
+              <div class="radio-group">
+                <div class="radio-option" data-value="short">Short</div>
+                <div class="radio-option active" data-value="medium">Medium</div>
+                <div class="radio-option" data-value="long">Long</div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Tone</label>
+              <select class="form-input" id="tone-select">
+                <option value="professional">Professional</option>
+                <option value="casual">Casual</option>
+                <option value="analyst">Analyst</option>
+                <option value="custom">Custom</option>
+              </select>
+            </div>
+            <div class="form-group" id="custom-instructions" style="display: none;">
+              <label class="form-label">Custom Instructions</label>
+              <textarea class="form-input" placeholder="Describe the tone and style you want..."></textarea>
+            </div>
+          </div>
+
+          <div class="form-section">
+            <h2>Telegram Channel</h2>
+            <div class="form-group">
+              <label class="form-label">Channel ID or Handle</label>
+              <input type="text" class="form-input" id="telegram-channel" placeholder="@yourchannel or -1001234567890">
+              <div class="help-text">Find your channel ID at t.me/username_to_id_bot</div>
+            </div>
+          </div>
+
+          <button class="btn btn-primary" id="save-settings-btn">Save Settings</button>
+        </div>
+      </div>
+
+      <!-- Screen 2: Fetch News -->
+      <div class="screen" id="screen-fetch">
+        <div class="header">
+          <h1>Fetch News</h1>
+          <div class="header-actions">
+            <button class="btn btn-secondary" id="fetch-select-all-btn" style="display: none;">Select All</button>
+            <div class="status" id="fetch-status">
+              <span class="status-dot"></span>
+              Idle
+            </div>
+            <button class="btn btn-primary" id="fetch-btn">Fetch News</button>
+          </div>
+        </div>
+        <div class="content">
+          <div class="add-url">
+            <input type="text" class="form-input" id="manual-url" placeholder="Paste article URL to add manually">
+            <button class="btn btn-secondary" id="add-url-btn">Add Article</button>
+          </div>
+          
+          <div class="articles-grid" id="articles-grid">
+            <!-- Articles will be populated here -->
+          </div>
+        </div>
+      </div>
+
+      <!-- Screen 3: Drafts -->
+      <div class="screen" id="screen-drafts">
+        <div class="header">
+          <h1>Draft Summaries</h1>
+        </div>
+        <div class="content" style="padding-bottom: 0; display: flex; flex-direction: column; height: calc(100vh - 120px);">
+          <div class="two-column" style="flex: 1; overflow: hidden;">
+            <div class="column" style="display: flex; flex-direction: column;">
+              <div id="draft-list" style="flex: 1; overflow-y: auto; padding-right: 8px;">
+                <!-- Draft list items -->
+              </div>
+              <div class="draft-list-footer">
+                <button class="btn btn-secondary" id="select-all-btn" style="display: none; flex: 1;">Select All</button>
+                <button class="btn btn-primary" id="send-selected-btn" style="display: none; flex: 1;">Send Selected</button>
+              </div>
+            </div>
+            <div class="column">
+              <div class="editor" id="editor">
+                <button class="expand-editor-btn" id="expand-editor-btn" title="Expand editor">
+                  <span id="expand-icon">⛶</span>
+                </button>
+                <div class="editor-header">
+                  <div class="editor-tabs">
+                    <div class="editor-tab active" data-tab="edit">Edit</div>
+                    <div class="editor-tab" data-tab="preview">Preview</div>
+                  </div>
+                  <div class="editor-status-dropdown">
+                    <label class="editor-field-label" style="margin-bottom: 8px;">Status</label>
+                    <select id="draft-status-select" class="form-input" style="padding: 10px 16px; width: 200px;" disabled>
+                      <option value="draft">Draft</option>
+                      <option value="in-progress">In Progress</option>
+                      <option value="needs-review">Needs Review</option>
+                      <option value="approved">Approved</option>
+                      <option value="ready">Ready</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="editor-body">
+                  <div id="edit-view" style="display: flex; flex-direction: column; gap: 20px; height: 100%;">
+                    <div id="editor-empty-state" style="display: flex; align-items: center; justify-content: center; flex: 1; color: var(--text-tertiary); font-family: 'Orbitron', sans-serif; text-transform: uppercase; letter-spacing: 0.1em; font-size: 14px;">
+                      Select an article to edit
+                    </div>
+                    <div id="editor-content-area" style="display: none; flex-direction: column; gap: 20px; flex: 1;">
+                      <div class="editor-field-group">
+                        <label class="editor-field-label">Headline</label>
+                        <input type="text" class="editor-input" id="draft-title" placeholder="Enter headline..." disabled>
+                      </div>
+                      <div class="editor-field-group">
+                        <label class="editor-field-label">URL</label>
+                        <input type="text" class="editor-url" id="draft-url" placeholder="Enter article URL..." disabled>
+                      </div>
+                      <div class="editor-field-group" style="flex: 1; display: flex; flex-direction: column;">
+                        <label class="editor-field-label">Summary</label>
+                        <textarea class="editor-content" id="draft-content" placeholder="Enter summary content..." disabled></textarea>
+                      </div>
+                    </div>
+                  </div>
+                  <div id="preview-view" style="display: none; height: 100%; overflow-y: auto;">
+                    <div class="telegram-preview">
+                      <div class="telegram-header">Your Channel</div>
+                      <div class="telegram-text" id="preview-text"></div>
+                    </div>
+                  </div>
+                </div>
+                <div class="editor-footer">
+                  <button class="btn btn-secondary" id="save-draft-btn" disabled>Save Draft</button>
+                  <button class="btn btn-primary" id="send-now-btn" disabled>Send Now</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Screen 4: Already Sent -->
+      <div class="screen" id="screen-sent">
+        <div class="header">
+          <h1>Already Sent</h1>
+        </div>
+        <div class="content">
+          <div id="sent-list">
+            <!-- Sent items will be populated here -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom Selection Bar (Fixed to viewport bottom) -->
+  <div class="bottom-bar" id="selection-bar">
+    <div class="selection-info">
+      <span class="selection-count" id="selected-count">0</span> articles selected
+    </div>
+    <button class="btn btn-primary" id="generate-btn">Generate Summaries</button>
+  </div>
+
+  <!-- Modal -->
+  <div class="modal-overlay" id="confirm-modal">
+    <div class="modal">
+      <h3>Send to Telegram?</h3>
+      <p id="modal-message">This will post the summary to your Telegram channel. This action cannot be undone.</p>
+      <div class="modal-actions">
+        <button class="btn btn-secondary" id="cancel-send">Cancel</button>
+        <button class="btn btn-primary" id="confirm-send">Confirm & Send</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Navigation
+    document.querySelectorAll('.nav-item').forEach(item => {
+      item.addEventListener('click', () => {
+        const screen = item.dataset.screen;
+        
+        // Update nav
+        document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+        item.classList.add('active');
+        
+        // Update screen
+        document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+        document.getElementById(`screen-${screen}`).classList.add('active');
+        
+        // Hide bottom bar if not on fetch screen
+        const selectionBar = document.getElementById('selection-bar');
+        if (screen !== 'fetch' && selectionBar) {
+          selectionBar.classList.remove('visible');
+        } else if (screen === 'fetch' && selectedArticles.size > 0) {
+          // Show it again if returning to fetch with selections
+          selectionBar.classList.add('visible');
+        }
+      });
+    });
+
+    // Slider - MUST be declared before settings code that uses updateSlider()
+    const slider = document.getElementById('article-slider');
+    const sliderTrack = document.getElementById('slider-track');
+    const sliderThumb = document.getElementById('slider-thumb');
+    const sliderValue = document.getElementById('slider-value');
+    let sliderMin = 5;
+    let sliderMax = 20;
+    let currentValue = 10;
+
+    function updateSlider(value) {
+      currentValue = Math.max(sliderMin, Math.min(sliderMax, value));
+      const percent = ((currentValue - sliderMin) / (sliderMax - sliderMin)) * 100;
+      sliderTrack.style.width = percent + '%';
+      sliderThumb.style.left = percent + '%';
+      sliderValue.textContent = currentValue;
+    }
+
+    slider.addEventListener('click', (e) => {
+      const rect = slider.getBoundingClientRect();
+      const percent = (e.clientX - rect.left) / rect.width;
+      const value = Math.round(sliderMin + percent * (sliderMax - sliderMin));
+      updateSlider(value);
+    });
+
+    let isDragging = false;
+    sliderThumb.addEventListener('mousedown', () => isDragging = true);
+    document.addEventListener('mouseup', () => isDragging = false);
+    document.addEventListener('mousemove', (e) => {
+      if (!isDragging) return;
+      const rect = slider.getBoundingClientRect();
+      const percent = (e.clientX - rect.left) / rect.width;
+      const value = Math.round(sliderMin + percent * (sliderMax - sliderMin));
+      updateSlider(value);
+    });
+
+    updateSlider(10);
+
+    // Settings
+    let settings = {
+      topic: '',
+      articleCount: 10,
+      summaryLength: 'medium',
+      tone: 'professional',
+      customInstructions: '',
+      telegramChannel: ''
+    };
+
+    // Load settings from localStorage if available
+    const savedSettings = localStorage.getItem('newsAppSettings');
+    if (savedSettings) {
+      settings = JSON.parse(savedSettings);
+      // Populate form fields
+      document.getElementById('news-topic').value = settings.topic || '';
+      updateSlider(settings.articleCount || 10);
+      
+      // Set radio button for summary length
+      const radioGroup = document.querySelector('.radio-group');
+      if (radioGroup) {
+        radioGroup.querySelectorAll('.radio-option').forEach(opt => {
+          opt.classList.remove('active');
+          if (opt.dataset.value === settings.summaryLength) {
+            opt.classList.add('active');
+          }
+        });
+      }
+      
+      document.getElementById('tone-select').value = settings.tone || 'professional';
+      document.getElementById('telegram-channel').value = settings.telegramChannel || '';
+    }
+
+    // Save Settings
+    document.getElementById('save-settings-btn').addEventListener('click', function() {
+      const originalText = this.textContent;
+      
+      // Gather settings
+      settings.topic = document.getElementById('news-topic').value;
+      settings.articleCount = currentValue;
+      
+      const activeRadio = document.querySelector('.radio-option.active');
+      settings.summaryLength = activeRadio ? activeRadio.dataset.value : 'medium';
+      
+      settings.tone = document.getElementById('tone-select').value;
+      
+      const customTextarea = document.querySelector('#custom-instructions textarea');
+      settings.customInstructions = customTextarea ? customTextarea.value : '';
+      
+      settings.telegramChannel = document.getElementById('telegram-channel').value;
+      
+      // Save to localStorage
+      localStorage.setItem('newsAppSettings', JSON.stringify(settings));
+      
+      // Update button text
+      this.textContent = 'Saved!';
+      this.style.background = '#7fff00';
+      
+      setTimeout(() => {
+        this.textContent = originalText;
+        this.style.background = '';
+      }, 2000);
+    });
+
+    // Radio buttons
+    document.querySelectorAll('.radio-option').forEach(option => {
+      option.addEventListener('click', () => {
+        option.parentElement.querySelectorAll('.radio-option').forEach(o => o.classList.remove('active'));
+        option.classList.add('active');
+      });
+    });
+
+    // Tone select
+    document.getElementById('tone-select').addEventListener('change', (e) => {
+      const customInstructions = document.getElementById('custom-instructions');
+      customInstructions.style.display = e.target.value === 'custom' ? 'block' : 'none';
+    });
+
+    // Mock data - expanded pool of articles
+    const articlePool = [
+      {
+        source: 'TechCrunch',
+        date: 'Jan 28, 2026',
+        title: 'OpenAI announces GPT-5 with breakthrough reasoning capabilities',
+        description: 'The latest model shows significant improvements in complex problem-solving and multi-step reasoning tasks.',
+        url: 'https://techcrunch.com/2026/01/28/openai-gpt5-breakthrough'
+      },
+      {
+        source: 'The Verge',
+        date: 'Jan 28, 2026',
+        title: 'Apple Vision Pro 2 to launch in March with improved comfort',
+        description: 'Sources say the next iteration will be 30% lighter with better battery life and enhanced passthrough.',
+        url: 'https://theverge.com/2026/01/28/apple-vision-pro-2-launch'
+      },
+      {
+        source: 'Wired',
+        date: 'Jan 27, 2026',
+        title: 'Quantum computing breakthrough enables room-temperature qubits',
+        description: 'Researchers at MIT have developed a new material that maintains quantum coherence at 20°C.',
+        url: 'https://wired.com/story/quantum-computing-room-temperature'
+      },
+      {
+        source: 'Bloomberg',
+        date: 'Jan 27, 2026',
+        title: 'Tesla unveils fully autonomous robotaxi fleet for select cities',
+        description: 'The service will launch in Phoenix and Austin, with plans to expand to 10 more cities by year-end.',
+        url: 'https://bloomberg.com/news/tesla-robotaxi-fleet-launch'
+      },
+      {
+        source: 'Ars Technica',
+        date: 'Jan 26, 2026',
+        title: 'SpaceX Starship completes first Mars sample return mission',
+        description: 'The uncrewed mission successfully brought back 50kg of Martian soil and rock samples.',
+        url: 'https://arstechnica.com/space/spacex-mars-sample-return'
+      },
+      {
+        source: 'MIT Technology Review',
+        date: 'Jan 28, 2026',
+        title: 'New battery technology promises 1000-mile electric vehicle range',
+        description: 'Solid-state batteries using lithium-metal anodes achieve unprecedented energy density.',
+        url: 'https://technologyreview.com/battery-breakthrough-1000-mile'
+      },
+      {
+        source: 'Nature',
+        date: 'Jan 27, 2026',
+        title: 'CRISPR gene therapy shows promise in treating sickle cell disease',
+        description: 'Clinical trials demonstrate 95% success rate in eliminating symptoms after single treatment.',
+        url: 'https://nature.com/articles/crispr-sickle-cell-therapy'
+      },
+      {
+        source: 'Reuters',
+        date: 'Jan 27, 2026',
+        title: 'Global semiconductor production reaches record high in Q4 2025',
+        description: 'New fab openings in US and Europe help ease supply chain constraints.',
+        url: 'https://reuters.com/technology/semiconductor-production-record'
+      },
+      {
+        source: 'The Guardian',
+        date: 'Jan 26, 2026',
+        title: 'Fusion reactor achieves net positive energy for sustained period',
+        description: 'ITER facility maintains fusion reaction producing 150% energy output for 5 minutes.',
+        url: 'https://theguardian.com/science/fusion-energy-breakthrough'
+      },
+      {
+        source: 'VentureBeat',
+        date: 'Jan 26, 2026',
+        title: 'AI coding assistants now write 40% of professional code',
+        description: 'Study shows dramatic increase in developer productivity with GitHub Copilot and competitors.',
+        url: 'https://venturebeat.com/ai-coding-assistants-adoption'
+      },
+      {
+        source: 'TechCrunch',
+        date: 'Jan 25, 2026',
+        title: 'Meta releases open-source Llama 4 with 500B parameters',
+        description: 'New model matches GPT-4 performance while remaining fully open for research and commercial use.',
+        url: 'https://techcrunch.com/meta-llama-4-release'
+      },
+      {
+        source: 'CNBC',
+        date: 'Jan 25, 2026',
+        title: 'Apple announces $10B investment in Indian manufacturing',
+        description: 'Company plans to produce 25% of iPhones in India by 2027 as part of supply chain diversification.',
+        url: 'https://cnbc.com/apple-india-manufacturing-investment'
+      },
+      {
+        source: 'The Verge',
+        date: 'Jan 25, 2026',
+        title: 'Steam Deck 2 launches with OLED display and 8-hour battery life',
+        description: 'Valve\'s updated handheld gaming PC features AMD\'s latest APU and improved cooling system.',
+        url: 'https://theverge.com/steam-deck-2-review'
+      },
+      {
+        source: 'Science',
+        date: 'Jan 24, 2026',
+        title: 'Telescope discovers potentially habitable exoplanet 40 light-years away',
+        description: 'Planet orbiting red dwarf star shows signs of liquid water and stable atmosphere.',
+        url: 'https://science.org/exoplanet-habitable-discovery'
+      },
+      {
+        source: 'Financial Times',
+        date: 'Jan 24, 2026',
+        title: 'Quantum internet test network spans 500 miles between major cities',
+        description: 'Unhackable communication network demonstrates practical feasibility of quantum key distribution.',
+        url: 'https://ft.com/quantum-internet-network-test'
+      },
+      {
+        source: 'Wired',
+        date: 'Jan 24, 2026',
+        title: 'Brain-computer interface allows paralyzed patient to control robotic arm',
+        description: 'Neural implant enables precise movement control with thought alone, marking major BCI milestone.',
+        url: 'https://wired.com/brain-computer-interface-breakthrough'
+      },
+      {
+        source: 'BBC',
+        date: 'Jan 23, 2026',
+        title: 'Vertical farms produce 40% of Netherlands vegetable supply',
+        description: 'Indoor agriculture revolution reduces water usage by 95% compared to traditional farming.',
+        url: 'https://bbc.com/news/vertical-farming-netherlands'
+      },
+      {
+        source: 'Ars Technica',
+        date: 'Jan 23, 2026',
+        title: 'Linux kernel 7.0 brings major performance improvements',
+        description: 'New scheduler and memory management changes boost desktop and server workload efficiency.',
+        url: 'https://arstechnica.com/linux-kernel-7-release'
+      },
+      {
+        source: 'IEEE Spectrum',
+        date: 'Jan 23, 2026',
+        title: 'Graphene superconductor operates at room temperature',
+        description: 'Twisted bilayer graphene exhibits zero resistance at 20°C, revolutionizing electronics potential.',
+        url: 'https://spectrum.ieee.org/graphene-superconductor'
+      },
+      {
+        source: 'TechCrunch',
+        date: 'Jan 22, 2026',
+        title: 'Startup develops biodegradable plastic that dissolves in 6 months',
+        description: 'New polymer breaks down in ocean water, potentially solving marine pollution crisis.',
+        url: 'https://techcrunch.com/biodegradable-plastic-startup'
+      }
+    ];
+
+    let mockArticles = [];
+    let nextArticleId = 1;
+
+    function generateMockArticles(count) {
+      const newArticles = [];
+      const availableArticles = articlePool.filter(article => 
+        !mockArticles.some(existing => existing.title === article.title)
+      );
+      
+      // If we've used all unique articles, start recycling with modified titles
+      const articlesToUse = availableArticles.length >= count 
+        ? availableArticles.slice(0, count)
+        : [
+            ...availableArticles,
+            ...articlePool.slice(0, count - availableArticles.length).map(a => ({
+              ...a,
+              title: `[Update] ${a.title}`
+            }))
+          ];
+      
+      articlesToUse.forEach(article => {
+        newArticles.push({
+          ...article,
+          id: nextArticleId++
+        });
+      });
+      
+      return newArticles;
+    }
+
+    let selectedArticles = new Set();
+
+    // Fetch News
+    const fetchBtn = document.getElementById('fetch-btn');
+    const fetchStatus = document.getElementById('fetch-status');
+    const articlesGrid = document.getElementById('articles-grid');
+    const selectionBar = document.getElementById('selection-bar');
+    const selectedCount = document.getElementById('selected-count');
+
+    function renderArticles() {
+      articlesGrid.innerHTML = mockArticles.map(article => `
+        <div class="article-card ${selectedArticles.has(article.id) ? 'selected' : ''}" data-id="${article.id}">
+          <div class="article-select"></div>
+          <div class="article-meta">
+            <span>${article.source}</span>
+            <span>${article.date}</span>
+          </div>
+          <div class="article-title">${article.title}</div>
+          <div class="article-desc collapsed">${article.description}</div>
+          <div class="article-expanded-content" id="expanded-${article.id}">
+            <div class="article-url">🔗 ${article.url || `https://example.com/article/${article.id}`}</div>
+            <div class="article-actions">
+              <a href="${article.url || `https://example.com/article/${article.id}`}" target="_blank" class="read-article-btn" onclick="event.stopPropagation()">
+                Read Article
+                <svg class="external-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
+                </svg>
+              </a>
+            </div>
+          </div>
+          <button class="expand-btn" data-article-id="${article.id}">
+            <span class="expand-text">Read More</span>
+            <span class="expand-arrow">▼</span>
+          </button>
+        </div>
+      `).join('');
+
+      // Show select all button if there are articles
+      const selectAllBtn = document.getElementById('fetch-select-all-btn');
+      if (mockArticles.length > 0) {
+        selectAllBtn.style.display = 'block';
+        updateFetchSelectAllBtn();
+      }
+
+      // Add event listeners
+      document.querySelectorAll('.article-card').forEach(card => {
+        const selectBox = card.querySelector('.article-select');
+        
+        // Select checkbox click
+        selectBox.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const id = parseInt(card.dataset.id);
+          if (selectedArticles.has(id)) {
+            selectedArticles.delete(id);
+            card.classList.remove('selected');
+          } else {
+            selectedArticles.add(id);
+            card.classList.add('selected');
+          }
+          updateSelectionBar();
+          updateFetchSelectAllBtn();
+        });
+
+        // Card click - don't toggle, just visual feedback
+        card.addEventListener('click', (e) => {
+          // Only if not clicking on buttons or links
+          if (!e.target.closest('.expand-btn') && !e.target.closest('.read-article-btn')) {
+            const id = parseInt(card.dataset.id);
+            if (selectedArticles.has(id)) {
+              selectedArticles.delete(id);
+              card.classList.remove('selected');
+            } else {
+              selectedArticles.add(id);
+              card.classList.add('selected');
+            }
+            updateSelectionBar();
+            updateFetchSelectAllBtn();
+          }
+        });
+      });
+
+      // Expand buttons
+      document.querySelectorAll('.expand-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const articleId = btn.dataset.articleId;
+          const expandedContent = document.getElementById(`expanded-${articleId}`);
+          const card = btn.closest('.article-card');
+          const desc = card.querySelector('.article-desc');
+          
+          if (expandedContent.classList.contains('visible')) {
+            expandedContent.classList.remove('visible');
+            desc.classList.add('collapsed');
+            btn.classList.remove('expanded');
+            btn.querySelector('.expand-text').textContent = 'Read More';
+          } else {
+            expandedContent.classList.add('visible');
+            desc.classList.remove('collapsed');
+            btn.classList.add('expanded');
+            btn.querySelector('.expand-text').textContent = 'Show Less';
+          }
+        });
+      });
+    }
+
+    function updateFetchSelectAllBtn() {
+      const selectAllBtn = document.getElementById('fetch-select-all-btn');
+      const allSelected = mockArticles.length > 0 && selectedArticles.size === mockArticles.length;
+      
+      if (allSelected) {
+        selectAllBtn.textContent = 'Deselect All';
+      } else {
+        selectAllBtn.textContent = 'Select All';
+      }
+    }
+
+    function updateSelectionBar() {
+      selectedCount.textContent = selectedArticles.size;
+      const articlesGrid = document.getElementById('articles-grid');
+      
+      if (selectedArticles.size > 0) {
+        selectionBar.classList.add('visible');
+        if (articlesGrid) {
+          articlesGrid.classList.add('has-selection');
+        }
+      } else {
+        selectionBar.classList.remove('visible');
+        if (articlesGrid) {
+          articlesGrid.classList.remove('has-selection');
+        }
+      }
+    }
+
+    fetchBtn.addEventListener('click', () => {
+      fetchStatus.innerHTML = '<span class="status-dot"></span>Fetching';
+      fetchStatus.classList.add('fetching');
+      fetchBtn.disabled = true;
+
+      setTimeout(() => {
+        // Generate new articles based on settings
+        const count = settings.articleCount || 10;
+        const newArticles = generateMockArticles(count);
+        
+        // Clear previous selections
+        selectedArticles.clear();
+        
+        // Add new articles to the beginning
+        mockArticles = [...newArticles, ...mockArticles];
+        
+        renderArticles();
+        fetchStatus.innerHTML = '<span class="status-dot"></span>Idle';
+        fetchStatus.classList.remove('fetching');
+        fetchBtn.disabled = false;
+      }, 2000);
+    });
+
+    // Fetch Select All functionality
+    document.getElementById('fetch-select-all-btn').addEventListener('click', function() {
+      const allSelected = mockArticles.length > 0 && selectedArticles.size === mockArticles.length;
+      
+      if (allSelected) {
+        // Deselect all
+        selectedArticles.clear();
+        document.querySelectorAll('.article-card').forEach(card => {
+          card.classList.remove('selected');
+        });
+      } else {
+        // Select all
+        mockArticles.forEach(article => selectedArticles.add(article.id));
+        document.querySelectorAll('.article-card').forEach(card => {
+          card.classList.add('selected');
+        });
+      }
+      
+      updateSelectionBar();
+      updateFetchSelectAllBtn();
+    });
+
+    // Add URL manually
+    const manualUrlInput = document.getElementById('manual-url');
+    const addUrlBtn = document.getElementById('add-url-btn');
+    
+    function addManualArticle() {
+      const url = manualUrlInput.value.trim();
+      if (url) {
+        const newArticle = {
+          id: nextArticleId++,
+          source: 'Custom',
+          date: 'Just now',
+          title: 'Manually added article',
+          description: 'Click "Read More" to view the full URL and open the article.',
+          url: url
+        };
+        mockArticles.unshift(newArticle);
+        
+        // Re-render articles (this will preserve selections)
+        renderArticles();
+        
+        // Auto-select the new article
+        selectedArticles.add(newArticle.id);
+        const newCard = document.querySelector(`[data-id="${newArticle.id}"]`);
+        if (newCard) {
+          newCard.classList.add('selected');
+        }
+        
+        updateSelectionBar();
+        updateFetchSelectAllBtn();
+        manualUrlInput.value = '';
+        
+        // Scroll to top to show new article
+        articlesGrid.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }
+    
+    addUrlBtn.addEventListener('click', addManualArticle);
+    
+    manualUrlInput.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') {
+        addManualArticle();
+      }
+    });
+
+    // Generate Summaries
+    let selectedDrafts = new Set();
+    let draftData = [];
+    let currentEditingId = null;
+    let draftStatuses = {}; // Store status for each draft
+
+    function getStatusLabel(status) {
+      const labels = {
+        'draft': 'Draft',
+        'in-progress': 'In Progress',
+        'needs-review': 'Needs Review',
+        'approved': 'Approved',
+        'ready': 'Ready'
+      };
+      return labels[status] || 'Draft';
+    }
+
+    function updateDraftListItem(articleId) {
+      const item = document.querySelector(`[data-draft-id="${articleId}"]`);
+      if (item) {
+        const statusBadge = item.querySelector('.article-status');
+        const status = draftStatuses[articleId] || 'draft';
+        statusBadge.className = `article-status ${status}`;
+        statusBadge.textContent = getStatusLabel(status);
+      }
+    }
+
+    document.getElementById('generate-btn').addEventListener('click', () => {
+      if (selectedArticles.size === 0) return;
+      
+      const statusSelect = document.getElementById('draft-status-select');
+      if (statusSelect) {
+        statusSelect.value = 'draft';
+      }
+
+      setTimeout(() => {
+        // Switch to drafts screen
+        document.querySelector('[data-screen="drafts"]').click();
+        
+        // Populate drafts
+        const draftList = document.getElementById('draft-list');
+        const selectedData = mockArticles.filter(a => selectedArticles.has(a.id));
+        draftData = selectedData;
+        selectedDrafts.clear(); // Clear selections
+        
+        // Initialize statuses
+        selectedData.forEach(article => {
+          if (!draftStatuses[article.id]) {
+            draftStatuses[article.id] = 'draft';
+          }
+        });
+        
+        draftList.innerHTML = selectedData.map((article, index) => `
+          <div class="article-list-item ${index === 0 ? 'active' : ''}" data-draft-id="${article.id}">
+            <div class="draft-checkbox"></div>
+            <div class="article-status ${draftStatuses[article.id] || 'draft'}">${getStatusLabel(draftStatuses[article.id] || 'draft')}</div>
+            <div class="article-list-title">${article.title}</div>
+          </div>
+        `).join('');
+
+        // Load first draft
+        if (selectedData.length > 0) {
+          currentEditingId = selectedData[0].id;
+          loadDraft(selectedData[0]);
+        }
+
+        // Show select all and info
+        document.getElementById('select-all-btn').style.display = 'block';
+        updateDraftSelectionUI();
+
+        // Setup draft list clicks
+        document.querySelectorAll('.article-list-item').forEach(item => {
+          const checkbox = item.querySelector('.draft-checkbox');
+          
+          // Checkbox click - toggle selection
+          checkbox.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const id = parseInt(item.dataset.draftId);
+            if (selectedDrafts.has(id)) {
+              selectedDrafts.delete(id);
+              item.classList.remove('selected-for-send');
+            } else {
+              selectedDrafts.add(id);
+              item.classList.add('selected-for-send');
+            }
+            updateDraftSelectionUI();
+          });
+
+          // Item click - view/edit
+          item.addEventListener('click', () => {
+            document.querySelectorAll('.article-list-item').forEach(i => i.classList.remove('active'));
+            item.classList.add('active');
+            const id = parseInt(item.dataset.draftId);
+            currentEditingId = id;
+            const article = selectedData.find(a => a.id === id);
+            loadDraft(article);
+          });
+        });
+      }, 1500);
+    });
+
+    // Select All functionality
+    document.getElementById('select-all-btn').addEventListener('click', function() {
+      const allSelected = selectedDrafts.size === draftData.length;
+      
+      if (allSelected) {
+        // Deselect all
+        selectedDrafts.clear();
+        document.querySelectorAll('.article-list-item').forEach(item => {
+          item.classList.remove('selected-for-send');
+        });
+        this.textContent = 'Select All';
+      } else {
+        // Select all
+        draftData.forEach(article => selectedDrafts.add(article.id));
+        document.querySelectorAll('.article-list-item').forEach(item => {
+          item.classList.add('selected-for-send');
+        });
+        this.textContent = 'Deselect All';
+      }
+      
+      updateDraftSelectionUI();
+    });
+
+    function updateDraftSelectionUI() {
+      const sendBtn = document.getElementById('send-selected-btn');
+      const selectAllBtn = document.getElementById('select-all-btn');
+      
+      if (selectedDrafts.size > 0) {
+        sendBtn.style.display = 'block';
+        sendBtn.textContent = `Send Selected (${selectedDrafts.size})`;
+      } else {
+        sendBtn.style.display = 'none';
+      }
+      
+      // Update select all button text
+      if (selectedDrafts.size === draftData.length && draftData.length > 0) {
+        selectAllBtn.textContent = 'Deselect All';
+      } else {
+        selectAllBtn.textContent = 'Select All';
+      }
+    }
+
+    function updateSendButton() {
+      updateDraftSelectionUI();
+    }
+
+    function loadDraft(article) {
+      // Show editor content, hide empty state
+      document.getElementById('editor-empty-state').style.display = 'none';
+      const editorContentArea = document.getElementById('editor-content-area');
+      editorContentArea.style.display = 'flex';
+      
+      // Enable inputs
+      const titleInput = document.getElementById('draft-title');
+      const urlInput = document.getElementById('draft-url');
+      const contentInput = document.getElementById('draft-content');
+      const sendBtn = document.getElementById('send-now-btn');
+      const saveBtn = document.getElementById('save-draft-btn');
+      const statusSelect = document.getElementById('draft-status-select');
+      
+      titleInput.disabled = false;
+      urlInput.disabled = false;
+      contentInput.disabled = false;
+      sendBtn.disabled = false;
+      saveBtn.disabled = false;
+      statusSelect.disabled = false;
+      
+      titleInput.value = article.title;
+      urlInput.value = article.url || `https://example.com/article/${article.id}`;
+      contentInput.value = `• ${article.description}\n\n• Key insight about the development and its implications for the industry.\n\n• Analysis of how this will affect the market and competitors.`;
+      
+      // Set status
+      statusSelect.value = draftStatuses[article.id] || 'draft';
+      
+      updatePreview();
+    }
+
+    // Editor tabs
+    document.querySelectorAll('.editor-tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        document.querySelectorAll('.editor-tab').forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        
+        if (tab.dataset.tab === 'edit') {
+          document.getElementById('edit-view').style.display = 'flex';
+          document.getElementById('preview-view').style.display = 'none';
+        } else {
+          document.getElementById('edit-view').style.display = 'none';
+          document.getElementById('preview-view').style.display = 'block';
+          updatePreview();
+        }
+      });
+    });
+
+    // Expand editor functionality
+    let isEditorExpanded = false;
+    document.getElementById('expand-editor-btn').addEventListener('click', function() {
+      const leftColumn = document.querySelector('#screen-drafts .column:first-child');
+      const twoColumn = document.querySelector('#screen-drafts .two-column');
+      const expandIcon = document.getElementById('expand-icon');
+      
+      isEditorExpanded = !isEditorExpanded;
+      
+      if (isEditorExpanded) {
+        leftColumn.classList.add('collapsed');
+        twoColumn.style.gridTemplateColumns = '0 1fr';
+        expandIcon.textContent = '⛶';
+        this.title = 'Collapse editor';
+      } else {
+        leftColumn.classList.remove('collapsed');
+        twoColumn.style.gridTemplateColumns = '320px 1fr';
+        expandIcon.textContent = '⛶';
+        this.title = 'Expand editor';
+      }
+    });
+
+    function updatePreview() {
+      const title = document.getElementById('draft-title').value;
+      const url = document.getElementById('draft-url').value;
+      const content = document.getElementById('draft-content').value;
+      document.getElementById('preview-text').textContent = `${title}\n\n${content}\n\n${url}`;
+    }
+
+    // Send confirmation
+    const confirmModal = document.getElementById('confirm-modal');
+    const sendNowBtn = document.getElementById('send-now-btn');
+    const sendSelectedBtn = document.getElementById('send-selected-btn');
+    const cancelSendBtn = document.getElementById('cancel-send');
+    const confirmSendBtn = document.getElementById('confirm-send');
+    const modalMessage = document.getElementById('modal-message');
+    const statusSelect = document.getElementById('draft-status-select');
+    let sendMode = 'single'; // 'single' or 'batch'
+
+    sendNowBtn.addEventListener('click', () => {
+      sendMode = 'single';
+      modalMessage.textContent = 'This will post the summary to your Telegram channel. This action cannot be undone.';
+      confirmModal.classList.add('visible');
+    });
+
+    sendSelectedBtn.addEventListener('click', () => {
+      sendMode = 'batch';
+      modalMessage.textContent = `This will post ${selectedDrafts.size} summaries to your Telegram channel. This action cannot be undone.`;
+      confirmModal.classList.add('visible');
+    });
+
+    cancelSendBtn.addEventListener('click', () => {
+      confirmModal.classList.remove('visible');
+    });
+
+    confirmModal.addEventListener('click', (e) => {
+      if (e.target === confirmModal) {
+        confirmModal.classList.remove('visible');
+      }
+    });
+
+    confirmSendBtn.addEventListener('click', () => {
+      statusSelect.value = 'in-progress';
+      const draftStatus = document.getElementById('draft-status');
+      draftStatus.classList.add('sending');
+      confirmModal.classList.remove('visible');
+
+      setTimeout(() => {
+        const sentList = document.getElementById('sent-list');
+        const now = new Date().toLocaleString('en-US', { 
+          month: 'short', 
+          day: 'numeric', 
+          hour: 'numeric', 
+          minute: '2-digit' 
+        });
+
+        if (sendMode === 'single') {
+          // Send current draft
+          const title = document.getElementById('draft-title').value;
+          const content = document.getElementById('draft-content').value;
+
+          const sentItem = `
+            <div class="sent-item">
+              <div class="sent-header">
+                <div class="sent-title">${title}</div>
+                <div class="sent-time">${now}</div>
+              </div>
+              <div class="sent-preview">${content.substring(0, 150)}...</div>
+              <button class="copy-btn" onclick="copyText(\`${title}\\n\\n${content}\`)">Copy Text</button>
+            </div>
+          `;
+
+          sentList.insertAdjacentHTML('afterbegin', sentItem);
+          
+          // Remove sent item from drafts if it was selected
+          if (currentEditingId) {
+            selectedDrafts.delete(currentEditingId);
+          }
+        } else {
+          // Send all selected drafts
+          const itemsToSend = draftData.filter(article => selectedDrafts.has(article.id));
+          
+          itemsToSend.forEach(article => {
+            const content = `• ${article.description}\n\n• Key insight about the development and its implications for the industry.\n\n• Analysis of how this will affect the market and competitors.`;
+            
+            const sentItem = `
+              <div class="sent-item">
+                <div class="sent-header">
+                  <div class="sent-title">${article.title}</div>
+                  <div class="sent-time">${now}</div>
+                </div>
+                <div class="sent-preview">${content.substring(0, 150)}...</div>
+                <button class="copy-btn" onclick="copyText(\`${article.title}\\n\\n${content}\`)">Copy Text</button>
+              </div>
+            `;
+
+            sentList.insertAdjacentHTML('afterbegin', sentItem);
+          });
+
+          // Clear selected drafts
+          selectedDrafts.clear();
+          document.querySelectorAll('.article-list-item').forEach(item => {
+            item.classList.remove('selected-for-send');
+          });
+          updateDraftSelectionUI();
+        }
+
+        // Clear article selection from fetch page and update UI
+        selectedArticles.clear();
+        document.querySelectorAll('.article-card').forEach(card => {
+          card.classList.remove('selected');
+        });
+        updateSelectionBar();
+        
+        // Go to sent page to show results
+        document.querySelector('[data-screen="sent"]').click();
+
+        statusSelect.value = 'ready';
+        draftStatus.classList.remove('sending');
+      }, 1500);
+    });
+
+    // Status change handler
+    const draftStatusSelect = document.getElementById('draft-status-select');
+    if (draftStatusSelect) {
+      draftStatusSelect.addEventListener('change', function() {
+        if (currentEditingId) {
+          draftStatuses[currentEditingId] = this.value;
+          updateDraftListItem(currentEditingId);
+        }
+      });
+    }
+
+    // Make copy function globally accessible
+    window.copyText = function(text) {
+      navigator.clipboard.writeText(text).then(() => {
+        console.log('Copied to clipboard');
+        // Could add a toast notification here
+      }).catch(err => {
+        console.error('Failed to copy:', err);
+      });
+    };
+
+    // Initialize with some sent items
+    const sentList = document.getElementById('sent-list');
+    sentList.innerHTML = `
+      <div class="sent-item">
+        <div class="sent-header">
+          <div class="sent-title">Meta unveils new AR glasses with neural interface technology</div>
+          <div class="sent-time">Jan 27, 3:42 PM</div>
+        </div>
+        <div class="sent-preview">• Revolutionary brain-computer interface allows hands-free control of digital content through thought patterns...</div>
+        <button class="copy-btn">Copy Text</button>
+      </div>
+      <div class="sent-item">
+        <div class="sent-header">
+          <div class="sent-title">Anthropic releases Claude 4.0 with extended context window</div>
+          <div class="sent-time">Jan 26, 11:15 AM</div>
+        </div>
+        <div class="sent-preview">• New model supports up to 2 million tokens, enabling analysis of entire codebases and long documents...</div>
+        <button class="copy-btn">Copy Text</button>
+      </div>
+    `;
+  </script>
+</body>
+</html>
