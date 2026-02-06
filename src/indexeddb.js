@@ -52,6 +52,26 @@ class EncryptedDB {
             req.onerror = reject;
         });
     }
+
+    async delete(key) {
+        return new Promise((resolve, reject) => {
+            const tx = this.db.transaction(this.storeName, "readwrite");
+            tx.objectStore(this.storeName).delete(key);
+            tx.oncomplete = resolve;
+            tx.onerror = reject;
+        });
+    }
+
+    async listKeys() {
+        return new Promise((resolve, reject) => {
+            const tx = this.db.transaction(this.storeName, "readonly");
+            const store = tx.objectStore(this.storeName);
+            const req = store.getAllKeys();
+
+            req.onsuccess = () => resolve(req.result);
+            req.onerror = reject;
+        });
+    }
 }
 
 export default EncryptedDB;

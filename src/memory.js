@@ -11,14 +11,14 @@ class AgentMemory {
         this.key = key;
     }
 
-    async saveMemory(id, data) {
+    async saveMemory(namespace, id, data) {
         await this.ready;
-        return this.db.set(id, data, this.key);
+        return this.db.set(`${namespace}:${id}`, data, this.key);
     }
 
-    async loadMemory(id) {
+    async loadMemory(namespace, id) {
         await this.ready;
-        return this.db.get(id, this.key);
+        return this.db.get(`${namespace}:${id}`, this.key);
     }
 }
 

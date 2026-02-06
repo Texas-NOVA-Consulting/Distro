@@ -1,5 +1,8 @@
 const CryptoUtil = {
     encrypt(text, key) {
+        if (!key) {
+            throw new Error("Encryption key is required");
+        }
         return CryptoJS.AES.encrypt(text, key).toString();
     },
 
