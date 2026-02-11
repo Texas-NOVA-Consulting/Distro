@@ -1,6 +1,8 @@
 BEATSWEEP AGENT FRAMEWORK
 =========================
 
+Langsmith Personal API Key: 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
+
 OVERVIEW
 --------
 Agent uses LLMs to automatically process news: fetch → analyze → summarize → post
