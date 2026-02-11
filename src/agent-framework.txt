@@ -1,0 +1,121 @@
+BEATSWEEP AGENT FRAMEWORK
+=========================
+
+OVERVIEW
+--------
+Agent uses LLMs to automatically process news: fetch → analyze → summarize → post
+
+
+AGENT WORKFLOW (5 STEPS)
+-------------------------
+
+1. PERCEIVE
+   - Fetch news articles from APIs
+   - Input: News API endpoints
+   - Output: Raw articles array
+
+2. REASON
+   - Use LLM to analyze articles
+   - Prompt: "Is this article relevant? Rate 0-10"
+   - Output: Filtered list of relevant articles
+
+3. PLAN
+   - Decide what actions to take
+   - Create task list (summarize, categorize, post)
+   - Prioritize by relevance score
+
+4. EXECUTE
+   - Use LLM to summarize relevant articles
+   - Prompt: "Summarize this in 3 sentences"
+   - Post summaries to Telegram/Distro channels
+
+5. REFLECT
+   - Track what was posted
+   - Learn from results
+   - Update for next run
+
+
+LLM REASONING
+-------------
+
+The LLM makes decisions at each step:
+
+STEP 2 (Reason):
+- Question: "Is this news relevant to our audience?"
+- LLM evaluates and scores each article
+
+STEP 4 (Execute):
+- Question: "Create a concise summary"
+- LLM generates summary text
+- Question: "Which channel should this go to?"
+- LLM selects: Telegram, Tech Channel, or Politics Channel
+
+
+TASK EXECUTION
+--------------
+
+Tasks the agent performs:
+- Fetch: Get news from API (no LLM needed)
+- Analyze: Determine relevance (uses LLM)
+- Summarize: Create summary (uses LLM)
+- Categorize: Assign topic/channel (uses LLM)
+- Post: Send to channel (no LLM needed)
+
+
+STATE TRACKING
+--------------
+
+What the agent remembers:
+- articles: News fetched from APIs
+- summaries: Summaries created by LLM
+- posted: Successfully posted items
+- errors: Any failures
+
+
+DATA FLOW
+---------
+
+News API → Articles → LLM Analysis → Relevant Articles
+                                    ↓
+                           LLM Summarization
+                                    ↓
+                              Summaries
+                                    ↓
+                            Telegram/Distro
+
+
+INTEGRATION POINTS
+------------------
+
+1. News APIs (input)
+   - NewsAPI, NYT, Guardian
+   - Fetch top headlines
+
+2. LLM Service (processing)
+   - OpenAI or Anthropic
+   - Analyze and summarize
+
+3. Telegram Bot (output)
+   - Post summaries to channels
+
+
+CONFIGURATION
+-------------
+
+Environment variables needed:
+- OPENAI_API_KEY (or ANTHROPIC_API_KEY)
+- NEWS_API_KEY
+- TELEGRAM_BOT_TOKEN
+- TELEGRAM_CHAT_ID
+
+
+SUMMARY
+-------
+
+The framework defines how LLMs reason, plan, and execute:
+
+REASON: LLM evaluates "is this article worth posting?"
+PLAN: Agent decides "I'll summarize these 5 articles"
+EXECUTE: LLM generates summaries and selects channels
+
+Loop repeats every hour to process new news.
