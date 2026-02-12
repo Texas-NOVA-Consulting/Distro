@@ -1,0 +1,32 @@
+{
+  "name": "beatsweep-backend",
+  "version": "1.0.0",
+  "description": "BeatSweep news curation backend with LangChain",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "test": "jest",
+    "test:setup": "node src/langchain-setup.js",
+    "dev": "nodemon src/index.js"
+  },
+  "keywords": [
+    "langchain",
+    "news",
+    "ai",
+    "automation"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@langchain/core": "^0.1.52",
+    "@langchain/langgraph": "^0.0.20",
+    "@langchain/google-genai": "^0.0.11",
+    "dotenv": "^16.4.5",
+    "axios": "^1.6.7"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "nodemon": "^3.0.3"
+  }
+}
+
