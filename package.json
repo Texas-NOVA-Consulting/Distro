@@ -1,33 +1,21 @@
 {
-  "name": "beatsweep-backend",
+  "name": "beatsweep-vercel",
   "version": "1.0.0",
-  "description": "BeatSweep news curation backend with LangChain",
-  "main": "src/index.js",
+  "description": "BeatSweep AI news curation on Vercel",
+  "type": "module",
   "scripts": {
-    "start": "node src/index.js",
-    "test": "jest",
-    "test:setup": "node src/langchain-setup.js",
-    "test:prompts": "node src/prompt-testing.js",
-    "dev": "nodemon src/index.js"
+    "dev": "node test-server.js",
+    "vercel:dev": "vercel dev",
+    "deploy": "vercel --prod"
   },
-  "keywords": [
-    "langchain",
-    "news",
-    "ai",
-    "automation"
-  ],
-  "author": "",
-  "license": "MIT",
   "dependencies": {
     "@langchain/core": "^0.1.52",
-    "@langchain/langgraph": "^0.0.20",
     "@langchain/google-genai": "^0.0.11",
-    "dotenv": "^16.4.5",
-    "axios": "^1.6.7"
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5"
   },
   "devDependencies": {
-    "jest": "^29.7.0",
-    "nodemon": "^3.0.3"
+    "vercel": "^33.0.0"
   }
 }
-
