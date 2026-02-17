@@ -1474,6 +1474,9 @@
   </div>
 
   <script>
+    // API Configuration
+    const API_URL = 'https://distro-gold.vercel.app/api';
+
     // Navigation
     document.querySelectorAll('.nav-item').forEach(item => {
       item.addEventListener('click', () => {
@@ -1920,27 +1923,38 @@
       }
     }
 
-    fetchBtn.addEventListener('click', () => {
+    fetchBtn.addEventListener('click', async () => {
       fetchStatus.innerHTML = '<span class="status-dot"></span>Fetching';
       fetchStatus.classList.add('fetching');
       fetchBtn.disabled = true;
 
-      setTimeout(() => {
-        // Generate new articles based on settings
-        const count = settings.articleCount || 10;
-        const newArticles = generateMockArticles(count);
-        
-        // Clear previous selections
-        selectedArticles.clear();
-        
-        // Add new articles to the beginning
-        mockArticles = [...newArticles, ...mockArticles];
-        
-        renderArticles();
+      try {
+        const response = await fetch(`${API_URL}/fetch-news`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            topic: settings.topic || 'latest technology and AI news',
+            count: settings.articleCount || 10
+          })
+        });
+
+        const data = await response.json();
+
+        if (data.success && data.articles) {
+          selectedArticles.clear();
+          mockArticles = [...data.articles, ...mockArticles];
+          renderArticles();
+        } else {
+          alert('Failed to fetch news. Please try again.');
+        }
+      } catch (error) {
+        console.error('Fetch error:', error);
+        alert('Error connecting to API. Make sure the Vercel functions are deployed.');
+      } finally {
         fetchStatus.innerHTML = '<span class="status-dot"></span>Idle';
         fetchStatus.classList.remove('fetching');
         fetchBtn.disabled = false;
-      }, 2000);
+      }
     });
 
     // Fetch Select All functionality
@@ -2036,78 +2050,106 @@
       }
     }
 
-    document.getElementById('generate-btn').addEventListener('click', () => {
+    document.getElementById('generate-btn').addEventListener('click', async () => {
       if (selectedArticles.size === 0) return;
-      
+
       const statusSelect = document.getElementById('draft-status-select');
-      if (statusSelect) {
-        statusSelect.value = 'draft';
-      }
+      if (statusSelect) statusSelect.value = 'draft';
 
-      setTimeout(() => {
-        // Switch to drafts screen
-        document.querySelector('[data-screen="drafts"]').click();
-        
-        // Populate drafts
-        const draftList = document.getElementById('draft-list');
-        const selectedData = mockArticles.filter(a => selectedArticles.has(a.id));
-        draftData = selectedData;
-        selectedDrafts.clear(); // Clear selections
-        
-        // Initialize statuses
-        selectedData.forEach(article => {
-          if (!draftStatuses[article.id]) {
-            draftStatuses[article.id] = 'draft';
-          }
+      // Show generating status
+      fetchStatus.innerHTML = '<span class="status-dot"></span>Generating';
+      fetchStatus.classList.add('generating');
+      document.getElementById('generate-btn').disabled = true;
+
+      try {
+        const articlesToSummarize = mockArticles.filter(a => selectedArticles.has(a.id));
+
+        const response = await fetch(`${API_URL}/generate-summaries`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            articles: articlesToSummarize,
+            tone: settings.tone || 'professional',
+            summaryLength: settings.summaryLength || 'medium',
+            customInstructions: settings.customInstructions || ''
+          })
         });
-        
-        draftList.innerHTML = selectedData.map((article, index) => `
-          <div class="article-list-item ${index === 0 ? 'active' : ''}" data-draft-id="${article.id}">
-            <div class="draft-checkbox"></div>
-            <div class="article-status ${draftStatuses[article.id] || 'draft'}">${getStatusLabel(draftStatuses[article.id] || 'draft')}</div>
-            <div class="article-list-title">${article.title}</div>
-          </div>
-        `).join('');
 
-        // Load first draft
-        if (selectedData.length > 0) {
-          currentEditingId = selectedData[0].id;
-          loadDraft(selectedData[0]);
-        }
+        const data = await response.json();
 
-        // Show select all and info
-        document.getElementById('select-all-btn').style.display = 'block';
-        updateDraftSelectionUI();
+        if (data.success && data.summaries) {
+          // Switch to drafts screen
+          document.querySelector('[data-screen="drafts"]').click();
 
-        // Setup draft list clicks
-        document.querySelectorAll('.article-list-item').forEach(item => {
-          const checkbox = item.querySelector('.draft-checkbox');
-          
-          // Checkbox click - toggle selection
-          checkbox.addEventListener('click', (e) => {
-            e.stopPropagation();
-            const id = parseInt(item.dataset.draftId);
-            if (selectedDrafts.has(id)) {
-              selectedDrafts.delete(id);
-              item.classList.remove('selected-for-send');
-            } else {
-              selectedDrafts.add(id);
-              item.classList.add('selected-for-send');
+          // Set draft data
+          const draftList = document.getElementById('draft-list');
+          draftData = data.summaries;
+          selectedDrafts.clear();
+
+          // Initialize statuses
+          draftData.forEach(article => {
+            if (!draftStatuses[article.id]) {
+              draftStatuses[article.id] = 'draft';
             }
-            updateDraftSelectionUI();
           });
 
-          // Item click - view/edit
-          item.addEventListener('click', () => {
-            document.querySelectorAll('.article-list-item').forEach(i => i.classList.remove('active'));
-            item.classList.add('active');
-            const id = parseInt(item.dataset.draftId);
-            currentEditingId = id;
-            const article = selectedData.find(a => a.id === id);
-            loadDraft(article);
+          // Render draft list
+          draftList.innerHTML = draftData.map((article, index) => `
+            <div class="article-list-item ${index === 0 ? 'active' : ''}" data-draft-id="${article.id}">
+              <div class="draft-checkbox"></div>
+              <div class="article-status ${draftStatuses[article.id] || 'draft'}">${getStatusLabel(draftStatuses[article.id] || 'draft')}</div>
+              <div class="article-list-title">${article.title}</div>
+            </div>
+          `).join('');
+
+          // Load first draft
+          if (draftData.length > 0) {
+            currentEditingId = draftData[0].id;
+            loadDraft(draftData[0]);
+          }
+
+          // Show select all
+          document.getElementById('select-all-btn').style.display = 'block';
+          updateDraftSelectionUI();
+
+          // Setup draft list clicks
+          document.querySelectorAll('.article-list-item').forEach(item => {
+            const checkbox = item.querySelector('.draft-checkbox');
+
+            checkbox.addEventListener('click', (e) => {
+              e.stopPropagation();
+              const id = parseInt(item.dataset.draftId);
+              if (selectedDrafts.has(id)) {
+                selectedDrafts.delete(id);
+                item.classList.remove('selected-for-send');
+              } else {
+                selectedDrafts.add(id);
+                item.classList.add('selected-for-send');
+              }
+              updateDraftSelectionUI();
+            });
+
+            item.addEventListener('click', () => {
+              document.querySelectorAll('.article-list-item').forEach(i => i.classList.remove('active'));
+              item.classList.add('active');
+              const id = parseInt(item.dataset.draftId);
+              currentEditingId = id;
+              const article = draftData.find(a => a.id === id);
+              if (article) loadDraft(article);
+            });
           });
-        });
-      }, 1500);
+
+        } else {
+          alert('Failed to generate summaries. Please try again.');
+        }
+      } catch (error) {
+        console.error('Generate error:', error);
+        alert('Error connecting to API. Make sure the Vercel functions are deployed.');
+      } finally {
+        fetchStatus.innerHTML = '<span class="status-dot"></span>Idle';
+        fetchStatus.classList.remove('generating');
+        document.getElementById('generate-btn').disabled = false;
+      }
     });
 
     // Select All functionality
@@ -2179,7 +2221,11 @@
       
       titleInput.value = article.title;
       urlInput.value = article.url || `https://example.com/article/${article.id}`;
-      contentInput.value = `• ${article.description}\n\n• Key insight about the development and its implications for the industry.\n\n• Analysis of how this will affect the market and competitors.`;
+      if (article.summary) {
+        contentInput.value = article.summary;
+      } else {
+        contentInput.value = `• ${article.description}\n\n• Key insight about the development and its implications for the industry.\n\n• Analysis of how this will affect the market and competitors.`;
+      }
       
       // Set status
       statusSelect.value = draftStatuses[article.id] || 'draft';
