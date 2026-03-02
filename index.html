@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>News → Telegram</title>
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
   <style>
     * {
       margin: 0;
@@ -13,42 +13,57 @@
     }
 
     :root {
-      --bg-primary: #0d4d4d;
-      --bg-secondary: rgba(20, 60, 60, 0.8);
-      --bg-tertiary: rgba(30, 80, 80, 0.6);
-      --bg-hover: rgba(40, 100, 100, 0.5);
-      --border: rgba(100, 255, 150, 0.2);
-      --text-primary: #ffffff;
-      --text-secondary: rgba(255, 255, 255, 0.7);
-      --text-tertiary: rgba(255, 255, 255, 0.5);
-      --accent: #7fff00;
-      --accent-dim: #6adc00;
-      --accent-glow: rgba(127, 255, 0, 0.25);
-      --error: #ff4444;
-      --warning: #ffaa00;
-      --radius: 12px;
-      --shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+      --color-green:   #03d26f;
+      --color-lime:    #cef431;
+      --color-teal:    #014651;
+      --color-dark:    #161514;
+      --color-light:   #eaf4f4;
+
+      --bg-primary:    #161514;
+      --bg-secondary:  #1a1918;
+      --bg-card:       rgba(22, 21, 20, 0.95);
+      --bg-hover:      rgba(1, 70, 81, 0.4);
+
+      --border:        rgba(3, 210, 111, 0.2);
+      --border-teal:   rgba(1, 70, 81, 0.6);
+
+      --text-primary:  #eaf4f4;
+      --text-secondary: rgba(234, 244, 244, 0.65);
+      --text-tertiary: rgba(234, 244, 244, 0.4);
+
+      --accent:        #03d26f;
+      --accent-lime:   #cef431;
+      --accent-glow:   rgba(3, 210, 111, 0.2);
+      --accent-glow-strong: rgba(3, 210, 111, 0.5);
+
+      --error:   #ef4444;
+      --warning: #fbbf24;
+      --info:    #2dd4bf;
+
+      --radius:  12px;
+      --radius-btn: 10px;
+      --shadow:  0 8px 32px rgba(0, 0, 0, 0.4);
     }
 
     body {
-      font-family: 'Roboto', sans-serif;
-      background: linear-gradient(135deg, #0d4d4d 0%, #1a6666 50%, #7fff00 100%);
+      font-family: 'Inter', system-ui, sans-serif;
+      background: var(--bg-primary);
       color: var(--text-primary);
       overflow: hidden;
       height: 100vh;
       position: relative;
     }
-    
+
     body::before {
       content: '';
       position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: radial-gradient(circle at 20% 50%, rgba(127, 255, 0, 0.1) 0%, transparent 50%),
-                  radial-gradient(circle at 80% 80%, rgba(26, 102, 102, 0.3) 0%, transparent 50%);
+      inset: 0;
+      background:
+        radial-gradient(ellipse at 15% 40%, rgba(3, 210, 111, 0.06) 0%, transparent 55%),
+        radial-gradient(ellipse at 85% 20%, rgba(1, 70, 81, 0.3) 0%, transparent 50%),
+        radial-gradient(ellipse at 50% 100%, rgba(206, 244, 49, 0.04) 0%, transparent 60%);
       pointer-events: none;
+      z-index: 0;
     }
 
     .app {
@@ -60,65 +75,94 @@
 
     /* Sidebar */
     .sidebar {
-      width: 240px;
-      background: rgba(13, 77, 77, 0.7);
+      width: 220px;
+      background: rgba(22, 21, 20, 0.97);
       backdrop-filter: blur(20px);
-      border-right: 1px solid var(--border);
+      border-right: 1px solid var(--border-teal);
       display: flex;
       flex-direction: column;
-      padding: 24px 0;
-      box-shadow: 4px 0 24px rgba(0, 0, 0, 0.2);
+      padding: 28px 0;
+      box-shadow: 4px 0 32px rgba(0, 0, 0, 0.5);
+      position: relative;
+      z-index: 100;
+    }
+
+    /* Corner bracket decoration on sidebar */
+    .sidebar::before, .sidebar::after {
+      content: '';
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      border-color: var(--color-green);
+      border-style: solid;
+      opacity: 0.4;
+    }
+    .sidebar::before {
+      top: 8px; left: 8px;
+      border-width: 1px 0 0 1px;
+    }
+    .sidebar::after {
+      bottom: 8px; left: 8px;
+      border-width: 0 0 1px 1px;
     }
 
     .logo {
       font-family: 'Orbitron', sans-serif;
-      font-size: 20px;
+      font-size: 18px;
       font-weight: 700;
-      padding: 0 24px 32px;
-      color: var(--accent);
-      letter-spacing: 0.05em;
+      padding: 0 20px 32px;
+      color: var(--color-green);
+      letter-spacing: 0.08em;
       text-transform: uppercase;
+      line-height: 1.3;
     }
 
     .nav-item {
-      padding: 12px 24px;
+      padding: 11px 20px;
       cursor: pointer;
       transition: all 0.2s ease;
-      font-size: 15px;
-      color: var(--text-secondary);
-      border-left: 3px solid transparent;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-tertiary);
+      border-left: 2px solid transparent;
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 10px;
+      position: relative;
     }
 
     .nav-item:hover {
       background: var(--bg-hover);
       color: var(--text-primary);
+      border-left-color: rgba(3, 210, 111, 0.4);
     }
 
     .nav-item.active {
-      background: var(--bg-tertiary);
-      color: var(--text-primary);
-      border-left-color: var(--accent);
+      background: rgba(3, 210, 111, 0.08);
+      color: var(--color-green);
+      border-left-color: var(--color-green);
     }
 
     .nav-icon {
-      width: 18px;
-      height: 18px;
+      width: 16px;
+      height: 16px;
       opacity: 0.6;
+      flex-shrink: 0;
     }
 
     .nav-item.active .nav-icon {
       opacity: 1;
+      stroke: var(--color-green);
     }
 
     /* Main Content */
     .main {
       flex: 1;
       overflow-y: auto;
-      background: rgba(13, 77, 77, 0.3);
-      backdrop-filter: blur(10px);
+      background: rgba(22, 21, 20, 0.6);
+      backdrop-filter: blur(8px);
     }
 
     .screen {
@@ -131,58 +175,73 @@
     }
 
     @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
+      from { opacity: 0; transform: translateY(8px); }
+      to   { opacity: 1; transform: translateY(0); }
     }
 
     /* Header */
     .header {
-      padding: 32px 48px;
-      border-bottom: 1px solid var(--border);
+      padding: 24px 40px;
+      border-bottom: 1px solid var(--border-teal);
       display: flex;
       justify-content: space-between;
       align-items: center;
-      background: rgba(13, 77, 77, 0.5);
-      backdrop-filter: blur(10px);
+      background: rgba(22, 21, 20, 0.85);
+      backdrop-filter: blur(12px);
+      position: relative;
     }
+
+    /* Corner brackets on header */
+    .header::before, .header::after {
+      content: '';
+      position: absolute;
+      width: 8px;
+      height: 8px;
+      border-color: rgba(3, 210, 111, 0.3);
+      border-style: solid;
+      opacity: 0.6;
+    }
+    .header::before { top: 6px; left: 6px; border-width: 1px 0 0 1px; }
+    .header::after  { bottom: 6px; right: 6px; border-width: 0 1px 1px 0; }
 
     .header h1 {
       font-family: 'Orbitron', sans-serif;
-      font-size: 28px;
-      font-weight: 600;
-      letter-spacing: 0.02em;
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
       text-transform: uppercase;
+      color: var(--text-primary);
     }
 
     .header-actions {
       display: flex;
-      gap: 12px;
+      gap: 10px;
       align-items: center;
     }
 
     /* Status Badge */
     .status {
       font-family: 'Orbitron', sans-serif;
-      font-size: 11px;
-      padding: 8px 16px;
+      font-size: 10px;
+      padding: 7px 14px;
       border-radius: 20px;
-      background: rgba(20, 60, 60, 0.8);
-      border: 1px solid var(--border);
+      background: rgba(1, 70, 81, 0.5);
+      border: 1px solid var(--border-teal);
       color: var(--text-secondary);
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 7px;
       text-transform: uppercase;
-      letter-spacing: 0.05em;
+      letter-spacing: 0.08em;
     }
 
     .status.fetching,
     .status.generating,
     .status.sending {
-      background: var(--accent-glow);
-      border-color: var(--accent);
-      color: var(--accent);
-      box-shadow: 0 0 20px var(--accent-glow);
+      background: rgba(3, 210, 111, 0.12);
+      border-color: var(--color-green);
+      color: var(--color-green);
+      box-shadow: 0 0 16px rgba(3, 210, 111, 0.2);
     }
 
     .status select {
@@ -199,7 +258,7 @@
     }
 
     .status select option {
-      background: rgba(13, 77, 77, 0.95);
+      background: #161514;
       color: var(--text-primary);
     }
 
@@ -208,6 +267,7 @@
       height: 6px;
       border-radius: 50%;
       background: currentColor;
+      flex-shrink: 0;
     }
 
     .status.fetching .status-dot,
@@ -218,114 +278,529 @@
 
     @keyframes pulse {
       0%, 100% { opacity: 1; }
-      50% { opacity: 0.3; }
+      50% { opacity: 0.2; }
     }
 
-    /* Button */
+    /* Buttons */
     .btn {
       font-family: 'Orbitron', sans-serif;
-      padding: 12px 24px;
-      border-radius: var(--radius);
+      padding: 10px 20px;
+      border-radius: var(--radius-btn);
       border: none;
       cursor: pointer;
-      font-size: 13px;
-      transition: all 0.3s ease;
+      font-size: 11px;
+      transition: all 0.25s ease;
       font-weight: 600;
       text-transform: uppercase;
-      letter-spacing: 0.05em;
+      letter-spacing: 0.08em;
     }
 
     .btn-primary {
-      background: var(--accent);
-      color: #0d4d4d;
-      box-shadow: 0 4px 20px rgba(127, 255, 0, 0.3);
+      background: var(--color-green);
+      color: #001a0d;
+      box-shadow: 0 0 20px rgba(3, 210, 111, 0.3);
     }
 
     .btn-primary:hover {
-      background: var(--accent-dim);
+      background: #04e87a;
       transform: translateY(-2px);
-      box-shadow: 0 6px 30px rgba(127, 255, 0, 0.5);
+      box-shadow: 0 0 35px rgba(3, 210, 111, 0.55);
     }
 
     .btn-secondary {
-      background: rgba(20, 60, 60, 0.8);
+      background: rgba(1, 70, 81, 0.5);
       color: var(--text-primary);
-      border: 1px solid var(--border);
-      backdrop-filter: blur(10px);
+      border: 1px solid var(--border-teal);
+      backdrop-filter: blur(8px);
     }
 
     .btn-secondary:hover {
-      background: rgba(30, 80, 80, 0.8);
-      border-color: var(--accent);
-      box-shadow: 0 0 20px var(--accent-glow);
+      background: rgba(1, 70, 81, 0.8);
+      border-color: var(--color-green);
+      box-shadow: 0 0 16px rgba(3, 210, 111, 0.2);
+      color: var(--color-green);
     }
 
     .btn:disabled {
-      opacity: 0.5;
+      opacity: 0.4;
       cursor: not-allowed;
       transform: none !important;
+      box-shadow: none !important;
+    }
+
+    /* Header URL Input */
+    .header-url-input {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .header-url-field {
+      width: 220px;
+      height: 40px;
+      padding: 0 14px;
+      background: rgba(1, 70, 81, 0.4);
+      border: 1px solid var(--border-teal);
+      border-radius: 8px;
+      color: var(--text-primary);
+      font-family: 'Inter', sans-serif;
+      font-size: 13px;
+      outline: none;
+      transition: all 0.3s ease;
+    }
+
+    .header-url-field::placeholder {
+      color: var(--text-tertiary);
+    }
+
+    .header-url-field:focus {
+      border-color: var(--color-green);
+      box-shadow: 0 0 0 2px rgba(3, 210, 111, 0.2);
+      width: 300px;
+    }
+
+    /* AI Prompt Footer with Fetch Button */
+    .ai-prompt-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      padding: 12px 16px;
+      border-top: 1px solid rgba(3, 210, 111, 0.1);
+    }
+
+    .ai-prompt-footer-left {
+      display: flex;
+      gap: 12px;
+      align-items: flex-end;
+    }
+
+    .fetch-pulse-btn {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 11px 24px;
+      background: var(--color-green);
+      border: none;
+      border-radius: 8px;
+      color: #001a0d;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 0 20px rgba(3, 210, 111, 0.2);
+    }
+
+    .fetch-pulse-btn:hover {
+      background: #04e87a;
+      box-shadow: 0 0 35px rgba(3, 210, 111, 0.5);
+      transform: translateY(-2px);
+    }
+
+    .fetch-pulse-btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .fetch-pulse-icon {
+      display: flex;
+      align-items: center;
+    }
+
+    /* Topic Tags Row */
+    .topic-tags-row {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 16px;
+    }
+
+    .topic-tag {
+      padding: 5px 14px;
+      background: rgba(3, 210, 111, 0.06);
+      border: 1px solid rgba(3, 210, 111, 0.2);
+      border-radius: 20px;
+      color: var(--color-green);
+      font-family: 'Orbitron', sans-serif;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      user-select: none;
+    }
+
+    .topic-tag:hover {
+      background: rgba(3, 210, 111, 0.15);
+      border-color: var(--color-green);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(3, 210, 111, 0.2);
+    }
+
+    .topic-tag.active {
+      background: var(--color-green);
+      color: #001a0d;
+      border-color: var(--color-green);
+      font-weight: 700;
+      box-shadow: 0 0 16px rgba(3, 210, 111, 0.2);
+    }
+
+    /* Inline Controls */
+    .inline-control-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .inline-label {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--text-tertiary);
+    }
+
+    .inline-number-input {
+      width: 90px;
+      height: 44px;
+      padding: 0 10px;
+      background: rgba(1, 70, 81, 0.35);
+      border: 1px solid var(--border-teal);
+      border-radius: var(--radius);
+      color: var(--text-primary);
+      font-family: 'Orbitron', sans-serif;
+      font-size: 18px;
+      font-weight: 600;
+      text-align: left;
+      outline: none;
+      transition: all 0.3s ease;
+      box-sizing: border-box;
+      -moz-appearance: textfield;
+    }
+
+    .inline-number-input:focus {
+      border-color: var(--color-green);
+      box-shadow: 0 0 0 3px rgba(3, 210, 111, 0.2);
+    }
+
+    .inline-number-input::-webkit-inner-spin-button,
+    .inline-number-input::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+
+    .inline-select {
+      height: 44px;
+      padding: 0 36px 0 14px;
+      background: rgba(1, 70, 81, 0.35);
+      border: 1px solid var(--border-teal);
+      border-radius: var(--radius);
+      color: var(--text-primary);
+      font-family: 'Orbitron', sans-serif;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      outline: none;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L6 6L11 1' stroke='%23a0a0a0' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 12px center;
+      box-sizing: border-box;
+    }
+
+    .inline-select:focus {
+      border-color: var(--color-green);
+      box-shadow: 0 0 0 3px rgba(3, 210, 111, 0.2);
+    }
+
+    .inline-select option {
+      background: #161514;
+    }
+
+    /* AI Prompt Box */
+    .ai-prompt-wrap {
+      margin-bottom: 16px;
+      border-radius: var(--radius);
+      border: 1px solid rgba(3, 210, 111, 0.25);
+      background: var(--bg-card);
+      overflow: hidden;
+      position: relative;
+      transition: all 0.3s ease;
+      box-shadow: 0 0 20px rgba(3, 210, 111, 0.06), inset 0 0 40px rgba(3, 210, 111, 0.02);
+    }
+
+    .ai-prompt-wrap:focus-within {
+      border-color: rgba(3, 210, 111, 0.7);
+      box-shadow: 0 0 30px rgba(3, 210, 111, 0.18), 0 0 60px rgba(3, 210, 111, 0.06), inset 0 0 40px rgba(3, 210, 111, 0.04);
+    }
+
+    /* Sweeping glow animation */
+    .ai-prompt-wrap::before {
+      content: '';
+      position: absolute;
+      top: -2px;
+      left: -100%;
+      width: 60%;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--color-green), transparent);
+      animation: sweep 3s linear infinite;
+      z-index: 1;
+    }
+
+    /* AI Corner Accent Animations */
+    .ai-prompt-wrap::after,
+    .ai-prompt-wrap::before {
+      z-index: 1;
+    }
+
+    @keyframes sweep {
+      0%   { left: -60%; }
+      100% { left: 160%; }
+    }
+
+    .ai-prompt-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 16px 8px;
+      border-bottom: 1px solid rgba(3, 210, 111, 0.1);
+    }
+
+    .ai-badge {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      color: #001a0d;
+      background: var(--color-green);
+      padding: 3px 8px;
+      border-radius: 4px;
+      text-transform: uppercase;
+      box-shadow: 0 0 10px rgba(3, 210, 111, 0.2);
+    }
+
+    .ai-indicator {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--color-green);
+      opacity: 0.85;
+    }
+
+    .ai-pulse {
+      width: 8px;
+      height: 8px;
+      background: var(--color-green);
+      border-radius: 50%;
+      flex-shrink: 0;
+      box-shadow: 0 0 8px var(--color-green);
+      animation: ai-pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes ai-pulse {
+      0%, 100% { opacity: 1; box-shadow: 0 0 8px var(--color-green); transform: scale(1); }
+      50%       { opacity: 0.5; box-shadow: 0 0 16px var(--color-green); transform: scale(1.3); }
+    }
+
+    /* Info icon for DISTRO PULSE and other boxes */
+    .info-icon {
+      transition: opacity 0.2s ease, color 0.2s ease;
+    }
+
+    .info-icon:hover {
+      opacity: 1 !important;
+      color: var(--color-green);
+    }
+
+    .ai-prompt-input {
+      width: 100%;
+      min-height: 90px;
+      padding: 14px 16px;
+      background: transparent;
+      border: none;
+      color: var(--text-primary);
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      line-height: 1.7;
+      outline: none;
+      resize: vertical;
+      box-sizing: border-box;
+    }
+
+    .ai-prompt-input::placeholder {
+      color: rgba(3, 210, 111, 0.25);
+      font-style: italic;
+    }
+
+    /* Settings Status Bar */
+    .settings-status-bar {
+      background: rgba(1, 70, 81, 0.3);
+      border-bottom: 1px solid var(--border-teal);
+      padding: 10px 48px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      backdrop-filter: blur(10px);
+      gap: 24px;
+    }
+
+    .settings-status-items {
+      display: flex;
+      gap: 16px;
+      align-items: center;
+      flex: 1;
+    }
+
+    .settings-status-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+    }
+
+    .settings-status-divider {
+      color: var(--text-tertiary);
+      opacity: 0.5;
+    }
+
+    .settings-status-label {
+      color: var(--text-tertiary);
+      font-family: 'Orbitron', sans-serif;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .settings-status-value {
+      color: var(--color-green);
+      font-weight: 500;
+      font-family: 'Inter', sans-serif;
+      font-size: 12px;
+    }
+
+    .settings-status-value.not-set {
+      color: #ff6b6b;
+      font-style: italic;
+    }
+
+    .settings-edit-btn {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 10px;
+      padding: 8px 14px;
+      background: rgba(1, 70, 81, 0.4);
+      border: 1px solid var(--border-teal);
+      border-radius: 6px;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      white-space: nowrap;
+    }
+
+    .settings-edit-btn:hover {
+      background: rgba(3, 210, 111, 0.2);
+      color: var(--color-green);
+      border-color: var(--color-green);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(3, 210, 111, 0.2);
+    }
+
+    /* Settings Warning Banner */
+    .settings-warning {
+      background: linear-gradient(90deg, rgba(255, 170, 0, 0.15) 0%, rgba(255, 170, 0, 0.05) 100%);
+      border-bottom: 1px solid rgba(255, 170, 0, 0.3);
+      border-left: 4px solid #ffaa00;
+      padding: 14px 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      font-size: 13px;
+      color: var(--text-primary);
+      font-family: 'Inter', sans-serif;
+    }
+
+    /* Settings Form Container */
+    .settings-form-container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+
+    .settings-form-container .form-section {
+      margin-bottom: 32px;
     }
 
     /* Content */
     .content {
-      padding: 48px;
+      padding: 32px 40px;
       max-width: 1200px;
     }
 
     /* Form Sections */
     .form-section {
-      margin-bottom: 48px;
+      margin-bottom: 40px;
     }
 
     .form-section h2 {
       font-family: 'Orbitron', sans-serif;
-      font-size: 16px;
+      font-size: 13px;
       font-weight: 600;
       margin-bottom: 16px;
-      color: var(--accent);
+      color: var(--color-green);
       text-transform: uppercase;
-      letter-spacing: 0.08em;
+      letter-spacing: 0.1em;
     }
 
     .form-group {
-      margin-bottom: 24px;
+      margin-bottom: 20px;
     }
 
     .form-label {
       display: block;
-      font-size: 13px;
-      color: var(--text-secondary);
+      font-size: 10px;
+      color: var(--text-tertiary);
       margin-bottom: 8px;
       font-family: 'Orbitron', sans-serif;
       text-transform: uppercase;
-      letter-spacing: 0.05em;
+      letter-spacing: 0.1em;
       font-weight: 500;
     }
 
     .form-input {
       width: 100%;
-      background: rgba(20, 60, 60, 0.6);
-      border: 1px solid var(--border);
+      background: rgba(1, 70, 81, 0.35);
+      border: 1px solid var(--border-teal);
       border-radius: var(--radius);
-      padding: 12px 16px;
+      padding: 11px 16px;
       color: var(--text-primary);
-      font-size: 15px;
-      font-family: 'Roboto', sans-serif;
-      transition: all 0.3s ease;
+      font-size: 14px;
+      font-family: 'Inter', sans-serif;
+      transition: all 0.25s ease;
       backdrop-filter: blur(10px);
     }
 
     .form-input:focus {
       outline: none;
-      border-color: var(--accent);
-      box-shadow: 0 0 0 3px var(--accent-glow);
-      background: rgba(20, 60, 60, 0.8);
+      border-color: var(--color-green);
+      box-shadow: 0 0 0 3px rgba(3, 210, 111, 0.15);
+      background: rgba(1, 70, 81, 0.5);
     }
 
     textarea.form-input {
       resize: vertical;
       min-height: 100px;
-      font-family: 'Roboto', sans-serif;
+      font-family: 'Inter', sans-serif;
       font-size: 14px;
       line-height: 1.6;
     }
@@ -334,10 +809,103 @@
       font-size: 12px;
       color: var(--text-tertiary);
       margin-top: 6px;
-      font-family: 'Roboto', sans-serif;
+      font-family: 'Inter', sans-serif;
     }
 
-    /* Slider */
+    /* Slider - New Design */
+    .slider-label-top {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 11px;
+      color: var(--text-tertiary);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 16px;
+    }
+
+    .slider-container-new {
+      position: relative;
+      padding-right: 50px;
+    }
+
+    .slider-input {
+      width: 100%;
+      height: 6px;
+      background: rgba(3, 210, 111, 0.18);
+      border-radius: 3px;
+      outline: none;
+      -webkit-appearance: none;
+      appearance: none;
+      cursor: pointer;
+    }
+
+    .slider-input::-webkit-slider-track {
+      width: 100%;
+      height: 6px;
+      background: transparent;
+      border-radius: 3px;
+    }
+
+    .slider-input::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: var(--color-green);
+      cursor: pointer;
+      box-shadow: 0 0 10px rgba(3, 210, 111, 0.2);
+      transition: all 0.3s ease;
+      margin-top: -7px;
+    }
+
+    .slider-input::-webkit-slider-thumb:hover {
+      transform: scale(1.2);
+      box-shadow: 0 0 20px rgba(3, 210, 111, 0.2);
+    }
+
+    .slider-input::-moz-range-track {
+      width: 100%;
+      height: 6px;
+      background: rgba(3, 210, 111, 0.18);
+      border-radius: 3px;
+    }
+
+    .slider-input::-moz-range-thumb {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: var(--color-green);
+      cursor: pointer;
+      border: none;
+      box-shadow: 0 0 10px rgba(3, 210, 111, 0.2);
+      transition: all 0.3s ease;
+    }
+
+    .slider-input::-moz-range-thumb:hover {
+      transform: scale(1.2);
+      box-shadow: 0 0 20px rgba(3, 210, 111, 0.2);
+    }
+
+    .slider-input::-moz-range-progress {
+      background: var(--color-green);
+      height: 6px;
+      border-radius: 3px;
+    }
+
+    .slider-value-display {
+      position: absolute;
+      right: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      font-family: 'Orbitron', sans-serif;
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--color-green);
+      min-width: 40px;
+      text-align: right;
+    }
+
+    /* Old Slider - Keep for backwards compatibility */
     .slider-container {
       display: flex;
       align-items: center;
@@ -347,7 +915,7 @@
     .slider {
       flex: 1;
       height: 2px;
-      background: var(--border);
+      background: var(--border-teal);
       border-radius: 2px;
       position: relative;
       cursor: pointer;
@@ -355,7 +923,7 @@
 
     .slider-track {
       height: 100%;
-      background: var(--accent);
+      background: var(--color-green);
       border-radius: 2px;
       position: absolute;
       left: 0;
@@ -365,7 +933,7 @@
     .slider-thumb {
       width: 16px;
       height: 16px;
-      background: var(--accent);
+      background: var(--color-green);
       border-radius: 50%;
       position: absolute;
       top: 50%;
@@ -386,7 +954,7 @@
       font-family: 'Orbitron', sans-serif;
       font-size: 16px;
       font-weight: 600;
-      color: var(--accent);
+      color: var(--color-green);
       min-width: 35px;
       text-align: right;
     }
@@ -400,8 +968,8 @@
     .radio-option {
       flex: 1;
       padding: 12px;
-      background: rgba(20, 60, 60, 0.6);
-      border: 1px solid var(--border);
+      background: rgba(1, 70, 81, 0.35);
+      border: 1px solid var(--border-teal);
       border-radius: var(--radius);
       cursor: pointer;
       text-align: center;
@@ -412,16 +980,104 @@
     }
 
     .radio-option:hover {
-      border-color: var(--accent);
-      background: rgba(30, 80, 80, 0.6);
+      border-color: var(--color-green);
+      background: rgba(1, 70, 81, 0.4);
       transform: translateY(-2px);
     }
 
     .radio-option.active {
-      background: var(--accent-glow);
-      border-color: var(--accent);
-      color: var(--accent);
-      box-shadow: 0 0 20px var(--accent-glow);
+      background: rgba(3, 210, 111, 0.2);
+      border-color: var(--color-green);
+      color: var(--color-green);
+      box-shadow: 0 0 20px rgba(3, 210, 111, 0.2);
+    }
+
+    /* Tone Cards */
+    .tone-cards {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+
+    .tone-card {
+      padding: 20px;
+      background: rgba(1, 70, 81, 0.35);
+      border: 2px solid var(--border-teal);
+      border-radius: var(--radius);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      backdrop-filter: blur(10px);
+    }
+
+    .tone-card:hover {
+      border-color: var(--color-green);
+      background: rgba(1, 70, 81, 0.4);
+      transform: translateY(-4px);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+    }
+
+    .tone-card.active {
+      background: rgba(3, 210, 111, 0.2);
+      border-color: var(--color-green);
+      box-shadow: 0 0 30px rgba(3, 210, 111, 0.2);
+    }
+
+    .tone-card-custom {
+      background: linear-gradient(135deg, rgba(3, 210, 111, 0.1) 0%, rgba(1, 70, 81, 0.35) 100%);
+      border-color: rgba(3, 210, 111, 0.25);
+    }
+
+    .tone-card-custom:hover {
+      border-color: var(--color-green);
+      box-shadow: 0 8px 32px rgba(3, 210, 111, 0.2);
+    }
+
+    .tone-card-title {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: var(--text-primary);
+    }
+
+    .tone-card-desc {
+      font-size: 13px;
+      color: var(--text-secondary);
+      line-height: 1.4;
+    }
+
+    /* Tone Presets */
+    .tone-presets {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .tone-preset-btn {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 11px;
+      padding: 8px 16px;
+      background: rgba(1, 70, 81, 0.35);
+      border: 1px solid var(--border-teal);
+      border-radius: 6px;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .tone-preset-btn:hover {
+      background: rgba(1, 70, 81, 0.55);
+      border-color: var(--color-green);
+      color: var(--color-green);
+      transform: translateY(-2px);
+    }
+
+    .tone-preset-btn.active {
+      background: rgba(3, 210, 111, 0.2);
+      border-color: var(--color-green);
+      color: var(--color-green);
     }
 
     /* Select */
@@ -458,7 +1114,7 @@
       font-family: 'Orbitron', sans-serif;
       font-size: 120px;
       font-weight: 800;
-      color: rgba(127, 255, 0, 0.03);
+      color: rgba(3, 210, 111, 0.02);
       letter-spacing: 0.2em;
       animation: pulse-glow 4s ease-in-out infinite;
       pointer-events: none;
@@ -477,152 +1133,118 @@
     }
 
     .article-card {
-      background: rgba(20, 60, 60, 0.6);
-      border: 1px solid var(--border);
+      background: rgba(22, 21, 20, 0.85);
+      border: 1px solid var(--border-teal);
       border-radius: var(--radius);
       padding: 20px;
-      transition: all 0.3s ease;
+      transition: all 0.25s ease;
       cursor: pointer;
       position: relative;
-      backdrop-filter: blur(10px);
+      backdrop-filter: blur(12px);
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+    }
+
+    /* Corner bracket on card */
+    .article-card::before {
+      content: '';
+      position: absolute;
+      top: 6px; left: 6px;
+      width: 8px; height: 8px;
+      border-top: 1px solid rgba(3, 210, 111, 0.2);
+      border-left: 1px solid rgba(3, 210, 111, 0.2);
+      transition: all 0.25s ease;
     }
 
     .article-card:hover {
-      border-color: var(--accent);
-      transform: translateY(-4px);
-      box-shadow: 0 8px 30px var(--accent-glow);
+      border-color: rgba(3, 210, 111, 0.4);
+      transform: translateY(-3px);
+      box-shadow: 0 8px 28px rgba(3, 210, 111, 0.12), 0 0 0 1px rgba(3, 210, 111, 0.1);
+    }
+
+    .article-card:hover::before {
+      border-color: rgba(3, 210, 111, 0.6);
     }
 
     .article-card.selected {
-      border-color: var(--accent);
-      background: var(--accent-glow);
-      box-shadow: 0 8px 30px var(--accent-glow);
+      border-color: var(--color-green);
+      background: rgba(3, 210, 111, 0.08);
+      box-shadow: 0 8px 28px rgba(3, 210, 111, 0.15), 0 0 0 1px rgba(3, 210, 111, 0.2);
+    }
+
+    .article-card.selected::before {
+      border-color: var(--color-green);
     }
 
     .article-meta {
       font-family: 'Orbitron', sans-serif;
-      font-size: 10px;
+      font-size: 9px;
       color: var(--text-tertiary);
       margin-bottom: 8px;
       display: flex;
       gap: 12px;
       text-transform: uppercase;
-      letter-spacing: 0.05em;
+      letter-spacing: 0.08em;
+    }
+
+    .manual-badge {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      background: rgba(3, 210, 111, 0.1);
+      border: 1px solid var(--color-green);
+      color: var(--color-green);
+      font-size: 9px;
+      font-family: 'Orbitron', sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      padding: 3px 9px;
+      border-radius: 10px;
+      font-weight: 600;
+      box-shadow: 0 0 10px rgba(3, 210, 111, 0.2);
+      z-index: 5;
     }
 
     .article-title {
-      font-size: 16px;
-      font-weight: 500;
+      font-family: 'Inter', sans-serif;
+      font-size: 15px;
+      font-weight: 600;
       margin-bottom: 8px;
       line-height: 1.4;
-      padding-right: 100px;
+      padding-right: 90px;
+      color: var(--text-primary);
     }
 
     .article-desc {
-      font-size: 14px;
+      font-family: 'Inter', sans-serif;
+      font-size: 13px;
       color: var(--text-secondary);
       line-height: 1.6;
-      margin-bottom: 8px;
+      margin-bottom: 16px;
     }
 
-    .article-desc.collapsed {
-      display: -webkit-box;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
-    }
-
-    .article-expanded-content {
-      display: none;
-      padding-top: 12px;
-      margin-top: 12px;
-      border-top: 1px solid var(--border);
-    }
-
-    .article-expanded-content.visible {
-      display: block;
-      animation: slideDown 0.3s ease;
-    }
-
-    @keyframes slideDown {
-      from { opacity: 0; transform: translateY(-10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    .article-url {
-      font-family: 'Roboto', sans-serif;
-      font-size: 12px;
-      color: var(--text-tertiary);
-      margin-bottom: 12px;
-      word-break: break-all;
-    }
-
-    .article-actions {
-      display: flex;
-      gap: 8px;
-      margin-top: 12px;
-    }
-
-    .expand-btn {
+    .article-link {
       font-family: 'Orbitron', sans-serif;
-      font-size: 11px;
-      padding: 6px 12px;
-      background: rgba(30, 80, 80, 0.6);
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      color: var(--text-secondary);
-      cursor: pointer;
-      transition: all 0.3s ease;
+      font-size: 10px;
+      color: var(--color-green);
+      text-decoration: none;
       text-transform: uppercase;
-      letter-spacing: 0.05em;
-      display: flex;
+      letter-spacing: 0.1em;
+      font-weight: 600;
+      display: inline-flex;
       align-items: center;
       gap: 6px;
+      transition: all 0.3s ease;
+      padding: 8px 0;
     }
 
-    .expand-btn:hover {
-      background: var(--accent-glow);
-      color: var(--accent);
-      border-color: var(--accent);
+    .article-link:hover {
+      color: var(--text-primary);
+      transform: translateX(4px);
     }
 
-    .expand-arrow {
+    /* Draft List */
       transition: transform 0.3s ease;
       display: inline-block;
-    }
-
-    .expand-btn.expanded .expand-arrow {
-      transform: rotate(180deg);
-    }
-
-    .read-article-btn {
-      font-family: 'Orbitron', sans-serif;
-      font-size: 11px;
-      padding: 6px 12px;
-      background: var(--accent-glow);
-      border: 1px solid var(--accent);
-      border-radius: 6px;
-      color: var(--accent);
-      cursor: pointer;
-      transition: all 0.3s ease;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      text-decoration: none;
-    }
-
-    .read-article-btn:hover {
-      background: var(--accent);
-      color: #0d4d4d;
-      box-shadow: 0 4px 15px var(--accent-glow);
-      transform: translateY(-2px);
-    }
-
-    .external-icon {
-      width: 12px;
-      height: 12px;
     }
 
     .article-select {
@@ -631,7 +1253,7 @@
       right: 20px;
       width: 20px;
       height: 20px;
-      border: 2px solid var(--border);
+      border: 2px solid var(--border-teal);
       border-radius: 4px;
       transition: all 0.2s ease;
       z-index: 10;
@@ -639,12 +1261,12 @@
     }
 
     .article-card:hover .article-select {
-      border-color: var(--accent);
+      border-color: var(--color-green);
     }
 
     .article-card.selected .article-select {
-      background: var(--accent);
-      border-color: var(--accent);
+      background: var(--color-green);
+      border-color: var(--color-green);
     }
 
     .article-card.selected .article-select::after {
@@ -662,16 +1284,16 @@
     .bottom-bar {
       position: fixed;
       bottom: 0;
-      left: 240px;
+      left: 220px;
       right: 0;
-      background: rgba(13, 77, 77, 0.95);
-      border-top: 1px solid var(--border);
-      padding: 20px 48px;
+      background: rgba(22, 21, 20, 0.97);
+      border-top: 1px solid rgba(3, 210, 111, 0.25);
+      padding: 16px 40px;
       display: none;
       justify-content: space-between;
       align-items: center;
       backdrop-filter: blur(20px);
-      box-shadow: 0 -4px 24px rgba(0, 0, 0, 0.2);
+      box-shadow: 0 -4px 32px rgba(0, 0, 0, 0.5), 0 -1px 0 rgba(3, 210, 111, 0.15);
       z-index: 100;
       transition: opacity 0.3s ease;
     }
@@ -682,16 +1304,16 @@
 
     .selection-info {
       font-family: 'Orbitron', sans-serif;
-      font-size: 13px;
+      font-size: 11px;
       color: var(--text-secondary);
       text-transform: uppercase;
-      letter-spacing: 0.05em;
+      letter-spacing: 0.08em;
     }
 
     .selection-count {
-      color: var(--accent);
+      color: var(--color-green);
       font-weight: 700;
-      font-size: 18px;
+      font-size: 20px;
     }
 
     /* Two Column Layout */
@@ -720,8 +1342,8 @@
     .article-list-item {
       padding: 16px;
       padding-left: 48px;
-      background: rgba(20, 60, 60, 0.4);
-      border: 1px solid var(--border);
+      background: rgba(1, 70, 81, 0.3);
+      border: 1px solid var(--border-teal);
       border-radius: var(--radius);
       margin-bottom: 12px;
       cursor: pointer;
@@ -736,33 +1358,33 @@
     }
 
     .article-list-item:hover {
-      border-color: var(--accent);
+      border-color: var(--color-green);
       transform: translateX(4px);
       opacity: 1;
     }
 
     /* Currently being edited - brightest */
     .article-list-item.active {
-      border-color: var(--accent);
-      background: rgba(30, 80, 80, 0.8);
-      box-shadow: 0 0 20px var(--accent-glow);
+      border-color: var(--color-green);
+      background: rgba(1, 70, 81, 0.55);
+      box-shadow: 0 0 20px rgba(3, 210, 111, 0.2);
       opacity: 1;
       border-width: 2px;
     }
 
     /* Selected for sending - medium highlight */
     .article-list-item.selected-for-send {
-      border-color: rgba(127, 255, 0, 0.6);
-      background: rgba(20, 60, 60, 0.6);
-      box-shadow: 0 0 15px rgba(127, 255, 0, 0.15);
+      border-color: rgba(3, 210, 111, 0.6);
+      background: rgba(1, 70, 81, 0.35);
+      box-shadow: 0 0 15px rgba(3, 210, 111, 0.15);
       opacity: 0.9;
     }
 
     /* Selected for sending AND being edited - combine both states */
     .article-list-item.active.selected-for-send {
-      border-color: var(--accent);
-      background: rgba(30, 80, 80, 0.8);
-      box-shadow: 0 0 25px var(--accent-glow);
+      border-color: var(--color-green);
+      background: rgba(1, 70, 81, 0.55);
+      box-shadow: 0 0 25px rgba(3, 210, 111, 0.2);
       opacity: 1;
       border-width: 2px;
     }
@@ -774,19 +1396,19 @@
       transform: translateY(-50%);
       width: 20px;
       height: 20px;
-      border: 2px solid var(--border);
+      border: 2px solid var(--border-teal);
       border-radius: 4px;
       transition: all 0.3s ease;
       cursor: pointer;
     }
 
     .article-list-item:hover .draft-checkbox {
-      border-color: var(--accent);
+      border-color: var(--color-green);
     }
 
     .article-list-item.selected-for-send .draft-checkbox {
-      background: var(--accent);
-      border-color: var(--accent);
+      background: var(--color-green);
+      border-color: var(--color-green);
     }
 
     .article-list-item.selected-for-send .draft-checkbox::after {
@@ -795,7 +1417,7 @@
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      color: #0d4d4d;
+      color: #161514;
       font-size: 12px;
       font-weight: bold;
     }
@@ -803,11 +1425,11 @@
     .article-status {
       font-family: 'Orbitron', sans-serif;
       font-size: 10px;
-      color: var(--accent);
+      color: var(--color-green);
       text-transform: uppercase;
       letter-spacing: 0.1em;
       padding: 4px 8px;
-      background: rgba(127, 255, 0, 0.1);
+      background: rgba(3, 210, 111, 0.1);
       border-radius: 4px;
       display: inline-block;
       width: fit-content;
@@ -829,18 +1451,357 @@
     }
 
     .article-status.ready {
-      color: var(--accent);
-      background: rgba(127, 255, 0, 0.15);
+      color: var(--color-green);
+      background: rgba(3, 210, 111, 0.15);
     }
 
-    .draft-list-footer {
+    /* ── Drafts Layout ─────────────────────────────────── */
+    .drafts-layout {
+      display: grid;
+      grid-template-columns: 300px 1fr;
+      height: calc(100vh - 73px);
+      overflow: hidden;
+    }
+
+    .drafts-left {
+      border-right: 1px solid var(--border-teal);
       display: flex;
-      gap: 12px;
-      padding: 16px;
-      border-top: 1px solid var(--border);
+      flex-direction: column;
+      overflow: hidden;
+      background: rgba(22, 21, 20, 0.5);
+    }
+
+    .drafts-list-header {
+      padding: 14px 20px 10px;
+      border-bottom: 1px solid var(--border-teal);
       flex-shrink: 0;
-      background: rgba(13, 77, 77, 0.5);
-      backdrop-filter: blur(10px);
+    }
+
+    .drafts-list {
+      flex: 1;
+      overflow-y: auto;
+      padding: 12px;
+    }
+
+    .drafts-right {
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      padding: 16px 20px;
+      gap: 12px;
+    }
+
+    /* ── Regen Bar ─────────────────────────────────────── */
+    /* ── AI Summary Customization Bar (Horizontal, Green) ──────── */
+    .ai-summary-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      background: rgba(22, 21, 20, 0.95);
+      border: 1px solid rgba(3, 210, 111, 0.25);
+      border-radius: var(--radius);
+      padding: 18px 24px;
+      margin: 0 32px 16px;
+      position: relative;
+      overflow: hidden;
+      backdrop-filter: blur(12px);
+      box-shadow: 0 0 24px rgba(3, 210, 111, 0.08);
+      min-height: 70px;
+    }
+
+    /* Scanline sweep */
+    .ai-summary-bar::before {
+      content: '';
+      position: absolute;
+      top: 0; left: -60%;
+      width: 40%; height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(3, 210, 111, 0.7), transparent);
+      animation: scanline-sweep 4s linear infinite;
+    }
+
+    .ai-summary-bar-left {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      flex: 1;
+      min-width: 0;
+    }
+
+    .ai-summary-controls {
+      display: flex;
+      align-items: flex-end;
+      gap: 16px;
+      flex: 1;
+      min-width: 0;
+    }
+
+    .inline-input {
+      height: 38px;
+      padding: 0 14px;
+      background: rgba(1, 70, 81, 0.3);
+      border: 1px solid var(--border-teal);
+      border-radius: 8px;
+      color: var(--text-primary);
+      font-family: 'Inter', sans-serif;
+      font-size: 13px;
+      outline: none;
+      transition: all 0.2s ease;
+    }
+
+    .inline-input::placeholder {
+      color: rgba(234, 244, 244, 0.25);
+      font-style: italic;
+    }
+
+    .inline-input:focus {
+      border-color: rgba(3, 210, 111, 0.45);
+      background: rgba(3, 210, 111, 0.04);
+    }
+
+    .regenerate-action-btn-horizontal {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 20px;
+      background: var(--color-green);
+      border: none;
+      border-radius: var(--radius-btn);
+      color: #001a0d;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      box-shadow: 0 0 20px rgba(3, 210, 111, 0.25);
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .regenerate-action-btn-horizontal:hover:not(:disabled) {
+      background: #04e87a;
+      box-shadow: 0 0 32px rgba(3, 210, 111, 0.4);
+      transform: translateY(-1px);
+    }
+
+    .regenerate-action-btn-horizontal:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .regenerate-action-btn-horizontal.spinning svg {
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin {
+      from { transform: rotate(0deg); }
+      to   { transform: rotate(360deg); }
+    }
+
+    /* ── New Editor Layout ──────────────────────────────── */
+    .editor-layout {
+      display: grid;
+      grid-template-columns: 300px 1fr;
+      height: calc(100vh - 180px);
+      overflow: hidden;
+      margin: 0 32px;
+      gap: 16px;
+    }
+
+    .editor-left {
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      background: rgba(22, 21, 20, 0.5);
+      border: 1px solid var(--border-teal);
+      border-radius: var(--radius);
+    }
+
+    .editor-left-header {
+      padding: 14px 20px 10px;
+      border-bottom: 1px solid var(--border-teal);
+      flex-shrink: 0;
+    }
+
+    .editor-article-list {
+      flex: 1;
+      overflow-y: auto;
+      padding: 12px;
+    }
+
+    .editor-right {
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    /* ── Draft List Items ──────────────────────────────── */
+    .article-list-item {
+      padding: 14px 14px 14px 42px;
+      background: rgba(1, 70, 81, 0.2);
+      border: 1px solid var(--border-teal);
+      border-radius: var(--radius);
+      margin-bottom: 8px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      position: relative;
+      opacity: 0.75;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .article-list-item:hover {
+      border-color: rgba(3, 210, 111, 0.4);
+      background: rgba(1, 70, 81, 0.35);
+      opacity: 1;
+      transform: translateX(3px);
+    }
+
+    .article-list-item.active {
+      border-color: var(--color-green);
+      background: rgba(3, 210, 111, 0.07);
+      opacity: 1;
+      box-shadow: 0 0 16px rgba(3, 210, 111, 0.12);
+    }
+
+    .article-list-item.selected-for-send {
+      border-color: rgba(3, 210, 111, 0.5);
+      background: rgba(3, 210, 111, 0.05);
+      opacity: 0.9;
+    }
+
+    .article-list-item.active.selected-for-send {
+      border-color: var(--color-green);
+      background: rgba(3, 210, 111, 0.09);
+      opacity: 1;
+      box-shadow: 0 0 20px rgba(3, 210, 111, 0.15);
+    }
+
+    /* Regenerating shimmer state */
+    .article-list-item.regenerating {
+      pointer-events: none;
+      opacity: 0.55;
+    }
+
+    .regen-item-indicator {
+      display: none;
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 7px;
+      height: 7px;
+      background: var(--color-green);
+      border-radius: 50%;
+      box-shadow: 0 0 8px var(--color-green);
+      animation: ai-pulse 1s ease-in-out infinite;
+    }
+
+    .article-list-item.regenerating .regen-item-indicator {
+      display: block;
+    }
+
+    /* Completion flash */
+    .article-list-item.regen-complete {
+      animation: regen-complete-flash 0.6s ease-out;
+    }
+
+    @keyframes regen-complete-flash {
+      0% {
+        border-color: var(--color-green);
+        box-shadow: 0 0 20px rgba(3, 210, 111, 0.4);
+      }
+      100% {
+        border-color: rgba(3, 210, 111, 0.2);
+        box-shadow: 0 0 20px rgba(3, 210, 111, 0.15);
+      }
+    }
+
+    .draft-checkbox {
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 18px;
+      height: 18px;
+      border: 1.5px solid var(--border-teal);
+      border-radius: 4px;
+      transition: all 0.2s ease;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
+    .article-list-item:hover .draft-checkbox {
+      border-color: rgba(3, 210, 111, 0.5);
+    }
+
+    .article-list-item.selected-for-send .draft-checkbox {
+      background: var(--color-green);
+      border-color: var(--color-green);
+    }
+
+    .article-list-item.selected-for-send .draft-checkbox::after {
+      content: '✓';
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      color: #161514;
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .article-status {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 9px;
+      color: var(--color-green);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      padding: 3px 7px;
+      background: rgba(3, 210, 111, 0.08);
+      border-radius: 4px;
+      display: inline-block;
+      width: fit-content;
+    }
+
+    .article-status.in-progress { color: var(--warning); background: rgba(251, 191, 36, 0.1); }
+    .article-status.needs-review { color: var(--error); background: rgba(239, 68, 68, 0.1); }
+    .article-status.approved { color: var(--info); background: rgba(45, 212, 191, 0.1); }
+    .article-status.ready { color: var(--color-green); background: rgba(3, 210, 111, 0.12); }
+
+    .article-list-title {
+      font-family: 'Inter', sans-serif;
+      font-size: 13px;
+      font-weight: 500;
+      line-height: 1.4;
+      color: var(--text-primary);
+    }
+
+    /* Draft status indicator in header */
+    .draft-status-indicator {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 10px;
+      color: var(--text-tertiary);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    /* ── Editor ────────────────────────────────────────── */
+    .editor {
+      background: rgba(22, 21, 20, 0.7);
+      border: 1px solid var(--border-teal);
+      border-radius: var(--radius);
+      flex: 1;
+      min-height: 0;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      backdrop-filter: blur(12px);
     }
 
     .article-list-title {
@@ -848,24 +1809,11 @@
       line-height: 1.4;
     }
 
-    /* Editor */
-    .editor {
-      background: rgba(20, 60, 60, 0.6);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 0;
-      height: 100%;
-      backdrop-filter: blur(10px);
-      display: flex;
-      flex-direction: column;
-      position: relative;
-    }
-
     .editor-header {
       display: flex;
       flex-direction: column;
       padding: 20px 24px;
-      border-bottom: 1px solid var(--border);
+      border-bottom: 1px solid var(--border-teal);
       flex-shrink: 0;
       gap: 16px;
     }
@@ -880,8 +1828,8 @@
       display: flex;
       gap: 12px;
       padding: 20px 24px;
-      border-top: 1px solid var(--border);
-      background: rgba(13, 77, 77, 0.8);
+      border-top: 1px solid var(--border-teal);
+      background: rgba(1, 70, 81, 0.8);
       backdrop-filter: blur(10px);
       flex-shrink: 0;
       justify-content: flex-end;
@@ -899,8 +1847,8 @@
       right: 24px;
       width: 36px;
       height: 36px;
-      background: rgba(30, 80, 80, 0.6);
-      border: 1px solid var(--border);
+      background: rgba(1, 70, 81, 0.4);
+      border: 1px solid var(--border-teal);
       border-radius: 8px;
       color: var(--text-secondary);
       cursor: pointer;
@@ -914,9 +1862,9 @@
     }
 
     .expand-editor-btn:hover {
-      background: var(--accent-glow);
-      color: var(--accent);
-      border-color: var(--accent);
+      background: rgba(3, 210, 111, 0.2);
+      color: var(--color-green);
+      border-color: var(--color-green);
       transform: scale(1.1);
     }
 
@@ -948,7 +1896,7 @@
     .editor-tabs {
       display: flex;
       gap: 8px;
-      background: rgba(13, 77, 77, 0.5);
+      background: rgba(1, 70, 81, 0.4);
       padding: 6px;
       border-radius: 10px;
     }
@@ -969,21 +1917,21 @@
     }
 
     .editor-tab:hover {
-      background: rgba(30, 80, 80, 0.6);
+      background: rgba(1, 70, 81, 0.4);
       color: var(--text-primary);
     }
 
     .editor-tab.active {
-      background: var(--accent);
-      color: #0d4d4d;
-      border-color: var(--accent);
-      box-shadow: 0 4px 15px rgba(127, 255, 0, 0.3);
+      background: var(--color-green);
+      color: #161514;
+      border-color: var(--color-green);
+      box-shadow: 0 4px 15px rgba(3, 210, 111, 0.25);
     }
 
     .editor-input {
       width: 100%;
       background: rgba(30, 80, 80, 0.5);
-      border: 1px solid var(--border);
+      border: 1px solid var(--border-teal);
       border-radius: var(--radius);
       color: var(--text-primary);
       font-size: 16px;
@@ -992,25 +1940,25 @@
       line-height: 1.4;
       word-wrap: break-word;
       overflow-wrap: break-word;
-      font-family: 'Roboto', sans-serif;
+      font-family: 'Inter', sans-serif;
       transition: all 0.3s ease;
     }
 
     .editor-input:focus {
       outline: none;
-      border-color: var(--accent);
-      box-shadow: 0 0 0 2px var(--accent-glow);
+      border-color: var(--color-green);
+      box-shadow: 0 0 0 2px rgba(3, 210, 111, 0.2);
       background: rgba(30, 80, 80, 0.7);
     }
 
     .editor-url {
       width: 100%;
       background: rgba(30, 80, 80, 0.5);
-      border: 1px solid var(--border);
+      border: 1px solid var(--border-teal);
       border-radius: var(--radius);
       color: var(--text-secondary);
       font-size: 14px;
-      font-family: 'Roboto', sans-serif;
+      font-family: 'Inter', sans-serif;
       padding: 14px 16px;
       word-wrap: break-word;
       overflow-wrap: break-word;
@@ -1019,8 +1967,8 @@
 
     .editor-url:focus {
       outline: none;
-      border-color: var(--accent);
-      box-shadow: 0 0 0 2px var(--accent-glow);
+      border-color: var(--color-green);
+      box-shadow: 0 0 0 2px rgba(3, 210, 111, 0.2);
       background: rgba(30, 80, 80, 0.7);
     }
 
@@ -1031,9 +1979,9 @@
       line-height: 1.7;
       resize: vertical;
       max-height: none;
-      font-family: 'Roboto', sans-serif;
+      font-family: 'Inter', sans-serif;
       background: rgba(30, 80, 80, 0.5);
-      border: 1px solid var(--border);
+      border: 1px solid var(--border-teal);
       border-radius: var(--radius);
       padding: 14px 16px;
       color: var(--text-primary);
@@ -1042,21 +1990,21 @@
 
     .editor-content:focus {
       outline: none;
-      border-color: var(--accent);
-      box-shadow: 0 0 0 2px var(--accent-glow);
+      border-color: var(--color-green);
+      box-shadow: 0 0 0 2px rgba(3, 210, 111, 0.2);
       background: rgba(30, 80, 80, 0.7);
     }
 
     /* Telegram Preview */
     .telegram-preview {
-      background: rgba(20, 60, 60, 0.6);
-      border: 1px solid var(--accent);
+      background: rgba(1, 70, 81, 0.35);
+      border: 1px solid var(--color-green);
       color: var(--text-primary);
       padding: 24px;
       border-radius: var(--radius);
-      font-family: 'Roboto', sans-serif;
+      font-family: 'Inter', sans-serif;
       backdrop-filter: blur(10px);
-      box-shadow: 0 8px 30px var(--accent-glow);
+      box-shadow: 0 8px 30px rgba(3, 210, 111, 0.2);
     }
 
     .telegram-header {
@@ -1066,8 +2014,8 @@
       margin-bottom: 16px;
       text-transform: uppercase;
       letter-spacing: 0.1em;
-      color: var(--accent);
-      border-bottom: 1px solid var(--border);
+      color: var(--color-green);
+      border-bottom: 1px solid var(--border-teal);
       padding-bottom: 12px;
     }
 
@@ -1098,15 +2046,15 @@
     }
 
     .modal {
-      background: rgba(13, 77, 77, 0.95);
-      border: 1px solid var(--accent);
+      background: rgba(22, 21, 20, 0.97);
+      border: 1px solid var(--color-green);
       border-radius: var(--radius);
       padding: 32px;
       max-width: 450px;
       width: 90%;
       animation: modalIn 0.3s ease;
       backdrop-filter: blur(20px);
-      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5), 0 0 40px var(--accent-glow);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5), 0 0 40px rgba(3, 210, 111, 0.2);
     }
 
     @keyframes modalIn {
@@ -1121,7 +2069,7 @@
       margin-bottom: 12px;
       text-transform: uppercase;
       letter-spacing: 0.05em;
-      color: var(--accent);
+      color: var(--color-green);
     }
 
     .modal p {
@@ -1138,8 +2086,8 @@
 
     /* Sent Items */
     .sent-item {
-      background: rgba(20, 60, 60, 0.6);
-      border: 1px solid var(--border);
+      background: rgba(1, 70, 81, 0.35);
+      border: 1px solid var(--border-teal);
       border-radius: var(--radius);
       padding: 20px;
       margin-bottom: 16px;
@@ -1148,8 +2096,8 @@
     }
 
     .sent-item:hover {
-      border-color: var(--accent);
-      box-shadow: 0 4px 20px var(--accent-glow);
+      border-color: var(--color-green);
+      box-shadow: 0 4px 20px rgba(3, 210, 111, 0.2);
     }
 
     .sent-header {
@@ -1186,8 +2134,8 @@
       font-family: 'Orbitron', sans-serif;
       font-size: 11px;
       padding: 8px 16px;
-      background: rgba(30, 80, 80, 0.6);
-      border: 1px solid var(--border);
+      background: rgba(1, 70, 81, 0.4);
+      border: 1px solid var(--border-teal);
       border-radius: 8px;
       color: var(--text-secondary);
       cursor: pointer;
@@ -1197,22 +2145,22 @@
     }
 
     .copy-btn:hover {
-      background: var(--accent-glow);
-      color: var(--accent);
-      border-color: var(--accent);
-      box-shadow: 0 0 15px var(--accent-glow);
+      background: rgba(3, 210, 111, 0.2);
+      color: var(--color-green);
+      border-color: var(--color-green);
+      box-shadow: 0 0 15px rgba(3, 210, 111, 0.2);
     }
 
     /* Add URL Section */
     .add-url {
-      background: rgba(20, 60, 60, 0.6);
-      border: 1px solid var(--border);
+      background: rgba(22, 21, 20, 0.7);
+      border: 1px solid var(--border-teal);
       border-radius: var(--radius);
-      padding: 20px;
+      padding: 16px;
       margin-bottom: 24px;
       display: flex;
-      gap: 12px;
-      backdrop-filter: blur(10px);
+      gap: 10px;
+      backdrop-filter: blur(12px);
     }
 
     .add-url input {
@@ -1221,8 +2169,8 @@
 
     /* Scrollbar */
     ::-webkit-scrollbar {
-      width: 8px;
-      height: 8px;
+      width: 5px;
+      height: 5px;
     }
 
     ::-webkit-scrollbar-track {
@@ -1230,39 +2178,109 @@
     }
 
     ::-webkit-scrollbar-thumb {
-      background: var(--border);
-      border-radius: 4px;
+      background: rgba(3, 210, 111, 0.2);
+      border-radius: 3px;
     }
 
     ::-webkit-scrollbar-thumb:hover {
-      background: var(--text-tertiary);
+      background: rgba(3, 210, 111, 0.4);
+    }
+    /* Nav Tooltips */
+    .nav-info-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 14px;
+      height: 14px;
+      margin-left: auto;
+      font-size: 10px;
+      color: var(--text-tertiary);
+      opacity: 0.5;
+      transition: opacity 0.2s ease;
+      flex-shrink: 0;
+      cursor: help;
+      position: relative;
+    }
+
+    .nav-info-icon:hover {
+      opacity: 1;
+      color: var(--color-green);
+    }
+
+    .nav-info-icon svg {
+      stroke: currentColor;
+    }
+
+    .nav-tooltip {
+      position: fixed;
+      left: 230px;
+      padding: 10px 14px;
+      background: rgba(22, 21, 20, 0.98);
+      border: 1px solid var(--color-green);
+      border-radius: 8px;
+      color: var(--text-primary);
+      font-family: 'Inter', sans-serif;
+      font-size: 12px;
+      line-height: 1.5;
+      white-space: nowrap;
+      pointer-events: none;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.2s ease, visibility 0.2s ease;
+      z-index: 10000;
+      box-shadow: 0 4px 24px rgba(3, 210, 111, 0.4);
+      backdrop-filter: blur(12px);
+    }
+
+    .nav-info-icon:hover + .nav-tooltip {
+      opacity: 1;
+      visibility: visible;
     }
   </style>
+
 </head>
 <body>
   <div class="app">
     <!-- Sidebar -->
     <div class="sidebar">
-      <div class="logo">DISTRO<br><span style="font-size: 11px; letter-spacing: 0.15em; opacity: 0.7; font-weight: 400;">BeatSweep</span></div>
-      <div class="nav-item" data-screen="fetch">
+      <div class="logo">DISTRO<br><span style="font-size: 10px; letter-spacing: 0.2em; opacity: 0.5; font-weight: 400; font-family: 'Inter', sans-serif;">BeatSweep</span></div>
+      <div class="nav-item active" data-screen="fetch">
         <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
         </svg>
         Fetch News
+        <span class="nav-info-icon">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/>
+          </svg>
+        </span>
+        <div class="nav-tooltip">Find and select news articles based on your interests</div>
       </div>
       <div class="nav-item" data-screen="drafts">
         <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
         </svg>
-        Drafts
+        Editor
+        <span class="nav-info-icon">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/>
+          </svg>
+        </span>
+        <div class="nav-tooltip">Edit and customize your AI summaries before sending</div>
       </div>
       <div class="nav-item" data-screen="sent">
         <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
         </svg>
         Already Sent
+        <span class="nav-info-icon">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/>
+          </svg>
+        </span>
+        <div class="nav-tooltip">View your posting history and past summaries</div>
       </div>
-      <div class="nav-item active" data-screen="settings">
+      <div class="nav-item" data-screen="settings" style="display: none;">
         <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
@@ -1273,75 +2291,13 @@
 
     <!-- Main Content -->
     <div class="main">
-      <!-- Screen 1: Settings -->
-      <div class="screen active" id="screen-settings">
-        <div class="header">
-          <h1>Settings</h1>
-        </div>
-        <div class="content">
-          <div class="form-section">
-            <h2>News Topic</h2>
-            <div class="form-group">
-              <label class="form-label">Topic or Keywords</label>
-              <input type="text" class="form-input" id="news-topic" placeholder="e.g., AI and Machine Learning, Crypto Markets, Climate Tech">
-              <div class="help-text">This will be saved for future sessions</div>
-            </div>
-          </div>
-
-          <div class="form-section">
-            <h2>Number of Articles</h2>
-            <div class="form-group">
-              <label class="form-label">Articles per Fetch</label>
-              <div class="slider-container">
-                <div class="slider" id="article-slider">
-                  <div class="slider-track" id="slider-track"></div>
-                  <div class="slider-thumb" id="slider-thumb"></div>
-                </div>
-                <div class="slider-value" id="slider-value">10</div>
-              </div>
-            </div>
-          </div>
-
-          <div class="form-section">
-            <h2>Summary Style</h2>
-            <div class="form-group">
-              <label class="form-label">Length</label>
-              <div class="radio-group">
-                <div class="radio-option" data-value="short">Short</div>
-                <div class="radio-option active" data-value="medium">Medium</div>
-                <div class="radio-option" data-value="long">Long</div>
-              </div>
-            </div>
-            <div class="form-group">
-              <label class="form-label">Tone</label>
-              <select class="form-input" id="tone-select">
-                <option value="professional">Professional</option>
-                <option value="casual">Casual</option>
-                <option value="analyst">Analyst</option>
-                <option value="custom">Custom</option>
-              </select>
-            </div>
-            <div class="form-group" id="custom-instructions" style="display: none;">
-              <label class="form-label">Custom Instructions</label>
-              <textarea class="form-input" placeholder="Describe the tone and style you want..."></textarea>
-            </div>
-          </div>
-
-          <div class="form-section">
-            <h2>Telegram Channel</h2>
-            <div class="form-group">
-              <label class="form-label">Channel ID or Handle</label>
-              <input type="text" class="form-input" id="telegram-channel" placeholder="@yourchannel or -1001234567890">
-              <div class="help-text">Find your channel ID at t.me/username_to_id_bot</div>
-            </div>
-          </div>
-
-          <button class="btn btn-primary" id="save-settings-btn">Save Settings</button>
-        </div>
+      <!-- Screen 1: Settings (HIDDEN - now embedded in Fetch News) -->
+      <div class="screen" id="screen-settings" style="display: none;">
+        <!-- Settings moved to Fetch News page -->
       </div>
 
       <!-- Screen 2: Fetch News -->
-      <div class="screen" id="screen-fetch">
+      <div class="screen active" id="screen-fetch">
         <div class="header">
           <h1>Fetch News</h1>
           <div class="header-actions">
@@ -1350,93 +2306,209 @@
               <span class="status-dot"></span>
               Idle
             </div>
-            <button class="btn btn-primary" id="fetch-btn">Fetch News</button>
+            <!-- Manual URL moved to header -->
+            <div class="header-url-input">
+              <input type="text" class="header-url-field" id="manual-url" placeholder="Paste article URL...">
+              <button class="btn btn-secondary" id="add-url-btn">Add</button>
+            </div>
           </div>
         </div>
+
         <div class="content">
-          <div class="add-url">
-            <input type="text" class="form-input" id="manual-url" placeholder="Paste article URL to add manually">
-            <button class="btn btn-secondary" id="add-url-btn">Add Article</button>
+
+          <!-- Row 1: Topic Tags (above AI box) -->
+          <div class="topic-tags-row">
+            <span class="topic-tag" data-topic="AI">AI</span>
+            <span class="topic-tag" data-topic="Tech">Tech</span>
+            <span class="topic-tag" data-topic="Crypto">Crypto</span>
+            <span class="topic-tag" data-topic="Finance">Finance</span>
+            <span class="topic-tag" data-topic="Science">Science</span>
+            <span class="topic-tag" data-topic="Politics">Politics</span>
           </div>
-          
+
+          <!-- Row 2: Article Discovery -->
+          <div class="ai-prompt-wrap" id="ai-prompt-wrap">
+            <div class="ai-prompt-header">
+              <div class="ai-indicator">
+                <span class="ai-pulse"></span>
+                Article Discovery
+                <span class="info-icon" style="margin-left: 8px; font-size: 10px; opacity: 0.6; cursor: help;" title="AI will search for articles matching these criteria">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/>
+                  </svg>
+                </span>
+              </div>
+              <span class="ai-badge">AI</span>
+            </div>
+            <textarea
+              class="ai-prompt-input"
+              id="custom-tone-input"
+              placeholder="Describe the types of articles you want to see — e.g. 'Recent AI funding rounds over $10M, focus on healthcare applications' or 'Breaking crypto news from the past 24 hours, regulatory developments'"
+            ></textarea>
+            <div class="ai-prompt-footer">
+              <div class="ai-prompt-footer-left">
+                <div class="inline-control-group">
+                  <label class="inline-label">
+                    Articles
+                    <span class="info-icon" style="margin-left: 4px; opacity: 0.5; cursor: help; font-size: 9px;" title="How many articles do you want to generate?">
+                      <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/>
+                      </svg>
+                    </span>
+                  </label>
+                  <input type="number" class="inline-number-input" id="article-count-input" min="1" max="50" value="10" style="width: 70px;">
+                </div>
+              </div>
+              <button class="fetch-pulse-btn" id="fetch-btn">
+                <span class="fetch-pulse-icon">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+                  </svg>
+                </span>
+                Fetch News
+              </button>
+            </div>
+          </div>
+
+          <!-- Articles Grid -->
           <div class="articles-grid" id="articles-grid">
             <!-- Articles will be populated here -->
           </div>
         </div>
       </div>
 
-      <!-- Screen 3: Drafts -->
+      <!-- Screen 3: Editor -->
       <div class="screen" id="screen-drafts">
         <div class="header">
-          <h1>Draft Summaries</h1>
+          <h1>Editor</h1>
+          <div class="header-actions">
+            <button class="btn btn-secondary" id="select-all-btn" style="display: none;">Select All</button>
+            <button class="btn btn-primary" id="send-selected-btn" style="display: none;">Send Selected</button>
+          </div>
         </div>
-        <div class="content" style="padding-bottom: 0; display: flex; flex-direction: column; height: calc(100vh - 120px);">
-          <div class="two-column" style="flex: 1; overflow: hidden;">
-            <div class="column" style="display: flex; flex-direction: column;">
-              <div id="draft-list" style="flex: 1; overflow-y: auto; padding-right: 8px;">
-                <!-- Draft list items -->
-              </div>
-              <div class="draft-list-footer">
-                <button class="btn btn-secondary" id="select-all-btn" style="display: none; flex: 1;">Select All</button>
-                <button class="btn btn-primary" id="send-selected-btn" style="display: none; flex: 1;">Send Selected</button>
-              </div>
+
+        <!-- AI Summary Customization Bar (Horizontal) -->
+        <div class="ai-summary-bar" id="ai-summary-bar">
+          <div class="ai-summary-bar-left">
+            <div class="ai-indicator">
+              <span class="ai-pulse"></span>
+              Summary Customization
+              <span class="info-icon" style="margin-left: 8px; opacity: 0.6; cursor: help;" title="Customize how the AI writes your summaries. This won't affect article selection.">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/>
+                </svg>
+              </span>
             </div>
-            <div class="column">
-              <div class="editor" id="editor">
-                <button class="expand-editor-btn" id="expand-editor-btn" title="Expand editor">
-                  <span id="expand-icon">⛶</span>
-                </button>
-                <div class="editor-header">
-                  <div class="editor-tabs">
-                    <div class="editor-tab active" data-tab="edit">Edit</div>
-                    <div class="editor-tab" data-tab="preview">Preview</div>
-                  </div>
-                  <div class="editor-status-dropdown">
-                    <label class="editor-field-label" style="margin-bottom: 8px;">Status</label>
-                    <select id="draft-status-select" class="form-input" style="padding: 10px 16px; width: 200px;" disabled>
-                      <option value="draft">Draft</option>
-                      <option value="in-progress">In Progress</option>
-                      <option value="needs-review">Needs Review</option>
-                      <option value="approved">Approved</option>
-                      <option value="ready">Ready</option>
-                    </select>
-                  </div>
-                </div>
-                <div class="editor-body">
-                  <div id="edit-view" style="display: flex; flex-direction: column; gap: 20px; height: 100%;">
-                    <div id="editor-empty-state" style="display: flex; align-items: center; justify-content: center; flex: 1; color: var(--text-tertiary); font-family: 'Orbitron', sans-serif; text-transform: uppercase; letter-spacing: 0.1em; font-size: 14px;">
-                      Select an article to edit
-                    </div>
-                    <div id="editor-content-area" style="display: none; flex-direction: column; gap: 20px; flex: 1;">
-                      <div class="editor-field-group">
-                        <label class="editor-field-label">Headline</label>
-                        <input type="text" class="editor-input" id="draft-title" placeholder="Enter headline..." disabled>
-                      </div>
-                      <div class="editor-field-group">
-                        <label class="editor-field-label">URL</label>
-                        <input type="text" class="editor-url" id="draft-url" placeholder="Enter article URL..." disabled>
-                      </div>
-                      <div class="editor-field-group" style="flex: 1; display: flex; flex-direction: column;">
-                        <label class="editor-field-label">Summary</label>
-                        <textarea class="editor-content" id="draft-content" placeholder="Enter summary content..." disabled></textarea>
-                      </div>
-                    </div>
-                  </div>
-                  <div id="preview-view" style="display: none; height: 100%; overflow-y: auto;">
-                    <div class="telegram-preview">
-                      <div class="telegram-header">Your Channel</div>
-                      <div class="telegram-text" id="preview-text"></div>
-                    </div>
-                  </div>
-                </div>
-                <div class="editor-footer">
-                  <button class="btn btn-secondary" id="save-draft-btn" disabled>Save Draft</button>
-                  <button class="btn btn-primary" id="send-now-btn" disabled>Send Now</button>
-                </div>
+            
+            <div class="ai-summary-controls">
+              <!-- Length -->
+              <div class="inline-control-group">
+                <label class="inline-label">Summary Length</label>
+                <select class="inline-select" id="regen-length" style="width: 110px;">
+                  <option value="short">Short</option>
+                  <option value="medium" selected>Medium</option>
+                  <option value="long">Long</option>
+                </select>
+              </div>
+
+              <!-- Tone -->
+              <div class="inline-control-group" style="flex: 1; min-width: 200px;">
+                <label class="inline-label">Tone / Style</label>
+                <input
+                  type="text"
+                  class="inline-input"
+                  id="regen-tone"
+                  placeholder="e.g. 'sharp, data-first' or 'casual, accessible'"
+                  style="width: 100%;"
+                >
+              </div>
+
+              <!-- Apply To -->
+              <div class="inline-control-group">
+                <label class="inline-label">Apply To</label>
+                <select class="inline-select" id="apply-to-select" style="width: 140px;">
+                  <option value="current">This article</option>
+                  <option value="checked">Selected (<span id="checked-count-inline">0</span>)</option>
+                  <option value="all">All (<span id="all-count-inline">0</span>)</option>
+                </select>
               </div>
             </div>
           </div>
+
+          <button class="regenerate-action-btn-horizontal" id="regenerate-action-btn">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+            <span id="regenerate-btn-text">Regenerate</span>
+          </button>
         </div>
+
+        <!-- Main Editor Layout -->
+        <div class="editor-layout">
+
+          <!-- LEFT: Article List -->
+          <div class="editor-left">
+            <div class="editor-left-header">
+              <span class="inline-label">Articles</span>
+            </div>
+            <div id="draft-list" class="editor-article-list">
+              <!-- Draft list items populated by JS -->
+            </div>
+          </div>
+
+          <!-- RIGHT: Editor Panel -->
+          <div class="editor-right">
+            <div class="editor" id="editor">
+              <div class="editor-header">
+                <div class="editor-tabs">
+                  <div class="editor-tab active" data-tab="edit">Edit</div>
+                  <div class="editor-tab" data-tab="preview">Preview</div>
+                </div>
+                <div class="editor-status-dropdown">
+                  <label class="editor-field-label" style="margin-bottom: 8px;">Status</label>
+                  <select id="draft-status-select" class="form-input" style="padding: 8px 14px; width: 180px;" disabled>
+                    <option value="draft">Draft</option>
+                    <option value="in-progress">In Progress</option>
+                    <option value="needs-review">Needs Review</option>
+                    <option value="approved">Approved</option>
+                    <option value="ready">Ready</option>
+                  </select>
+                </div>
+              </div>
+              <div class="editor-body">
+                <div id="edit-view" style="display: flex; flex-direction: column; gap: 16px; height: 100%;">
+                  <div id="editor-empty-state" style="display: flex; flex-direction: column; align-items: center; justify-content: center; flex: 1; gap: 12px; color: var(--text-tertiary);">
+                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" opacity="0.3"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+                    <span style="font-family: 'Orbitron', sans-serif; font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em;">Select an article</span>
+                  </div>
+                  <div id="editor-content-area" style="display: none; flex-direction: column; gap: 16px; flex: 1;">
+                    <div class="editor-field-group">
+                      <label class="editor-field-label">Headline</label>
+                      <input type="text" class="editor-input" id="draft-title" placeholder="Enter headline..." disabled>
+                    </div>
+                    <div class="editor-field-group">
+                      <label class="editor-field-label">Source URL</label>
+                      <input type="text" class="editor-url" id="draft-url" placeholder="Enter article URL..." disabled>
+                    </div>
+                    <div class="editor-field-group" style="flex: 1; display: flex; flex-direction: column;">
+                      <label class="editor-field-label">Summary</label>
+                      <textarea class="editor-content" id="draft-content" placeholder="Summary will appear here..." disabled></textarea>
+                    </div>
+                  </div>
+                </div>
+                <div id="preview-view" style="display: none; height: 100%; overflow-y: auto;">
+                  <div class="telegram-preview">
+                    <div class="telegram-header">Your Channel</div>
+                    <div class="telegram-text" id="preview-text"></div>
+                  </div>
+                </div>
+              </div>
+              <div class="editor-footer">
+                <button class="btn btn-secondary" id="save-draft-btn" disabled>Save Draft</button>
+                <button class="btn btn-primary" id="send-now-btn" disabled>Send Now</button>
+              </div>
+            </div>
+          </div><!-- /editor-right -->
+
+        </div><!-- /editor-layout -->
       </div>
 
       <!-- Screen 4: Already Sent -->
@@ -1458,7 +2530,7 @@
     <div class="selection-info">
       <span class="selection-count" id="selected-count">0</span> articles selected
     </div>
-    <button class="btn btn-primary" id="generate-btn">Generate Summaries</button>
+    <button class="btn btn-primary" id="generate-btn">Generate Article Summaries</button>
   </div>
 
   <!-- Modal -->
@@ -1474,9 +2546,6 @@
   </div>
 
   <script>
-    // API Configuration
-    const API_URL = 'https://distro-gold.vercel.app/api';
-
     // Navigation
     document.querySelectorAll('.nav-item').forEach(item => {
       item.addEventListener('click', () => {
@@ -1499,121 +2568,74 @@
           selectionBar.classList.add('visible');
         }
       });
+
+      // Position tooltip dynamically when hovering info icon only
+      const infoIcon = item.querySelector('.nav-info-icon');
+      const tooltip = item.querySelector('.nav-tooltip');
+      if (infoIcon && tooltip) {
+        infoIcon.addEventListener('mouseenter', () => {
+          const rect = item.getBoundingClientRect();
+          tooltip.style.top = rect.top + (rect.height / 2) + 'px';
+        });
+      }
     });
 
-    // Slider - MUST be declared before settings code that uses updateSlider()
-    const slider = document.getElementById('article-slider');
-    const sliderTrack = document.getElementById('slider-track');
-    const sliderThumb = document.getElementById('slider-thumb');
-    const sliderValue = document.getElementById('slider-value');
-    let sliderMin = 5;
-    let sliderMax = 20;
-    let currentValue = 10;
-
-    function updateSlider(value) {
-      currentValue = Math.max(sliderMin, Math.min(sliderMax, value));
-      const percent = ((currentValue - sliderMin) / (sliderMax - sliderMin)) * 100;
-      sliderTrack.style.width = percent + '%';
-      sliderThumb.style.left = percent + '%';
-      sliderValue.textContent = currentValue;
-    }
-
-    slider.addEventListener('click', (e) => {
-      const rect = slider.getBoundingClientRect();
-      const percent = (e.clientX - rect.left) / rect.width;
-      const value = Math.round(sliderMin + percent * (sliderMax - sliderMin));
-      updateSlider(value);
-    });
-
-    let isDragging = false;
-    sliderThumb.addEventListener('mousedown', () => isDragging = true);
-    document.addEventListener('mouseup', () => isDragging = false);
-    document.addEventListener('mousemove', (e) => {
-      if (!isDragging) return;
-      const rect = slider.getBoundingClientRect();
-      const percent = (e.clientX - rect.left) / rect.width;
-      const value = Math.round(sliderMin + percent * (sliderMax - sliderMin));
-      updateSlider(value);
-    });
-
-    updateSlider(10);
-
-    // Settings
+    // Settings - simple inline, always visible
     let settings = {
       topic: '',
       articleCount: 10,
       summaryLength: 'medium',
-      tone: 'professional',
-      customInstructions: '',
-      telegramChannel: ''
+      customTone: '',
     };
 
-    // Load settings from localStorage if available
+    // Persistent manual articles
+    let manualArticles = [];
+
+    // Load settings from localStorage
     const savedSettings = localStorage.getItem('newsAppSettings');
     if (savedSettings) {
-      settings = JSON.parse(savedSettings);
-      // Populate form fields
-      document.getElementById('news-topic').value = settings.topic || '';
-      updateSlider(settings.articleCount || 10);
-      
-      // Set radio button for summary length
-      const radioGroup = document.querySelector('.radio-group');
-      if (radioGroup) {
-        radioGroup.querySelectorAll('.radio-option').forEach(opt => {
-          opt.classList.remove('active');
-          if (opt.dataset.value === settings.summaryLength) {
-            opt.classList.add('active');
-          }
-        });
-      }
-      
-      document.getElementById('tone-select').value = settings.tone || 'professional';
-      document.getElementById('telegram-channel').value = settings.telegramChannel || '';
+      try {
+        settings = { ...settings, ...JSON.parse(savedSettings) };
+      } catch(e) {}
     }
 
-    // Save Settings
-    document.getElementById('save-settings-btn').addEventListener('click', function() {
-      const originalText = this.textContent;
-      
-      // Gather settings
-      settings.topic = document.getElementById('news-topic').value;
-      settings.articleCount = currentValue;
-      
-      const activeRadio = document.querySelector('.radio-option.active');
-      settings.summaryLength = activeRadio ? activeRadio.dataset.value : 'medium';
-      
-      settings.tone = document.getElementById('tone-select').value;
-      
-      const customTextarea = document.querySelector('#custom-instructions textarea');
-      settings.customInstructions = customTextarea ? customTextarea.value : '';
-      
-      settings.telegramChannel = document.getElementById('telegram-channel').value;
-      
-      // Save to localStorage
-      localStorage.setItem('newsAppSettings', JSON.stringify(settings));
-      
-      // Update button text
-      this.textContent = 'Saved!';
-      this.style.background = '#7fff00';
-      
-      setTimeout(() => {
-        this.textContent = originalText;
-        this.style.background = '';
-      }, 2000);
-    });
+    // Populate controls from saved settings
+    document.getElementById('article-count-input').value = settings.articleCount || 10;
+    document.getElementById('custom-tone-input').value = settings.customTone || '';
 
-    // Radio buttons
-    document.querySelectorAll('.radio-option').forEach(option => {
-      option.addEventListener('click', () => {
-        option.parentElement.querySelectorAll('.radio-option').forEach(o => o.classList.remove('active'));
-        option.classList.add('active');
+    // Highlight active tag if matches saved topic
+    if (settings.topic) {
+      document.querySelectorAll('.topic-tag').forEach(tag => {
+        if (tag.dataset.topic.toLowerCase() === settings.topic.toLowerCase()) {
+          tag.classList.add('active');
+        }
       });
-    });
+    }
 
-    // Tone select
-    document.getElementById('tone-select').addEventListener('change', (e) => {
-      const customInstructions = document.getElementById('custom-instructions');
-      customInstructions.style.display = e.target.value === 'custom' ? 'block' : 'none';
+    // Auto-save settings whenever any control changes
+    function saveSettings() {
+      settings.articleCount = parseInt(document.getElementById('article-count-input').value) || 10;
+      settings.customTone = document.getElementById('custom-tone-input').value.trim();
+      localStorage.setItem('newsAppSettings', JSON.stringify(settings));
+    }
+
+    document.getElementById('article-count-input').addEventListener('input', saveSettings);
+    document.getElementById('custom-tone-input').addEventListener('input', saveSettings);
+
+    // Topic tag clicks - update settings.topic when clicked
+    document.querySelectorAll('.topic-tag').forEach(tag => {
+      tag.addEventListener('click', () => {
+        if (tag.classList.contains('active')) {
+          // Deselect
+          tag.classList.remove('active');
+          settings.topic = '';
+        } else {
+          document.querySelectorAll('.topic-tag').forEach(t => t.classList.remove('active'));
+          tag.classList.add('active');
+          settings.topic = tag.dataset.topic;
+        }
+        saveSettings();
+      });
     });
 
     // Mock data - expanded pool of articles
@@ -1803,27 +2825,16 @@
       articlesGrid.innerHTML = mockArticles.map(article => `
         <div class="article-card ${selectedArticles.has(article.id) ? 'selected' : ''}" data-id="${article.id}">
           <div class="article-select"></div>
+          ${article.isManual ? '<div class="manual-badge">Manual</div>' : ''}
           <div class="article-meta">
             <span>${article.source}</span>
             <span>${article.date}</span>
           </div>
           <div class="article-title">${article.title}</div>
-          <div class="article-desc collapsed">${article.description}</div>
-          <div class="article-expanded-content" id="expanded-${article.id}">
-            <div class="article-url">🔗 ${article.url || `https://example.com/article/${article.id}`}</div>
-            <div class="article-actions">
-              <a href="${article.url || `https://example.com/article/${article.id}`}" target="_blank" class="read-article-btn" onclick="event.stopPropagation()">
-                Read Article
-                <svg class="external-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
-                </svg>
-              </a>
-            </div>
-          </div>
-          <button class="expand-btn" data-article-id="${article.id}">
-            <span class="expand-text">Read More</span>
-            <span class="expand-arrow">▼</span>
-          </button>
+          <div class="article-desc">${article.description}</div>
+          <a href="${article.url || `https://example.com/article/${article.id}`}" target="_blank" class="article-link" onclick="event.stopPropagation()">
+            Read Full Article →
+          </a>
         </div>
       `).join('');
 
@@ -1853,10 +2864,10 @@
           updateFetchSelectAllBtn();
         });
 
-        // Card click - don't toggle, just visual feedback
+        // Card click to toggle selection
         card.addEventListener('click', (e) => {
-          // Only if not clicking on buttons or links
-          if (!e.target.closest('.expand-btn') && !e.target.closest('.read-article-btn')) {
+          // Only if not clicking on link
+          if (!e.target.closest('.article-link')) {
             const id = parseInt(card.dataset.id);
             if (selectedArticles.has(id)) {
               selectedArticles.delete(id);
@@ -1867,29 +2878,6 @@
             }
             updateSelectionBar();
             updateFetchSelectAllBtn();
-          }
-        });
-      });
-
-      // Expand buttons
-      document.querySelectorAll('.expand-btn').forEach(btn => {
-        btn.addEventListener('click', (e) => {
-          e.stopPropagation();
-          const articleId = btn.dataset.articleId;
-          const expandedContent = document.getElementById(`expanded-${articleId}`);
-          const card = btn.closest('.article-card');
-          const desc = card.querySelector('.article-desc');
-          
-          if (expandedContent.classList.contains('visible')) {
-            expandedContent.classList.remove('visible');
-            desc.classList.add('collapsed');
-            btn.classList.remove('expanded');
-            btn.querySelector('.expand-text').textContent = 'Read More';
-          } else {
-            expandedContent.classList.add('visible');
-            desc.classList.remove('collapsed');
-            btn.classList.add('expanded');
-            btn.querySelector('.expand-text').textContent = 'Show Less';
           }
         });
       });
@@ -1908,53 +2896,38 @@
 
     function updateSelectionBar() {
       selectedCount.textContent = selectedArticles.size;
-      const articlesGrid = document.getElementById('articles-grid');
+      const articlesGridEl = document.getElementById('articles-grid');
       
       if (selectedArticles.size > 0) {
         selectionBar.classList.add('visible');
-        if (articlesGrid) {
-          articlesGrid.classList.add('has-selection');
-        }
+        if (articlesGridEl) articlesGridEl.classList.add('has-selection');
       } else {
         selectionBar.classList.remove('visible');
-        if (articlesGrid) {
-          articlesGrid.classList.remove('has-selection');
-        }
+        if (articlesGridEl) articlesGridEl.classList.remove('has-selection');
       }
     }
 
-    fetchBtn.addEventListener('click', async () => {
-      fetchStatus.innerHTML = '<span class="status-dot"></span>Fetching';
-      fetchStatus.classList.add('fetching');
+    fetchBtn.addEventListener('click', () => {
+      fetchBtn.innerHTML = '<span class="fetch-pulse-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></span>Fetching...';
       fetchBtn.disabled = true;
+      if (fetchStatus) { fetchStatus.innerHTML = '<span class="status-dot"></span>Fetching'; fetchStatus.classList.add('fetching'); }
 
-      try {
-        const response = await fetch(`${API_URL}/fetch-news`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            topic: settings.topic || 'latest technology and AI news',
-            count: settings.articleCount || 10
-          })
-        });
-
-        const data = await response.json();
-
-        if (data.success && data.articles) {
-          selectedArticles.clear();
-          mockArticles = [...data.articles, ...mockArticles];
-          renderArticles();
-        } else {
-          alert('Failed to fetch news. Please try again.');
-        }
-      } catch (error) {
-        console.error('Fetch error:', error);
-        alert('Error connecting to API. Make sure the Vercel functions are deployed.');
-      } finally {
-        fetchStatus.innerHTML = '<span class="status-dot"></span>Idle';
-        fetchStatus.classList.remove('fetching');
+      setTimeout(() => {
+        // Generate fresh articles based on settings count
+        const count = parseInt(document.getElementById('article-count-input').value) || 10;
+        const newArticles = generateMockArticles(count);
+        
+        // Keep only the selected articles, discard all unselected
+        const selectedArticlesList = mockArticles.filter(a => selectedArticles.has(a.id));
+        
+        // Selected articles stay at top, fresh articles replace everything else
+        mockArticles = [...selectedArticlesList, ...newArticles];
+        
+        renderArticles();
+        fetchBtn.innerHTML = '<span class="fetch-pulse-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></span>Fetch News';
         fetchBtn.disabled = false;
-      }
+        if (fetchStatus) { fetchStatus.innerHTML = '<span class="status-dot"></span>Idle'; fetchStatus.classList.remove('fetching'); }
+      }, 2000);
     });
 
     // Fetch Select All functionality
@@ -1988,12 +2961,16 @@
       if (url) {
         const newArticle = {
           id: nextArticleId++,
-          source: 'Custom',
-          date: 'Just now',
+          source: 'Manual',
+          date: 'Added manually',
           title: 'Manually added article',
           description: 'Click "Read More" to view the full URL and open the article.',
-          url: url
+          url: url,
+          isManual: true  // Flag to identify manual articles
         };
+        
+        // Add to persistent manual articles array
+        manualArticles.unshift(newArticle);
         mockArticles.unshift(newArticle);
         
         // Re-render articles (this will preserve selections)
@@ -2023,6 +3000,11 @@
       }
     });
 
+    // Also support Enter on the header URL field
+    manualUrlInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') addManualArticle();
+    });
+
     // Generate Summaries
     let selectedDrafts = new Set();
     let draftData = [];
@@ -2050,106 +3032,86 @@
       }
     }
 
-    document.getElementById('generate-btn').addEventListener('click', async () => {
+    document.getElementById('generate-btn').addEventListener('click', () => {
       if (selectedArticles.size === 0) return;
-
+      
       const statusSelect = document.getElementById('draft-status-select');
-      if (statusSelect) statusSelect.value = 'draft';
-
-      // Show generating status
-      fetchStatus.innerHTML = '<span class="status-dot"></span>Generating';
-      fetchStatus.classList.add('generating');
-      document.getElementById('generate-btn').disabled = true;
-
-      try {
-        const articlesToSummarize = mockArticles.filter(a => selectedArticles.has(a.id));
-
-        const response = await fetch(`${API_URL}/generate-summaries`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            articles: articlesToSummarize,
-            tone: settings.tone || 'professional',
-            summaryLength: settings.summaryLength || 'medium',
-            customInstructions: settings.customInstructions || ''
-          })
-        });
-
-        const data = await response.json();
-
-        if (data.success && data.summaries) {
-          // Switch to drafts screen
-          document.querySelector('[data-screen="drafts"]').click();
-
-          // Set draft data
-          const draftList = document.getElementById('draft-list');
-          draftData = data.summaries;
-          selectedDrafts.clear();
-
-          // Initialize statuses
-          draftData.forEach(article => {
-            if (!draftStatuses[article.id]) {
-              draftStatuses[article.id] = 'draft';
-            }
-          });
-
-          // Render draft list
-          draftList.innerHTML = draftData.map((article, index) => `
-            <div class="article-list-item ${index === 0 ? 'active' : ''}" data-draft-id="${article.id}">
-              <div class="draft-checkbox"></div>
-              <div class="article-status ${draftStatuses[article.id] || 'draft'}">${getStatusLabel(draftStatuses[article.id] || 'draft')}</div>
-              <div class="article-list-title">${article.title}</div>
-            </div>
-          `).join('');
-
-          // Load first draft
-          if (draftData.length > 0) {
-            currentEditingId = draftData[0].id;
-            loadDraft(draftData[0]);
-          }
-
-          // Show select all
-          document.getElementById('select-all-btn').style.display = 'block';
-          updateDraftSelectionUI();
-
-          // Setup draft list clicks
-          document.querySelectorAll('.article-list-item').forEach(item => {
-            const checkbox = item.querySelector('.draft-checkbox');
-
-            checkbox.addEventListener('click', (e) => {
-              e.stopPropagation();
-              const id = parseInt(item.dataset.draftId);
-              if (selectedDrafts.has(id)) {
-                selectedDrafts.delete(id);
-                item.classList.remove('selected-for-send');
-              } else {
-                selectedDrafts.add(id);
-                item.classList.add('selected-for-send');
-              }
-              updateDraftSelectionUI();
-            });
-
-            item.addEventListener('click', () => {
-              document.querySelectorAll('.article-list-item').forEach(i => i.classList.remove('active'));
-              item.classList.add('active');
-              const id = parseInt(item.dataset.draftId);
-              currentEditingId = id;
-              const article = draftData.find(a => a.id === id);
-              if (article) loadDraft(article);
-            });
-          });
-
-        } else {
-          alert('Failed to generate summaries. Please try again.');
-        }
-      } catch (error) {
-        console.error('Generate error:', error);
-        alert('Error connecting to API. Make sure the Vercel functions are deployed.');
-      } finally {
-        fetchStatus.innerHTML = '<span class="status-dot"></span>Idle';
-        fetchStatus.classList.remove('generating');
-        document.getElementById('generate-btn').disabled = false;
+      if (statusSelect) {
+        statusSelect.value = 'draft';
       }
+
+      setTimeout(() => {
+        // Switch to drafts screen
+        document.querySelector('[data-screen="drafts"]').click();
+        
+        // Populate drafts
+        const draftList = document.getElementById('draft-list');
+        const selectedData = mockArticles.filter(a => selectedArticles.has(a.id));
+        draftData = selectedData;
+        selectedDrafts.clear(); // Clear selections
+        
+        // Initialize statuses
+        selectedData.forEach(article => {
+          if (!draftStatuses[article.id]) {
+            draftStatuses[article.id] = 'draft';
+          }
+        });
+        
+        draftList.innerHTML = selectedData.map((article, index) => `
+          <div class="article-list-item ${index === 0 ? 'active' : ''}" data-draft-id="${article.id}">
+            <div class="draft-checkbox"></div>
+            <div class="regen-item-indicator"></div>
+            <div class="article-status ${draftStatuses[article.id] || 'draft'}">${getStatusLabel(draftStatuses[article.id] || 'draft')}</div>
+            <div class="article-list-title">${article.title}</div>
+          </div>
+        `).join('');
+
+        // Load first draft
+        if (selectedData.length > 0) {
+          currentEditingId = selectedData[0].id;
+          loadDraft(selectedData[0]);
+          // Initialize summary box with first article
+          setTimeout(() => {
+            if (typeof syncSummaryBox === 'function') syncSummaryBox();
+          }, 100);
+        }
+
+        // Show select all and info
+        document.getElementById('select-all-btn').style.display = 'block';
+        updateDraftSelectionUI();
+
+        // Setup draft list clicks
+        document.querySelectorAll('.article-list-item').forEach(item => {
+          const checkbox = item.querySelector('.draft-checkbox');
+          
+          // Checkbox click - toggle selection
+          checkbox.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const id = parseInt(item.dataset.draftId);
+            if (selectedDrafts.has(id)) {
+              selectedDrafts.delete(id);
+              item.classList.remove('selected-for-send');
+            } else {
+              selectedDrafts.add(id);
+              item.classList.add('selected-for-send');
+            }
+            updateDraftSelectionUI();
+            if (typeof syncSummaryBox === 'function') syncSummaryBox();
+          });
+
+          // Item click - view/edit
+          item.addEventListener('click', () => {
+            document.querySelectorAll('.article-list-item').forEach(i => i.classList.remove('active'));
+            item.classList.add('active');
+            const id = parseInt(item.dataset.draftId);
+            currentEditingId = id;
+            const article = selectedData.find(a => a.id === id);
+            loadDraft(article);
+            // Update summary box to reflect selected article
+            if (typeof syncSummaryBox === 'function') syncSummaryBox();
+          });
+        });
+      }, 1500);
     });
 
     // Select All functionality
@@ -2173,6 +3135,7 @@
       }
       
       updateDraftSelectionUI();
+      if (typeof syncSummaryBox === 'function') syncSummaryBox();
     });
 
     function updateDraftSelectionUI() {
@@ -2221,11 +3184,7 @@
       
       titleInput.value = article.title;
       urlInput.value = article.url || `https://example.com/article/${article.id}`;
-      if (article.summary) {
-        contentInput.value = article.summary;
-      } else {
-        contentInput.value = `• ${article.description}\n\n• Key insight about the development and its implications for the industry.\n\n• Analysis of how this will affect the market and competitors.`;
-      }
+      contentInput.value = `• ${article.description}\n\n• Key insight about the development and its implications for the industry.\n\n• Analysis of how this will affect the market and competitors.`;
       
       // Set status
       statusSelect.value = draftStatuses[article.id] || 'draft';
@@ -2250,27 +3209,7 @@
       });
     });
 
-    // Expand editor functionality
-    let isEditorExpanded = false;
-    document.getElementById('expand-editor-btn').addEventListener('click', function() {
-      const leftColumn = document.querySelector('#screen-drafts .column:first-child');
-      const twoColumn = document.querySelector('#screen-drafts .two-column');
-      const expandIcon = document.getElementById('expand-icon');
-      
-      isEditorExpanded = !isEditorExpanded;
-      
-      if (isEditorExpanded) {
-        leftColumn.classList.add('collapsed');
-        twoColumn.style.gridTemplateColumns = '0 1fr';
-        expandIcon.textContent = '⛶';
-        this.title = 'Collapse editor';
-      } else {
-        leftColumn.classList.remove('collapsed');
-        twoColumn.style.gridTemplateColumns = '320px 1fr';
-        expandIcon.textContent = '⛶';
-        this.title = 'Expand editor';
-      }
-    });
+    // (expand-editor-btn removed from new layout)
 
     function updatePreview() {
       const title = document.getElementById('draft-title').value;
@@ -2407,11 +3346,197 @@
     window.copyText = function(text) {
       navigator.clipboard.writeText(text).then(() => {
         console.log('Copied to clipboard');
-        // Could add a toast notification here
       }).catch(err => {
         console.error('Failed to copy:', err);
       });
     };
+
+    // ── AI Summary Customization (Horizontal Bar) ───────────────────────
+
+    const applyToSelect = document.getElementById('apply-to-select');
+    const regenerateBtn = document.getElementById('regenerate-action-btn');
+    const regenerateBtnText = document.getElementById('regenerate-btn-text');
+    const checkedCountInline = document.getElementById('checked-count-inline');
+    const allCountInline = document.getElementById('all-count-inline');
+
+    let selectedScope = 'current'; // 'current', 'checked', 'all'
+
+    const REGEN_SVG = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>`;
+
+    // Dropdown selection
+    if (applyToSelect) {
+      applyToSelect.addEventListener('change', () => {
+        selectedScope = applyToSelect.value;
+        updateRegenerateButton();
+      });
+    }
+
+    // Update button text and counts based on selection state
+    function updateRegenerateButton() {
+      const checkedCount = selectedDrafts.size;
+      const totalCount = draftData.length;
+      
+      // Update dropdown counts
+      if (checkedCountInline) checkedCountInline.textContent = checkedCount;
+      if (allCountInline) allCountInline.textContent = totalCount;
+      
+      // Update button text and state
+      if (selectedScope === 'current') {
+        regenerateBtnText.textContent = 'Regenerate';
+        regenerateBtn.disabled = !currentEditingId;
+      } else if (selectedScope === 'checked') {
+        regenerateBtnText.textContent = `Regenerate ${checkedCount}`;
+        regenerateBtn.disabled = checkedCount === 0;
+      } else {
+        regenerateBtnText.textContent = `Regenerate All`;
+        regenerateBtn.disabled = totalCount === 0;
+      }
+    }
+
+    // Call this whenever selection changes
+    function syncSummaryBox() {
+      updateRegenerateButton();
+    }
+
+    function getRegenSettings() {
+      return {
+        length: document.getElementById('regen-length').value,
+        tone: document.getElementById('regen-tone').value.trim()
+      };
+    }
+
+    // Generate a mock summary (replace with real API call)
+    function makeSummary(title, length, tone) {
+      const counts = { short: 2, medium: 3, long: 5 };
+      const n = counts[length] || 3;
+      const bank = [
+        `${title} represents a pivotal shift in the current landscape.`,
+        `Early data shows strong momentum, with analysts revising forecasts upward.`,
+        `Key players are repositioning ahead of the next major development.`,
+        `Market sentiment remains cautious but optimistic on long-term prospects.`,
+        `Downstream implications could reshape the competitive dynamics through Q3.`
+      ];
+      const lines = bank.slice(0, n).map(l => `• ${l}`).join('\n');
+      return tone ? `${lines}\n\n[Style: ${tone.slice(0, 50)}]` : lines;
+    }
+
+    function flashGreen(el) {
+      el.style.transition = 'border-color 0.2s, box-shadow 0.2s';
+      el.style.borderColor = 'var(--color-green)';
+      el.style.boxShadow = '0 0 16px rgba(3, 210, 111, 0.3)';
+      setTimeout(() => {
+        el.style.borderColor = '';
+        el.style.boxShadow = '';
+        el.style.boxShadow = '';
+      }, 900);
+    }
+
+    function regenerateSingleArticle(id, length, tone) {
+      const listItem = document.querySelector(`[data-draft-id="${id}"]`);
+      if (listItem) listItem.classList.add('regenerating');
+      regenerateBtn.classList.add('spinning');
+      regenerateBtn.disabled = true;
+      
+      // Update button text
+      regenerateBtnText.textContent = 'Regenerating...';
+
+      setTimeout(() => {
+        const title = document.getElementById('draft-title').value;
+        const newContent = makeSummary(title, length, tone);
+        const draft = draftData.find(d => d.id === id);
+        if (draft) draft.content = newContent;
+        
+        const contentEl = document.getElementById('draft-content');
+        contentEl.value = newContent;
+        flashGreen(contentEl);
+
+        // Show completion state
+        if (listItem) {
+          listItem.classList.remove('regenerating');
+          listItem.classList.add('regen-complete');
+          setTimeout(() => listItem.classList.remove('regen-complete'), 600);
+        }
+        
+        regenerateBtn.classList.remove('spinning');
+        regenerateBtn.disabled = false;
+        updateRegenerateButton(); // Reset button text
+      }, 1000);
+    }
+
+    function regenerateMultipleArticles(ids, length, tone) {
+      regenerateBtn.classList.add('spinning');
+      regenerateBtn.disabled = true;
+      
+      // Update button text with count
+      regenerateBtnText.textContent = `Regenerating ${ids.length}...`;
+      
+      document.querySelectorAll('.article-list-item').forEach(el => {
+        const id = parseInt(el.dataset.draftId);
+        if (ids.includes(id)) {
+          el.classList.add('regenerating');
+        }
+      });
+
+      let completed = 0;
+      ids.forEach((id, i) => {
+        setTimeout(() => {
+          const draft = draftData.find(d => d.id === id);
+          if (draft) {
+            draft.content = makeSummary(draft.title, length, tone);
+            
+            if (id === currentEditingId) {
+              const contentEl = document.getElementById('draft-content');
+              contentEl.value = draft.content;
+              flashGreen(contentEl);
+            }
+          }
+
+          const listItem = document.querySelector(`[data-draft-id="${id}"]`);
+          if (listItem) {
+            listItem.classList.remove('regenerating');
+            listItem.classList.add('regen-complete');
+            setTimeout(() => listItem.classList.remove('regen-complete'), 600);
+          }
+
+          completed++;
+          
+          // Update progress in button text
+          regenerateBtnText.textContent = `Regenerating ${completed}/${ids.length}`;
+          
+          if (completed === ids.length) {
+            regenerateBtn.classList.remove('spinning');
+            regenerateBtn.disabled = false;
+            updateRegenerateButton(); // Reset button text
+            syncSummaryBox();
+          }
+        }, i * 500);
+      });
+    }
+
+    function performRegeneration() {
+      const { length, tone } = getRegenSettings();
+      
+      if (selectedScope === 'current') {
+        regenerateSingleArticle(currentEditingId, length, tone);
+      } else if (selectedScope === 'checked') {
+        regenerateMultipleArticles([...selectedDrafts], length, tone);
+      } else {
+        const allIds = draftData.map(d => d.id);
+        regenerateMultipleArticles(allIds, length, tone);
+      }
+    }
+
+    regenerateBtn.addEventListener('click', () => {
+      if (selectedScope === 'all') {
+        // TODO: Show confirmation modal in Step 6
+        performRegeneration();
+      } else {
+        performRegeneration();
+      }
+    });
+
+    // Initialize
+    syncSummaryBox();
 
     // Initialize with some sent items
     const sentList = document.getElementById('sent-list');
