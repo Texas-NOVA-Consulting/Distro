@@ -2638,179 +2638,8 @@
       });
     });
 
-    // Mock data - expanded pool of articles
-    const articlePool = [
-      {
-        source: 'TechCrunch',
-        date: 'Jan 28, 2026',
-        title: 'OpenAI announces GPT-5 with breakthrough reasoning capabilities',
-        description: 'The latest model shows significant improvements in complex problem-solving and multi-step reasoning tasks.',
-        url: 'https://techcrunch.com/2026/01/28/openai-gpt5-breakthrough'
-      },
-      {
-        source: 'The Verge',
-        date: 'Jan 28, 2026',
-        title: 'Apple Vision Pro 2 to launch in March with improved comfort',
-        description: 'Sources say the next iteration will be 30% lighter with better battery life and enhanced passthrough.',
-        url: 'https://theverge.com/2026/01/28/apple-vision-pro-2-launch'
-      },
-      {
-        source: 'Wired',
-        date: 'Jan 27, 2026',
-        title: 'Quantum computing breakthrough enables room-temperature qubits',
-        description: 'Researchers at MIT have developed a new material that maintains quantum coherence at 20°C.',
-        url: 'https://wired.com/story/quantum-computing-room-temperature'
-      },
-      {
-        source: 'Bloomberg',
-        date: 'Jan 27, 2026',
-        title: 'Tesla unveils fully autonomous robotaxi fleet for select cities',
-        description: 'The service will launch in Phoenix and Austin, with plans to expand to 10 more cities by year-end.',
-        url: 'https://bloomberg.com/news/tesla-robotaxi-fleet-launch'
-      },
-      {
-        source: 'Ars Technica',
-        date: 'Jan 26, 2026',
-        title: 'SpaceX Starship completes first Mars sample return mission',
-        description: 'The uncrewed mission successfully brought back 50kg of Martian soil and rock samples.',
-        url: 'https://arstechnica.com/space/spacex-mars-sample-return'
-      },
-      {
-        source: 'MIT Technology Review',
-        date: 'Jan 28, 2026',
-        title: 'New battery technology promises 1000-mile electric vehicle range',
-        description: 'Solid-state batteries using lithium-metal anodes achieve unprecedented energy density.',
-        url: 'https://technologyreview.com/battery-breakthrough-1000-mile'
-      },
-      {
-        source: 'Nature',
-        date: 'Jan 27, 2026',
-        title: 'CRISPR gene therapy shows promise in treating sickle cell disease',
-        description: 'Clinical trials demonstrate 95% success rate in eliminating symptoms after single treatment.',
-        url: 'https://nature.com/articles/crispr-sickle-cell-therapy'
-      },
-      {
-        source: 'Reuters',
-        date: 'Jan 27, 2026',
-        title: 'Global semiconductor production reaches record high in Q4 2025',
-        description: 'New fab openings in US and Europe help ease supply chain constraints.',
-        url: 'https://reuters.com/technology/semiconductor-production-record'
-      },
-      {
-        source: 'The Guardian',
-        date: 'Jan 26, 2026',
-        title: 'Fusion reactor achieves net positive energy for sustained period',
-        description: 'ITER facility maintains fusion reaction producing 150% energy output for 5 minutes.',
-        url: 'https://theguardian.com/science/fusion-energy-breakthrough'
-      },
-      {
-        source: 'VentureBeat',
-        date: 'Jan 26, 2026',
-        title: 'AI coding assistants now write 40% of professional code',
-        description: 'Study shows dramatic increase in developer productivity with GitHub Copilot and competitors.',
-        url: 'https://venturebeat.com/ai-coding-assistants-adoption'
-      },
-      {
-        source: 'TechCrunch',
-        date: 'Jan 25, 2026',
-        title: 'Meta releases open-source Llama 4 with 500B parameters',
-        description: 'New model matches GPT-4 performance while remaining fully open for research and commercial use.',
-        url: 'https://techcrunch.com/meta-llama-4-release'
-      },
-      {
-        source: 'CNBC',
-        date: 'Jan 25, 2026',
-        title: 'Apple announces $10B investment in Indian manufacturing',
-        description: 'Company plans to produce 25% of iPhones in India by 2027 as part of supply chain diversification.',
-        url: 'https://cnbc.com/apple-india-manufacturing-investment'
-      },
-      {
-        source: 'The Verge',
-        date: 'Jan 25, 2026',
-        title: 'Steam Deck 2 launches with OLED display and 8-hour battery life',
-        description: 'Valve\'s updated handheld gaming PC features AMD\'s latest APU and improved cooling system.',
-        url: 'https://theverge.com/steam-deck-2-review'
-      },
-      {
-        source: 'Science',
-        date: 'Jan 24, 2026',
-        title: 'Telescope discovers potentially habitable exoplanet 40 light-years away',
-        description: 'Planet orbiting red dwarf star shows signs of liquid water and stable atmosphere.',
-        url: 'https://science.org/exoplanet-habitable-discovery'
-      },
-      {
-        source: 'Financial Times',
-        date: 'Jan 24, 2026',
-        title: 'Quantum internet test network spans 500 miles between major cities',
-        description: 'Unhackable communication network demonstrates practical feasibility of quantum key distribution.',
-        url: 'https://ft.com/quantum-internet-network-test'
-      },
-      {
-        source: 'Wired',
-        date: 'Jan 24, 2026',
-        title: 'Brain-computer interface allows paralyzed patient to control robotic arm',
-        description: 'Neural implant enables precise movement control with thought alone, marking major BCI milestone.',
-        url: 'https://wired.com/brain-computer-interface-breakthrough'
-      },
-      {
-        source: 'BBC',
-        date: 'Jan 23, 2026',
-        title: 'Vertical farms produce 40% of Netherlands vegetable supply',
-        description: 'Indoor agriculture revolution reduces water usage by 95% compared to traditional farming.',
-        url: 'https://bbc.com/news/vertical-farming-netherlands'
-      },
-      {
-        source: 'Ars Technica',
-        date: 'Jan 23, 2026',
-        title: 'Linux kernel 7.0 brings major performance improvements',
-        description: 'New scheduler and memory management changes boost desktop and server workload efficiency.',
-        url: 'https://arstechnica.com/linux-kernel-7-release'
-      },
-      {
-        source: 'IEEE Spectrum',
-        date: 'Jan 23, 2026',
-        title: 'Graphene superconductor operates at room temperature',
-        description: 'Twisted bilayer graphene exhibits zero resistance at 20°C, revolutionizing electronics potential.',
-        url: 'https://spectrum.ieee.org/graphene-superconductor'
-      },
-      {
-        source: 'TechCrunch',
-        date: 'Jan 22, 2026',
-        title: 'Startup develops biodegradable plastic that dissolves in 6 months',
-        description: 'New polymer breaks down in ocean water, potentially solving marine pollution crisis.',
-        url: 'https://techcrunch.com/biodegradable-plastic-startup'
-      }
-    ];
-
-    let mockArticles = [];
+    let articles = [];
     let nextArticleId = 1;
-
-    function generateMockArticles(count) {
-      const newArticles = [];
-      const availableArticles = articlePool.filter(article => 
-        !mockArticles.some(existing => existing.title === article.title)
-      );
-      
-      // If we've used all unique articles, start recycling with modified titles
-      const articlesToUse = availableArticles.length >= count 
-        ? availableArticles.slice(0, count)
-        : [
-            ...availableArticles,
-            ...articlePool.slice(0, count - availableArticles.length).map(a => ({
-              ...a,
-              title: `[Update] ${a.title}`
-            }))
-          ];
-      
-      articlesToUse.forEach(article => {
-        newArticles.push({
-          ...article,
-          id: nextArticleId++
-        });
-      });
-      
-      return newArticles;
-    }
 
     let selectedArticles = new Set();
 
@@ -2822,7 +2651,7 @@
     const selectedCount = document.getElementById('selected-count');
 
     function renderArticles() {
-      articlesGrid.innerHTML = mockArticles.map(article => `
+      articlesGrid.innerHTML = articles.map(article => `
         <div class="article-card ${selectedArticles.has(article.id) ? 'selected' : ''}" data-id="${article.id}">
           <div class="article-select"></div>
           ${article.isManual ? '<div class="manual-badge">Manual</div>' : ''}
@@ -2840,7 +2669,7 @@
 
       // Show select all button if there are articles
       const selectAllBtn = document.getElementById('fetch-select-all-btn');
-      if (mockArticles.length > 0) {
+      if (articles.length > 0) {
         selectAllBtn.style.display = 'block';
         updateFetchSelectAllBtn();
       }
@@ -2885,7 +2714,7 @@
 
     function updateFetchSelectAllBtn() {
       const selectAllBtn = document.getElementById('fetch-select-all-btn');
-      const allSelected = mockArticles.length > 0 && selectedArticles.size === mockArticles.length;
+      const allSelected = articles.length > 0 && selectedArticles.size === articles.length;
       
       if (allSelected) {
         selectAllBtn.textContent = 'Deselect All';
@@ -2907,32 +2736,44 @@
       }
     }
 
-    fetchBtn.addEventListener('click', () => {
-      fetchBtn.innerHTML = '<span class="fetch-pulse-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></span>Fetching...';
+    fetchBtn.addEventListener('click', async () => {
+      const FETCH_SVG = '<span class="fetch-pulse-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></span>';
+      fetchBtn.innerHTML = `${FETCH_SVG}Fetching...`;
       fetchBtn.disabled = true;
       if (fetchStatus) { fetchStatus.innerHTML = '<span class="status-dot"></span>Fetching'; fetchStatus.classList.add('fetching'); }
 
-      setTimeout(() => {
-        // Generate fresh articles based on settings count
+      try {
         const count = parseInt(document.getElementById('article-count-input').value) || 10;
-        const newArticles = generateMockArticles(count);
-        
-        // Keep only the selected articles, discard all unselected
-        const selectedArticlesList = mockArticles.filter(a => selectedArticles.has(a.id));
-        
-        // Selected articles stay at top, fresh articles replace everything else
-        mockArticles = [...selectedArticlesList, ...newArticles];
-        
+        const topic = (document.getElementById('custom-tone-input').value.trim() || settings.topic || 'latest technology and AI news');
+
+        const response = await fetch('/api/fetch-news', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ topic, count })
+        });
+
+        const data = await response.json();
+
+        if (!data.success) throw new Error(data.error || 'Fetch failed');
+
+        // Keep selected articles, replace the rest
+        const selectedArticlesList = articles.filter(a => selectedArticles.has(a.id));
+        articles = [...selectedArticlesList, ...data.articles];
         renderArticles();
-        fetchBtn.innerHTML = '<span class="fetch-pulse-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></span>Fetch News';
+
+      } catch (error) {
+        console.error('Fetch error:', error);
+        articlesGrid.innerHTML = `<div style="color:#ef4444;padding:24px;font-family:Inter,sans-serif;">Error fetching news: ${error.message}</div>`;
+      } finally {
+        fetchBtn.innerHTML = `${FETCH_SVG}Fetch News`;
         fetchBtn.disabled = false;
         if (fetchStatus) { fetchStatus.innerHTML = '<span class="status-dot"></span>Idle'; fetchStatus.classList.remove('fetching'); }
-      }, 2000);
+      }
     });
 
     // Fetch Select All functionality
     document.getElementById('fetch-select-all-btn').addEventListener('click', function() {
-      const allSelected = mockArticles.length > 0 && selectedArticles.size === mockArticles.length;
+      const allSelected = articles.length > 0 && selectedArticles.size === articles.length;
       
       if (allSelected) {
         // Deselect all
@@ -2942,7 +2783,7 @@
         });
       } else {
         // Select all
-        mockArticles.forEach(article => selectedArticles.add(article.id));
+        articles.forEach(article => selectedArticles.add(article.id));
         document.querySelectorAll('.article-card').forEach(card => {
           card.classList.add('selected');
         });
@@ -2971,7 +2812,7 @@
         
         // Add to persistent manual articles array
         manualArticles.unshift(newArticle);
-        mockArticles.unshift(newArticle);
+        articles.unshift(newArticle);
         
         // Re-render articles (this will preserve selections)
         renderArticles();
@@ -3032,31 +2873,47 @@
       }
     }
 
-    document.getElementById('generate-btn').addEventListener('click', () => {
+    document.getElementById('generate-btn').addEventListener('click', async () => {
       if (selectedArticles.size === 0) return;
-      
-      const statusSelect = document.getElementById('draft-status-select');
-      if (statusSelect) {
-        statusSelect.value = 'draft';
-      }
 
-      setTimeout(() => {
+      const generateBtn = document.getElementById('generate-btn');
+      generateBtn.textContent = 'Generating...';
+      generateBtn.disabled = true;
+
+      const statusSelect = document.getElementById('draft-status-select');
+      if (statusSelect) statusSelect.value = 'draft';
+
+      try {
+        const selectedData = articles.filter(a => selectedArticles.has(a.id));
+        const tone = document.getElementById('regen-tone').value.trim() || 'professional';
+        const summaryLength = document.getElementById('regen-length').value || 'medium';
+
+        const response = await fetch('/api/generate-summaries', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ articles: selectedData, tone, summaryLength })
+        });
+
+        const data = await response.json();
+        if (!data.success) throw new Error(data.error || 'Generation failed');
+
+        // Merge summaries into article data
+        data.summaries.forEach(s => {
+          const article = selectedData.find(a => a.id === s.id);
+          if (article) article.summary = s.summary;
+        });
+
+        draftData = selectedData;
+        selectedDrafts.clear();
+
+        selectedData.forEach(article => {
+          if (!draftStatuses[article.id]) draftStatuses[article.id] = 'draft';
+        });
+
         // Switch to drafts screen
         document.querySelector('[data-screen="drafts"]').click();
-        
-        // Populate drafts
+
         const draftList = document.getElementById('draft-list');
-        const selectedData = mockArticles.filter(a => selectedArticles.has(a.id));
-        draftData = selectedData;
-        selectedDrafts.clear(); // Clear selections
-        
-        // Initialize statuses
-        selectedData.forEach(article => {
-          if (!draftStatuses[article.id]) {
-            draftStatuses[article.id] = 'draft';
-          }
-        });
-        
         draftList.innerHTML = selectedData.map((article, index) => `
           <div class="article-list-item ${index === 0 ? 'active' : ''}" data-draft-id="${article.id}">
             <div class="draft-checkbox"></div>
@@ -3066,40 +2923,25 @@
           </div>
         `).join('');
 
-        // Load first draft
         if (selectedData.length > 0) {
           currentEditingId = selectedData[0].id;
           loadDraft(selectedData[0]);
-          // Initialize summary box with first article
-          setTimeout(() => {
-            if (typeof syncSummaryBox === 'function') syncSummaryBox();
-          }, 100);
+          setTimeout(() => { if (typeof syncSummaryBox === 'function') syncSummaryBox(); }, 100);
         }
 
-        // Show select all and info
         document.getElementById('select-all-btn').style.display = 'block';
         updateDraftSelectionUI();
 
-        // Setup draft list clicks
         document.querySelectorAll('.article-list-item').forEach(item => {
           const checkbox = item.querySelector('.draft-checkbox');
-          
-          // Checkbox click - toggle selection
           checkbox.addEventListener('click', (e) => {
             e.stopPropagation();
             const id = parseInt(item.dataset.draftId);
-            if (selectedDrafts.has(id)) {
-              selectedDrafts.delete(id);
-              item.classList.remove('selected-for-send');
-            } else {
-              selectedDrafts.add(id);
-              item.classList.add('selected-for-send');
-            }
+            if (selectedDrafts.has(id)) { selectedDrafts.delete(id); item.classList.remove('selected-for-send'); }
+            else { selectedDrafts.add(id); item.classList.add('selected-for-send'); }
             updateDraftSelectionUI();
             if (typeof syncSummaryBox === 'function') syncSummaryBox();
           });
-
-          // Item click - view/edit
           item.addEventListener('click', () => {
             document.querySelectorAll('.article-list-item').forEach(i => i.classList.remove('active'));
             item.classList.add('active');
@@ -3107,11 +2949,17 @@
             currentEditingId = id;
             const article = selectedData.find(a => a.id === id);
             loadDraft(article);
-            // Update summary box to reflect selected article
             if (typeof syncSummaryBox === 'function') syncSummaryBox();
           });
         });
-      }, 1500);
+
+      } catch (error) {
+        console.error('Generate error:', error);
+        alert(`Error generating summaries: ${error.message}`);
+      } finally {
+        generateBtn.textContent = 'Generate Article Summaries';
+        generateBtn.disabled = false;
+      }
     });
 
     // Select All functionality
@@ -3183,8 +3031,8 @@
       statusSelect.disabled = false;
       
       titleInput.value = article.title;
-      urlInput.value = article.url || `https://example.com/article/${article.id}`;
-      contentInput.value = `• ${article.description}\n\n• Key insight about the development and its implications for the industry.\n\n• Analysis of how this will affect the market and competitors.`;
+      urlInput.value = article.url || '';
+      contentInput.value = article.summary || `• ${article.description}`;
       
       // Set status
       statusSelect.value = draftStatuses[article.id] || 'draft';
@@ -3292,7 +3140,7 @@
           const itemsToSend = draftData.filter(article => selectedDrafts.has(article.id));
           
           itemsToSend.forEach(article => {
-            const content = `• ${article.description}\n\n• Key insight about the development and its implications for the industry.\n\n• Analysis of how this will affect the market and competitors.`;
+            const content = article.summary || `• ${article.description}`;
             
             const sentItem = `
               <div class="sent-item">
@@ -3405,21 +3253,6 @@
       };
     }
 
-    // Generate a mock summary (replace with real API call)
-    function makeSummary(title, length, tone) {
-      const counts = { short: 2, medium: 3, long: 5 };
-      const n = counts[length] || 3;
-      const bank = [
-        `${title} represents a pivotal shift in the current landscape.`,
-        `Early data shows strong momentum, with analysts revising forecasts upward.`,
-        `Key players are repositioning ahead of the next major development.`,
-        `Market sentiment remains cautious but optimistic on long-term prospects.`,
-        `Downstream implications could reshape the competitive dynamics through Q3.`
-      ];
-      const lines = bank.slice(0, n).map(l => `• ${l}`).join('\n');
-      return tone ? `${lines}\n\n[Style: ${tone.slice(0, 50)}]` : lines;
-    }
-
     function flashGreen(el) {
       el.style.transition = 'border-color 0.2s, box-shadow 0.2s';
       el.style.borderColor = 'var(--color-green)';
@@ -3431,86 +3264,109 @@
       }, 900);
     }
 
-    function regenerateSingleArticle(id, length, tone) {
+    async function regenerateSingleArticle(id, length, tone) {
       const listItem = document.querySelector(`[data-draft-id="${id}"]`);
       if (listItem) listItem.classList.add('regenerating');
       regenerateBtn.classList.add('spinning');
       regenerateBtn.disabled = true;
-      
-      // Update button text
       regenerateBtnText.textContent = 'Regenerating...';
 
-      setTimeout(() => {
-        const title = document.getElementById('draft-title').value;
-        const newContent = makeSummary(title, length, tone);
+      try {
         const draft = draftData.find(d => d.id === id);
-        if (draft) draft.content = newContent;
-        
+        if (!draft) return;
+
+        const response = await fetch('/api/generate-summaries', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            articles: [draft],
+            tone: tone || 'professional',
+            summaryLength: length || 'medium',
+            customInstructions: tone
+          })
+        });
+
+        const data = await response.json();
+        if (!data.success) throw new Error(data.error);
+
+        const newSummary = data.summaries[0]?.summary || '';
+        draft.summary = newSummary;
+
         const contentEl = document.getElementById('draft-content');
-        contentEl.value = newContent;
+        contentEl.value = newSummary;
         flashGreen(contentEl);
 
-        // Show completion state
+      } catch (err) {
+        console.error('Regen error:', err);
+      } finally {
         if (listItem) {
           listItem.classList.remove('regenerating');
           listItem.classList.add('regen-complete');
           setTimeout(() => listItem.classList.remove('regen-complete'), 600);
         }
-        
         regenerateBtn.classList.remove('spinning');
         regenerateBtn.disabled = false;
-        updateRegenerateButton(); // Reset button text
-      }, 1000);
+        updateRegenerateButton();
+      }
     }
 
-    function regenerateMultipleArticles(ids, length, tone) {
+    async function regenerateMultipleArticles(ids, length, tone) {
       regenerateBtn.classList.add('spinning');
       regenerateBtn.disabled = true;
-      
-      // Update button text with count
       regenerateBtnText.textContent = `Regenerating ${ids.length}...`;
-      
-      document.querySelectorAll('.article-list-item').forEach(el => {
-        const id = parseInt(el.dataset.draftId);
-        if (ids.includes(id)) {
-          el.classList.add('regenerating');
-        }
+
+      ids.forEach(id => {
+        const el = document.querySelector(`[data-draft-id="${id}"]`);
+        if (el) el.classList.add('regenerating');
       });
 
-      let completed = 0;
-      ids.forEach((id, i) => {
-        setTimeout(() => {
-          const draft = draftData.find(d => d.id === id);
+      try {
+        const draftsToRegen = draftData.filter(d => ids.includes(d.id));
+
+        const response = await fetch('/api/generate-summaries', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            articles: draftsToRegen,
+            tone: tone || 'professional',
+            summaryLength: length || 'medium',
+            customInstructions: tone
+          })
+        });
+
+        const data = await response.json();
+        if (!data.success) throw new Error(data.error);
+
+        data.summaries.forEach(s => {
+          const draft = draftData.find(d => d.id === s.id);
           if (draft) {
-            draft.content = makeSummary(draft.title, length, tone);
-            
-            if (id === currentEditingId) {
+            draft.summary = s.summary;
+            if (s.id === currentEditingId) {
               const contentEl = document.getElementById('draft-content');
-              contentEl.value = draft.content;
+              contentEl.value = s.summary;
               flashGreen(contentEl);
             }
           }
-
-          const listItem = document.querySelector(`[data-draft-id="${id}"]`);
+          const listItem = document.querySelector(`[data-draft-id="${s.id}"]`);
           if (listItem) {
             listItem.classList.remove('regenerating');
             listItem.classList.add('regen-complete');
             setTimeout(() => listItem.classList.remove('regen-complete'), 600);
           }
+        });
 
-          completed++;
-          
-          // Update progress in button text
-          regenerateBtnText.textContent = `Regenerating ${completed}/${ids.length}`;
-          
-          if (completed === ids.length) {
-            regenerateBtn.classList.remove('spinning');
-            regenerateBtn.disabled = false;
-            updateRegenerateButton(); // Reset button text
-            syncSummaryBox();
-          }
-        }, i * 500);
-      });
+      } catch (err) {
+        console.error('Regen error:', err);
+        ids.forEach(id => {
+          const el = document.querySelector(`[data-draft-id="${id}"]`);
+          if (el) el.classList.remove('regenerating');
+        });
+      } finally {
+        regenerateBtn.classList.remove('spinning');
+        regenerateBtn.disabled = false;
+        updateRegenerateButton();
+        syncSummaryBox();
+      }
     }
 
     function performRegeneration() {
@@ -3538,26 +3394,8 @@
     // Initialize
     syncSummaryBox();
 
-    // Initialize with some sent items
+    // Sent list starts empty — items added as articles are sent
     const sentList = document.getElementById('sent-list');
-    sentList.innerHTML = `
-      <div class="sent-item">
-        <div class="sent-header">
-          <div class="sent-title">Meta unveils new AR glasses with neural interface technology</div>
-          <div class="sent-time">Jan 27, 3:42 PM</div>
-        </div>
-        <div class="sent-preview">• Revolutionary brain-computer interface allows hands-free control of digital content through thought patterns...</div>
-        <button class="copy-btn">Copy Text</button>
-      </div>
-      <div class="sent-item">
-        <div class="sent-header">
-          <div class="sent-title">Anthropic releases Claude 4.0 with extended context window</div>
-          <div class="sent-time">Jan 26, 11:15 AM</div>
-        </div>
-        <div class="sent-preview">• New model supports up to 2 million tokens, enabling analysis of entire codebases and long documents...</div>
-        <button class="copy-btn">Copy Text</button>
-      </div>
-    `;
   </script>
 </body>
 </html>

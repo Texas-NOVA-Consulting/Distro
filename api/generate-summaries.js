@@ -1,10 +1,10 @@
-import { ChatGoogleGenerativeAI } from '@langchain/google-genai';
+import { GoogleGenerativeAI } from '@google/generative-ai';
 
-function getLLM() {
-  return new ChatGoogleGenerativeAI({
-    modelName: 'gemini-2.5-flash',
-    temperature: 0.7,
-    apiKey: process.env.GOOGLE_API_KEY,
+function getModel() {
+  const genAI = new GoogleGenerativeAI(process.env.GOOGLE_API_KEY);
+  return genAI.getGenerativeModel({
+    model: 'gemini-2.0-flash',
+    generationConfig: { temperature: 0.7 }
   });
 }
 
@@ -28,26 +28,27 @@ export default async function handler(req, res) {
       return res.status(400).json({ success: false, error: 'No articles provided' });
     }
 
-    console.log(`✍️  Generating ${summaryLength} "${tone}" summaries for ${articles.length} articles`);
+    console.log(`✍️  Generating ${summaryLength} summaries (tone: "${tone}") for ${articles.length} articles`);
 
-    const model = getLLM();
-    const summaries = [];
+    const model = getModel();
 
     const toneInstructions = {
       professional: 'professional and informative, suitable for a business audience',
-      casual:       'casual and conversational, easy to read and friendly',
-      analyst:      'like a financial/tech analyst - data-driven, insightful, with market implications and strategic context',
-      custom:       customInstructions || 'professional and informative',
+      casual: 'casual and conversational, easy to read and friendly',
+      analyst: 'like a financial/tech analyst — data-driven, with market implications and strategic context',
+      custom: customInstructions || 'professional and informative',
     };
 
     const lengthInstructions = {
-      short:  '2-3 concise bullet points (keep it tight)',
+      short: '2-3 concise bullet points',
       medium: '3-4 detailed bullet points with key insights',
-      long:   '5-6 comprehensive bullet points with analysis and implications',
+      long: '5-6 comprehensive bullet points with analysis and implications',
     };
 
     const toneStyle = toneInstructions[tone] || toneInstructions.professional;
     const bulletCount = lengthInstructions[summaryLength] || lengthInstructions.medium;
+
+    const summaries = [];
 
     for (const article of articles) {
       try {
@@ -62,7 +63,8 @@ Format: ${bulletCount}
 - Focus on: what happened, why it matters, and implications
 - Return ONLY the bullet points, nothing else`;
 
-        const response = await model.invoke(prompt);
+        const result = await model.generateContent(prompt);
+        const summary = result.response.text().trim();
 
         summaries.push({
           id: article.id,
@@ -70,7 +72,7 @@ Format: ${bulletCount}
           url: article.url,
           source: article.source,
           description: article.description,
-          summary: response.content.trim()
+          summary
         });
 
       } catch (err) {
@@ -81,7 +83,7 @@ Format: ${bulletCount}
           url: article.url,
           source: article.source,
           description: article.description,
-          summary: `• ${article.description}\n\n• Further details are available in the full article.\n\n• This development may have broader implications for the industry.`
+          summary: `• ${article.description}`
         });
       }
     }

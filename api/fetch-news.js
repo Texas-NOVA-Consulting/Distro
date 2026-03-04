@@ -1,13 +1,3 @@
-import { ChatGoogleGenerativeAI } from '@langchain/google-genai';
-
-function getLLM() {
-  return new ChatGoogleGenerativeAI({
-    modelName: 'gemini-2.5-flash',
-    temperature: 0.7,
-    apiKey: process.env.GOOGLE_API_KEY,
-  });
-}
-
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
@@ -20,74 +10,104 @@ export default async function handler(req, res) {
     const { topic, count = 10 } = req.body;
     const searchTopic = topic || 'latest technology and AI news';
 
-    console.log(`📰 Fetching ${count} articles about: "${searchTopic}"`);
+    const query = encodeURIComponent(searchTopic);
+    const rssUrl = `https://news.google.com/rss/search?q=${query}&hl=en-US&gl=US&ceid=US:en`;
 
-    const model = getLLM();
+    const response = await fetch(rssUrl);
+    if (!response.ok) throw new Error(`RSS fetch failed: ${response.status}`);
 
-    const prompt = `Search Google News for the top ${count} most recent articles about: "${searchTopic}"
+    const xml = await response.text();
+    const articles = parseRSS(xml, parseInt(count));
 
-IMPORTANT: Return ONLY valid JSON with no markdown, no code blocks, no explanation.
+    if (articles.length === 0) throw new Error('No articles found for this topic');
 
-For each article provide:
-{
-  "source": "Publication name",
-  "date": "Recent date like 'Jan 28, 2026' or '2 hours ago'",
-  "title": "Article headline",
-  "description": "Brief 1-2 sentence description",
-  "url": "Full article URL"
-}
-
-Return in this exact JSON format:
-{
-  "articles": [
-    {
-      "source": "TechCrunch",
-      "date": "Jan 28, 2026",
-      "title": "Example Article Title",
-      "description": "Brief description of the article content.",
-      "url": "https://example.com/article"
-    }
-  ]
-}`;
-
-    const response = await model.invoke(prompt);
-    let jsonText = response.content.trim();
-
-    jsonText = jsonText
-      .replace(/```json\s*/g, '')
-      .replace(/```\s*/g, '')
-      .trim();
-
-    const data = JSON.parse(jsonText);
-    const articles = data.articles || [];
-
-    const articlesWithIds = articles.map((article, index) => ({
-      id: Date.now() + index,
-      ...article
-    }));
-
-    console.log(`✅ Found ${articlesWithIds.length} articles`);
-
-    res.status(200).json({ 
-      success: true,
-      articles: articlesWithIds
-    });
+    console.log(`✅ Fetched ${articles.length} real articles for: "${searchTopic}"`);
+    res.status(200).json({ success: true, articles });
 
   } catch (error) {
     console.error('❌ Error fetching news:', error.message);
-    
-    res.status(200).json({
-      success: true,
-      articles: [
-        {
-          id: Date.now(),
-          source: 'TechCrunch',
-          date: 'Just now',
-          title: 'API returned successfully (using fallback data)',
-          description: 'Your Gemini API is working! This is placeholder data.',
-          url: 'https://techcrunch.com'
-        }
-      ]
+    res.status(500).json({ success: false, error: error.message });
+  }
+}
+
+function parseRSS(xml, limit) {
+  const items = [];
+  const itemRegex = /<item>([\s\S]*?)<\/item>/g;
+  let match;
+  let id = Date.now();
+
+  while ((match = itemRegex.exec(xml)) !== null && items.length < limit) {
+    const item = match[1];
+
+    const title = extractCDATA(item, 'title') || extractTag(item, 'title') || '';
+    const link = extractTag(item, 'link') || extractTag(item, 'guid') || '';
+    const pubDate = extractTag(item, 'pubDate') || '';
+    const source = extractSourceTag(item) || '';
+    const rawDesc = extractCDATA(item, 'description') || extractTag(item, 'description') || '';
+    const description = stripHtml(rawDesc).substring(0, 220);
+
+    if (!title) continue;
+
+    items.push({
+      id: id++,
+      title: cleanTitle(title, source),
+      source: source || extractSourceFromTitle(title) || 'News',
+      date: formatDate(pubDate),
+      description: description || `News about ${cleanTitle(title, source)}`,
+      url: link
     });
+  }
+
+  return items;
+}
+
+function extractTag(xml, tag) {
+  const m = xml.match(new RegExp(`<${tag}[^>]*>([\\s\\S]*?)<\\/${tag}>`, 'i'));
+  return m ? m[1].trim() : '';
+}
+
+function extractCDATA(xml, tag) {
+  const m = xml.match(new RegExp(`<${tag}[^>]*><!\\[CDATA\\[([\\s\\S]*?)\\]\\]><\\/${tag}>`, 'i'));
+  return m ? m[1].trim() : null;
+}
+
+function extractSourceTag(xml) {
+  const m = xml.match(/<source[^>]*>([\s\S]*?)<\/source>/i);
+  return m ? m[1].trim() : '';
+}
+
+function extractSourceFromTitle(title) {
+  const m = title.match(/ - ([^-]+)$/);
+  return m ? m[1].trim() : '';
+}
+
+function cleanTitle(title, source) {
+  let t = title;
+  if (source) t = t.replace(new RegExp(` - ${source.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}$`), '');
+  return t.replace(/ - [^-]*$/, '').trim();
+}
+
+function stripHtml(html) {
+  return html
+    .replace(/<[^>]*>/g, ' ')
+    .replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>')
+    .replace(/&quot;/g, '"').replace(/&#39;/g, "'").replace(/&nbsp;/g, ' ')
+    .replace(/\s+/g, ' ').trim();
+}
+
+function formatDate(dateStr) {
+  if (!dateStr) return 'Recent';
+  try {
+    const date = new Date(dateStr);
+    const diffMs = Date.now() - date;
+    const diffHrs = Math.floor(diffMs / 3600000);
+    const diffDays = Math.floor(diffHrs / 24);
+    if (diffHrs < 1) return 'Just now';
+    if (diffHrs < 24) return `${diffHrs}h ago`;
+    if (diffDays === 1) return 'Yesterday';
+    if (diffDays < 7) return `${diffDays}d ago`;
+    return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+  } catch {
+    return 'Recent';
   }
 }
