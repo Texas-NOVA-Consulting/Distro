@@ -3,7 +3,7 @@ import { GoogleGenerativeAI } from '@google/generative-ai';
 function getModel() {
   const genAI = new GoogleGenerativeAI(process.env.GOOGLE_API_KEY);
   return genAI.getGenerativeModel({
-    model: 'gemini-2.0-flash',
+    model: 'gemini-2.5-flash',
     generationConfig: { temperature: 0.7 }
   });
 }

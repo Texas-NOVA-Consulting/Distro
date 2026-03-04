@@ -3394,6 +3394,47 @@
 
     // Sent list starts empty — items added as articles are sent
     const sentList = document.getElementById('sent-list');
+
+    // Info icon tooltips — show styled tooltip on hover for .info-icon elements with title=""
+    const infoTip = document.createElement('div');
+    infoTip.style.cssText = `
+      position:fixed;padding:10px 14px;background:rgba(22,21,20,0.98);border:1px solid var(--color-green);
+      border-radius:8px;color:var(--text-primary);font-family:'Inter',sans-serif;font-size:12px;
+      line-height:1.5;white-space:nowrap;pointer-events:none;opacity:0;visibility:hidden;
+      transition:opacity 0.15s ease,visibility 0.15s ease;z-index:10000;
+      box-shadow:0 4px 24px rgba(3,210,111,0.4);backdrop-filter:blur(12px);max-width:280px;white-space:normal;
+    `;
+    document.body.appendChild(infoTip);
+
+    document.querySelectorAll('.info-icon[title]').forEach(el => {
+      const text = el.getAttribute('title');
+      if (!text) return;
+      el.removeAttribute('title'); // prevent native browser tooltip
+
+      el.addEventListener('mouseenter', (e) => {
+        infoTip.textContent = text;
+        infoTip.style.opacity = '1';
+        infoTip.style.visibility = 'visible';
+        positionTip(e);
+      });
+      el.addEventListener('mousemove', positionTip);
+      el.addEventListener('mouseleave', () => {
+        infoTip.style.opacity = '0';
+        infoTip.style.visibility = 'hidden';
+      });
+    });
+
+    function positionTip(e) {
+      const pad = 12;
+      const tw = infoTip.offsetWidth || 200;
+      const th = infoTip.offsetHeight || 40;
+      let x = e.clientX + pad;
+      let y = e.clientY - th - pad;
+      if (x + tw > window.innerWidth - pad) x = e.clientX - tw - pad;
+      if (y < pad) y = e.clientY + pad;
+      infoTip.style.left = x + 'px';
+      infoTip.style.top  = y + 'px';
+    }
   </script>
 </body>
 </html>
