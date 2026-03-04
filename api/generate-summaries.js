@@ -1,9 +1,4 @@
-// ============================================
-// Vercel Serverless Function: Generate Summaries
-// File: api/generate-summaries.js
-// ============================================
-
-const { ChatGoogleGenerativeAI } = require('@langchain/google-genai');
+import { ChatGoogleGenerativeAI } from '@langchain/google-genai';
 
 function getLLM() {
   return new ChatGoogleGenerativeAI({
@@ -38,7 +33,6 @@ export default async function handler(req, res) {
     const model = getLLM();
     const summaries = [];
 
-    // Match exactly what the frontend settings page offers
     const toneInstructions = {
       professional: 'professional and informative, suitable for a business audience',
       casual:       'casual and conversational, easy to read and friendly',
