@@ -1093,6 +1093,7 @@
     /* Articles Grid */
     .articles-grid {
       display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
       gap: 16px;
       margin-top: 24px;
       position: relative;
@@ -2426,7 +2427,7 @@
               <!-- Apply To -->
               <div class="inline-control-group">
                 <label class="inline-label">Apply To</label>
-                <select class="inline-select" id="apply-to-select" style="width: 140px;">
+                <select class="inline-select" id="apply-to-select" style="width: 200px;">
                   <option value="current">This article</option>
                   <option value="checked">Selected (<span id="checked-count-inline">0</span>)</option>
                   <option value="all">All (<span id="all-count-inline">0</span>)</option>
@@ -2540,7 +2541,7 @@
       <p id="modal-message">This will post the summary to your Telegram channel. This action cannot be undone.</p>
       <div class="modal-actions">
         <button class="btn btn-secondary" id="cancel-send">Cancel</button>
-        <button class="btn btn-primary" id="confirm-send">Confirm & Send</button>
+        <button class="btn btn-primary" id="confirm-send">Send to Telegram</button>
       </div>
     </div>
   </div>
@@ -3098,85 +3099,82 @@
       }
     });
 
-    confirmSendBtn.addEventListener('click', () => {
+    confirmSendBtn.addEventListener('click', async () => {
       statusSelect.value = 'in-progress';
       const draftStatus = document.getElementById('draft-status');
       draftStatus.classList.add('sending');
       confirmModal.classList.remove('visible');
+      confirmSendBtn.disabled = true;
+      confirmSendBtn.textContent = 'Sending...';
 
-      setTimeout(() => {
-        const sentList = document.getElementById('sent-list');
-        const now = new Date().toLocaleString('en-US', { 
-          month: 'short', 
-          day: 'numeric', 
-          hour: 'numeric', 
-          minute: '2-digit' 
-        });
+      try {
+        let articlesToSend = [];
 
         if (sendMode === 'single') {
-          // Send current draft
-          const title = document.getElementById('draft-title').value;
+          const title   = document.getElementById('draft-title').value;
           const content = document.getElementById('draft-content').value;
+          const url     = document.getElementById('draft-url').value;
+          const draft   = draftData.find(d => d.id === currentEditingId);
+          articlesToSend = [{ title, summary: content, url, source: draft?.source || '' }];
+        } else {
+          articlesToSend = draftData
+            .filter(a => selectedDrafts.has(a.id))
+            .map(a => ({ title: a.title, summary: a.summary || `• ${a.description}`, url: a.url, source: a.source }));
+        }
 
-          const sentItem = `
+        const response = await fetch('/api/send-telegram', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ articles: articlesToSend })
+        });
+
+        const data = await response.json();
+
+        if (!data.success && !data.results) {
+          throw new Error(data.error || 'Failed to send to Telegram');
+        }
+
+        // Add to sent list
+        const sentList = document.getElementById('sent-list');
+        const now = new Date().toLocaleString('en-US', { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' });
+
+        articlesToSend.forEach(article => {
+          const preview = (article.summary || '').substring(0, 150);
+          const safeTitle = article.title.replace(/`/g, "'");
+          const safeContent = article.summary ? article.summary.replace(/`/g, "'") : '';
+          sentList.insertAdjacentHTML('afterbegin', `
             <div class="sent-item">
               <div class="sent-header">
-                <div class="sent-title">${title}</div>
+                <div class="sent-title">${article.title}</div>
                 <div class="sent-time">${now}</div>
               </div>
-              <div class="sent-preview">${content.substring(0, 150)}...</div>
-              <button class="copy-btn" onclick="copyText(\`${title}\\n\\n${content}\`)">Copy Text</button>
+              <div class="sent-preview">${preview}${preview.length >= 150 ? '...' : ''}</div>
+              <button class="copy-btn" onclick="copyText(\`${safeTitle}\n\n${safeContent}\`)">Copy Text</button>
             </div>
-          `;
+          `);
+        });
 
-          sentList.insertAdjacentHTML('afterbegin', sentItem);
-          
-          // Remove sent item from drafts if it was selected
-          if (currentEditingId) {
-            selectedDrafts.delete(currentEditingId);
-          }
-        } else {
-          // Send all selected drafts
-          const itemsToSend = draftData.filter(article => selectedDrafts.has(article.id));
-          
-          itemsToSend.forEach(article => {
-            const content = article.summary || `• ${article.description}`;
-            
-            const sentItem = `
-              <div class="sent-item">
-                <div class="sent-header">
-                  <div class="sent-title">${article.title}</div>
-                  <div class="sent-time">${now}</div>
-                </div>
-                <div class="sent-preview">${content.substring(0, 150)}...</div>
-                <button class="copy-btn" onclick="copyText(\`${article.title}\\n\\n${content}\`)">Copy Text</button>
-              </div>
-            `;
-
-            sentList.insertAdjacentHTML('afterbegin', sentItem);
-          });
-
-          // Clear selected drafts
+        if (sendMode === 'batch') {
           selectedDrafts.clear();
-          document.querySelectorAll('.article-list-item').forEach(item => {
-            item.classList.remove('selected-for-send');
-          });
+          document.querySelectorAll('.article-list-item').forEach(item => item.classList.remove('selected-for-send'));
           updateDraftSelectionUI();
         }
 
-        // Clear article selection from fetch page and update UI
         selectedArticles.clear();
-        document.querySelectorAll('.article-card').forEach(card => {
-          card.classList.remove('selected');
-        });
+        document.querySelectorAll('.article-card').forEach(card => card.classList.remove('selected'));
         updateSelectionBar();
-        
-        // Go to sent page to show results
-        document.querySelector('[data-screen="sent"]').click();
 
+        document.querySelector('[data-screen="sent"]').click();
         statusSelect.value = 'ready';
+
+      } catch (error) {
+        alert(`Send failed: ${error.message}`);
+        statusSelect.value = 'draft';
+      } finally {
         draftStatus.classList.remove('sending');
-      }, 1500);
+        confirmSendBtn.disabled = false;
+        confirmSendBtn.textContent = 'Send to Telegram';
+      }
     });
 
     // Status change handler

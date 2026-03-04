@@ -13,7 +13,9 @@ export default async function handler(req, res) {
     const query = encodeURIComponent(searchTopic);
     const rssUrl = `https://news.google.com/rss/search?q=${query}&hl=en-US&gl=US&ceid=US:en`;
 
-    const response = await fetch(rssUrl);
+    const response = await fetch(rssUrl, {
+      headers: { 'User-Agent': 'Mozilla/5.0 (compatible; NewsBot/1.0)' }
+    });
     if (!response.ok) throw new Error(`RSS fetch failed: ${response.status}`);
 
     const xml = await response.text();
@@ -39,26 +41,37 @@ function parseRSS(xml, limit) {
   while ((match = itemRegex.exec(xml)) !== null && items.length < limit) {
     const item = match[1];
 
-    const title = extractCDATA(item, 'title') || extractTag(item, 'title') || '';
-    const link = extractTag(item, 'link') || extractTag(item, 'guid') || '';
-    const pubDate = extractTag(item, 'pubDate') || '';
-    const source = extractSourceTag(item) || '';
-    const rawDesc = extractCDATA(item, 'description') || extractTag(item, 'description') || '';
-    const description = stripHtml(rawDesc).substring(0, 220);
+    const rawTitle = extractCDATA(item, 'title') || extractTag(item, 'title') || '';
+    const rawDesc  = extractCDATA(item, 'description') || '';
+    const pubDate  = extractTag(item, 'pubDate') || '';
+    const source   = extractSourceTag(item) || '';
 
-    if (!title) continue;
+    if (!rawTitle) continue;
+
+    // Google News RSS wraps the real article URL in the first <a href> of the description CDATA
+    const realUrl = extractFirstHref(rawDesc) || extractTag(item, 'link') || '';
+
+    // Strip HTML for readable description text
+    const descText = stripHtml(rawDesc).substring(0, 220).trim();
+    const cleanedTitle = cleanTitle(rawTitle, source);
 
     items.push({
       id: id++,
-      title: cleanTitle(title, source),
-      source: source || extractSourceFromTitle(title) || 'News',
+      title: cleanedTitle,
+      source: source || extractSourceFromTitle(rawTitle) || 'News',
       date: formatDate(pubDate),
-      description: description || `News about ${cleanTitle(title, source)}`,
-      url: link
+      description: descText || `${cleanedTitle} — click to read more.`,
+      url: realUrl
     });
   }
 
   return items;
+}
+
+// Google News description CDATA contains the real article URL as the first <a href>
+function extractFirstHref(html) {
+  const m = html.match(/<a\s+[^>]*href="([^"]+)"/i);
+  return m ? m[1] : '';
 }
 
 function extractTag(xml, tag) {
