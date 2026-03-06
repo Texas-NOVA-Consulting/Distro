@@ -6,15 +6,19 @@ export default async function handler(req, res) {
   if (req.method === 'OPTIONS') return res.status(200).end();
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
-  const token  = process.env.TELEGRAM_BOT_TOKEN;
-  const chatId = process.env.TELEGRAM_CHAT_ID;
+  const token = process.env.TELEGRAM_BOT_TOKEN;
 
-  if (!token || !chatId) {
-    return res.status(500).json({ success: false, error: 'Telegram credentials not configured. Add TELEGRAM_BOT_TOKEN and TELEGRAM_CHAT_ID to your Vercel environment variables.' });
+  if (!token) {
+    return res.status(500).json({ success: false, error: 'TELEGRAM_BOT_TOKEN not configured in Vercel environment variables.' });
   }
 
   try {
-    const { articles } = req.body; // array of { title, summary, url, source }
+    const { articles, chatId: bodyChatId } = req.body;
+    const chatId = bodyChatId || process.env.TELEGRAM_CHAT_ID;
+
+    if (!chatId) {
+      return res.status(400).json({ success: false, error: 'No Telegram channel ID provided. Enter your channel ID in the app.' });
+    }
 
     if (!articles || articles.length === 0) {
       return res.status(400).json({ success: false, error: 'No articles provided' });
