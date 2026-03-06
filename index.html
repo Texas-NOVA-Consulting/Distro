@@ -3326,8 +3326,6 @@
 
     confirmSendBtn.addEventListener('click', async () => {
       statusSelect.value = 'in-progress';
-      const draftStatus = document.getElementById('draft-status');
-      draftStatus.classList.add('sending');
       confirmModal.classList.remove('visible');
       confirmSendBtn.disabled = true;
       confirmSendBtn.textContent = 'Sending...';
@@ -3386,7 +3384,6 @@
         alert(`Send failed: ${err.message}`);
         statusSelect.value = 'draft';
       } finally {
-        draftStatus.classList.remove('sending');
         confirmSendBtn.disabled = false;
         confirmSendBtn.textContent = 'Send to Telegram';
       }
