@@ -359,6 +359,63 @@
       width: 300px;
     }
 
+    /* Telegram Channel Input */
+    .telegram-channel-input {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .telegram-channel-field {
+      width: 180px;
+      height: 40px;
+      padding: 0 14px;
+      background: rgba(1, 70, 81, 0.4);
+      border: 1px solid var(--border-teal);
+      border-radius: 8px;
+      color: var(--text-primary);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      outline: none;
+      transition: all 0.3s ease;
+    }
+
+    .telegram-channel-field[readonly] {
+      background: rgba(1, 70, 81, 0.2);
+      cursor: default;
+    }
+
+    .telegram-channel-field::placeholder {
+      color: var(--text-tertiary);
+      font-family: 'Inter', sans-serif;
+    }
+
+    .telegram-channel-field:not([readonly]):focus {
+      border-color: var(--color-green);
+      box-shadow: 0 0 0 2px rgba(3, 210, 111, 0.2);
+    }
+
+    .channel-edit-btn {
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(1, 70, 81, 0.3);
+      border: 1px solid var(--border-teal);
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      color: var(--text-secondary);
+      flex-shrink: 0;
+    }
+
+    .channel-edit-btn:hover {
+      background: rgba(3, 210, 111, 0.1);
+      border-color: var(--color-green);
+      color: var(--color-green);
+    }
+
     /* AI Prompt Footer with Fetch Button */
     .ai-prompt-footer {
       display: flex;
@@ -614,11 +671,60 @@
     /* Info icon for DISTRO PULSE and other boxes */
     .info-icon {
       transition: opacity 0.2s ease, color 0.2s ease;
+      display: inline-block;
+      position: relative;
+    }
+
+    .info-icon svg {
+      pointer-events: none;
+      display: block;
     }
 
     .info-icon:hover {
       opacity: 1 !important;
       color: var(--color-green);
+    }
+
+    /* Custom tooltip for info icons */
+    .info-tooltip {
+      position: absolute;
+      top: calc(100% + 8px);
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 8px 12px;
+      background: rgba(22, 21, 20, 0.98);
+      border: 1px solid var(--color-green);
+      border-radius: 6px;
+      color: var(--text-primary);
+      font-family: 'Inter', sans-serif;
+      font-size: 11px;
+      line-height: 1.4;
+      white-space: normal;
+      max-width: 200px;
+      text-align: center;
+      pointer-events: none;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.2s ease, visibility 0.2s ease;
+      z-index: 10000;
+      box-shadow: 0 4px 20px rgba(3, 210, 111, 0.3);
+      backdrop-filter: blur(12px);
+    }
+
+    .info-icon:hover .info-tooltip {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    /* Tooltip arrow pointing up */
+    .info-tooltip::after {
+      content: '';
+      position: absolute;
+      bottom: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      border: 5px solid transparent;
+      border-bottom-color: var(--color-green);
     }
 
     .ai-prompt-input {
@@ -1093,7 +1199,6 @@
     /* Articles Grid */
     .articles-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
       gap: 16px;
       margin-top: 24px;
       position: relative;
@@ -2307,6 +2412,27 @@
               <span class="status-dot"></span>
               Idle
             </div>
+            <!-- Telegram Channel ID -->
+            <div class="telegram-channel-input">
+              <label class="inline-label" style="margin-bottom: 6px;">
+                Channel ID
+                <span class="info-icon" style="margin-left: 4px; opacity: 0.6; cursor: help; font-size: 9px;">
+                  <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/>
+                  </svg>
+                  <div class="info-tooltip">Your Telegram channel ID (e.g. @yourchannel)</div>
+                </span>
+              </label>
+              <div style="display: flex; align-items: center; gap: 6px;">
+                <input type="text" class="telegram-channel-field" id="telegram-channel-id" placeholder="@yourchannel" readonly>
+                <button class="channel-edit-btn" id="edit-channel-btn" title="Edit channel ID">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                    <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                  </svg>
+                </button>
+              </div>
+            </div>
             <!-- Manual URL moved to header -->
             <div class="header-url-input">
               <input type="text" class="header-url-field" id="manual-url" placeholder="Paste article URL...">
@@ -2357,7 +2483,7 @@
                       </svg>
                     </span>
                   </label>
-                  <input type="number" class="inline-number-input" id="article-count-input" min="1" max="50" value="10" style="width: 70px;">
+                  <input type="number" class="inline-number-input" id="article-count-input" min="1" max="40" value="10" maxlength="2" oninput="if(this.value.length > 2) this.value = this.value.slice(0,2); if(this.value > 40) this.value = 40; if(this.value < 1) this.value = 1;" style="width: 70px;">
                 </div>
               </div>
               <button class="fetch-pulse-btn" id="fetch-btn">
@@ -2383,6 +2509,27 @@
         <div class="header">
           <h1>Editor</h1>
           <div class="header-actions">
+            <!-- Telegram Channel ID -->
+            <div class="telegram-channel-input">
+              <label class="inline-label" style="margin-bottom: 6px;">
+                Channel ID
+                <span class="info-icon" style="margin-left: 4px; opacity: 0.6; cursor: help; font-size: 9px;">
+                  <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/>
+                  </svg>
+                  <div class="info-tooltip">Your Telegram channel ID (e.g. @yourchannel)</div>
+                </span>
+              </label>
+              <div style="display: flex; align-items: center; gap: 6px;">
+                <input type="text" class="telegram-channel-field" id="telegram-channel-id-editor" placeholder="@yourchannel" readonly>
+                <button class="channel-edit-btn" id="edit-channel-btn-editor" title="Edit channel ID">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                    <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                  </svg>
+                </button>
+              </div>
+            </div>
             <button class="btn btn-secondary" id="select-all-btn" style="display: none;">Select All</button>
             <button class="btn btn-primary" id="send-selected-btn" style="display: none;">Send Selected</button>
           </div>
@@ -2394,10 +2541,11 @@
             <div class="ai-indicator">
               <span class="ai-pulse"></span>
               Summary Customization
-              <span class="info-icon" style="margin-left: 8px; opacity: 0.6; cursor: help;" title="Customize how the AI writes your summaries. This won't affect article selection.">
+              <span class="info-icon" style="margin-left: 8px; opacity: 0.6; cursor: help; font-size: 9px;">
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                   <circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/>
                 </svg>
+                <div class="info-tooltip">Customize how the AI writes your summaries</div>
               </span>
             </div>
             
@@ -2427,7 +2575,7 @@
               <!-- Apply To -->
               <div class="inline-control-group">
                 <label class="inline-label">Apply To</label>
-                <select class="inline-select" id="apply-to-select" style="width: 200px;">
+                <select class="inline-select" id="apply-to-select" style="width: 140px;">
                   <option value="current">This article</option>
                   <option value="checked">Selected (<span id="checked-count-inline">0</span>)</option>
                   <option value="all">All (<span id="all-count-inline">0</span>)</option>
@@ -2516,6 +2664,29 @@
       <div class="screen" id="screen-sent">
         <div class="header">
           <h1>Already Sent</h1>
+          <div class="header-actions">
+            <!-- Telegram Channel ID -->
+            <div class="telegram-channel-input">
+              <label class="inline-label" style="margin-bottom: 6px;">
+                Channel ID
+                <span class="info-icon" style="margin-left: 4px; opacity: 0.6; cursor: help; font-size: 9px;">
+                  <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/>
+                  </svg>
+                  <div class="info-tooltip">Your Telegram channel ID (e.g. @yourchannel)</div>
+                </span>
+              </label>
+              <div style="display: flex; align-items: center; gap: 6px;">
+                <input type="text" class="telegram-channel-field" id="telegram-channel-id-sent" placeholder="@yourchannel" readonly>
+                <button class="channel-edit-btn" id="edit-channel-btn-sent" title="Edit channel ID">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                    <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
         <div class="content">
           <div id="sent-list">
@@ -2541,7 +2712,31 @@
       <p id="modal-message">This will post the summary to your Telegram channel. This action cannot be undone.</p>
       <div class="modal-actions">
         <button class="btn btn-secondary" id="cancel-send">Cancel</button>
-        <button class="btn btn-primary" id="confirm-send">Send to Telegram</button>
+        <button class="btn btn-primary" id="confirm-send">Confirm & Send</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Channel Setup Modal -->
+  <div class="modal-overlay" id="channel-setup-modal">
+    <div class="modal">
+      <h3>Set Up Telegram Channel</h3>
+      <p style="color: var(--text-secondary); margin-bottom: 16px;">Please enter your Telegram channel ID before sending.</p>
+      <div class="inline-control-group" style="margin-bottom: 20px;">
+        <label class="inline-label">
+          Channel ID
+          <span class="info-icon" style="margin-left: 4px; opacity: 0.6; cursor: help; font-size: 9px;">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/>
+            </svg>
+            <div class="info-tooltip">Your Telegram channel ID (e.g. @yourchannel)</div>
+          </span>
+        </label>
+        <input type="text" class="telegram-channel-field" id="channel-setup-input" placeholder="@yourchannel or -1001234567890" style="width: 100%;">
+      </div>
+      <div class="modal-actions">
+        <button class="btn btn-secondary" id="cancel-channel-setup">Cancel</button>
+        <button class="btn btn-primary" id="save-channel-setup">Save & Continue</button>
       </div>
     </div>
   </div>
@@ -2604,6 +2799,12 @@
     document.getElementById('article-count-input').value = settings.articleCount || 10;
     document.getElementById('custom-tone-input').value = settings.customTone || '';
 
+    // Populate Telegram Channel ID from settings
+    const telegramChannelId = settings.telegramChannelId || '';
+    document.getElementById('telegram-channel-id').value = telegramChannelId;
+    document.getElementById('telegram-channel-id-editor').value = telegramChannelId;
+    document.getElementById('telegram-channel-id-sent').value = telegramChannelId;
+
     // Highlight active tag if matches saved topic
     if (settings.topic) {
       document.querySelectorAll('.topic-tag').forEach(tag => {
@@ -2617,12 +2818,14 @@
     function saveSettings() {
       settings.articleCount = parseInt(document.getElementById('article-count-input').value) || 10;
       settings.customTone = document.getElementById('custom-tone-input').value.trim();
+      settings.telegramChannelId = document.getElementById('telegram-channel-id').value.trim();
       localStorage.setItem('newsAppSettings', JSON.stringify(settings));
     }
 
     document.getElementById('article-count-input').addEventListener('input', saveSettings);
     document.getElementById('custom-tone-input').addEventListener('input', saveSettings);
 
+    // Sync Telegram Channel ID across all three fields
     // Topic tag clicks - update settings.topic when clicked
     document.querySelectorAll('.topic-tag').forEach(tag => {
       tag.addEventListener('click', () => {
@@ -2639,8 +2842,179 @@
       });
     });
 
-    let articles = [];
+    // Mock data - expanded pool of articles
+    const articlePool = [
+      {
+        source: 'TechCrunch',
+        date: 'Jan 28, 2026',
+        title: 'OpenAI announces GPT-5 with breakthrough reasoning capabilities',
+        description: 'The latest model shows significant improvements in complex problem-solving and multi-step reasoning tasks.',
+        url: 'https://techcrunch.com/2026/01/28/openai-gpt5-breakthrough'
+      },
+      {
+        source: 'The Verge',
+        date: 'Jan 28, 2026',
+        title: 'Apple Vision Pro 2 to launch in March with improved comfort',
+        description: 'Sources say the next iteration will be 30% lighter with better battery life and enhanced passthrough.',
+        url: 'https://theverge.com/2026/01/28/apple-vision-pro-2-launch'
+      },
+      {
+        source: 'Wired',
+        date: 'Jan 27, 2026',
+        title: 'Quantum computing breakthrough enables room-temperature qubits',
+        description: 'Researchers at MIT have developed a new material that maintains quantum coherence at 20°C.',
+        url: 'https://wired.com/story/quantum-computing-room-temperature'
+      },
+      {
+        source: 'Bloomberg',
+        date: 'Jan 27, 2026',
+        title: 'Tesla unveils fully autonomous robotaxi fleet for select cities',
+        description: 'The service will launch in Phoenix and Austin, with plans to expand to 10 more cities by year-end.',
+        url: 'https://bloomberg.com/news/tesla-robotaxi-fleet-launch'
+      },
+      {
+        source: 'Ars Technica',
+        date: 'Jan 26, 2026',
+        title: 'SpaceX Starship completes first Mars sample return mission',
+        description: 'The uncrewed mission successfully brought back 50kg of Martian soil and rock samples.',
+        url: 'https://arstechnica.com/space/spacex-mars-sample-return'
+      },
+      {
+        source: 'MIT Technology Review',
+        date: 'Jan 28, 2026',
+        title: 'New battery technology promises 1000-mile electric vehicle range',
+        description: 'Solid-state batteries using lithium-metal anodes achieve unprecedented energy density.',
+        url: 'https://technologyreview.com/battery-breakthrough-1000-mile'
+      },
+      {
+        source: 'Nature',
+        date: 'Jan 27, 2026',
+        title: 'CRISPR gene therapy shows promise in treating sickle cell disease',
+        description: 'Clinical trials demonstrate 95% success rate in eliminating symptoms after single treatment.',
+        url: 'https://nature.com/articles/crispr-sickle-cell-therapy'
+      },
+      {
+        source: 'Reuters',
+        date: 'Jan 27, 2026',
+        title: 'Global semiconductor production reaches record high in Q4 2025',
+        description: 'New fab openings in US and Europe help ease supply chain constraints.',
+        url: 'https://reuters.com/technology/semiconductor-production-record'
+      },
+      {
+        source: 'The Guardian',
+        date: 'Jan 26, 2026',
+        title: 'Fusion reactor achieves net positive energy for sustained period',
+        description: 'ITER facility maintains fusion reaction producing 150% energy output for 5 minutes.',
+        url: 'https://theguardian.com/science/fusion-energy-breakthrough'
+      },
+      {
+        source: 'VentureBeat',
+        date: 'Jan 26, 2026',
+        title: 'AI coding assistants now write 40% of professional code',
+        description: 'Study shows dramatic increase in developer productivity with GitHub Copilot and competitors.',
+        url: 'https://venturebeat.com/ai-coding-assistants-adoption'
+      },
+      {
+        source: 'TechCrunch',
+        date: 'Jan 25, 2026',
+        title: 'Meta releases open-source Llama 4 with 500B parameters',
+        description: 'New model matches GPT-4 performance while remaining fully open for research and commercial use.',
+        url: 'https://techcrunch.com/meta-llama-4-release'
+      },
+      {
+        source: 'CNBC',
+        date: 'Jan 25, 2026',
+        title: 'Apple announces $10B investment in Indian manufacturing',
+        description: 'Company plans to produce 25% of iPhones in India by 2027 as part of supply chain diversification.',
+        url: 'https://cnbc.com/apple-india-manufacturing-investment'
+      },
+      {
+        source: 'The Verge',
+        date: 'Jan 25, 2026',
+        title: 'Steam Deck 2 launches with OLED display and 8-hour battery life',
+        description: 'Valve\'s updated handheld gaming PC features AMD\'s latest APU and improved cooling system.',
+        url: 'https://theverge.com/steam-deck-2-review'
+      },
+      {
+        source: 'Science',
+        date: 'Jan 24, 2026',
+        title: 'Telescope discovers potentially habitable exoplanet 40 light-years away',
+        description: 'Planet orbiting red dwarf star shows signs of liquid water and stable atmosphere.',
+        url: 'https://science.org/exoplanet-habitable-discovery'
+      },
+      {
+        source: 'Financial Times',
+        date: 'Jan 24, 2026',
+        title: 'Quantum internet test network spans 500 miles between major cities',
+        description: 'Unhackable communication network demonstrates practical feasibility of quantum key distribution.',
+        url: 'https://ft.com/quantum-internet-network-test'
+      },
+      {
+        source: 'Wired',
+        date: 'Jan 24, 2026',
+        title: 'Brain-computer interface allows paralyzed patient to control robotic arm',
+        description: 'Neural implant enables precise movement control with thought alone, marking major BCI milestone.',
+        url: 'https://wired.com/brain-computer-interface-breakthrough'
+      },
+      {
+        source: 'BBC',
+        date: 'Jan 23, 2026',
+        title: 'Vertical farms produce 40% of Netherlands vegetable supply',
+        description: 'Indoor agriculture revolution reduces water usage by 95% compared to traditional farming.',
+        url: 'https://bbc.com/news/vertical-farming-netherlands'
+      },
+      {
+        source: 'Ars Technica',
+        date: 'Jan 23, 2026',
+        title: 'Linux kernel 7.0 brings major performance improvements',
+        description: 'New scheduler and memory management changes boost desktop and server workload efficiency.',
+        url: 'https://arstechnica.com/linux-kernel-7-release'
+      },
+      {
+        source: 'IEEE Spectrum',
+        date: 'Jan 23, 2026',
+        title: 'Graphene superconductor operates at room temperature',
+        description: 'Twisted bilayer graphene exhibits zero resistance at 20°C, revolutionizing electronics potential.',
+        url: 'https://spectrum.ieee.org/graphene-superconductor'
+      },
+      {
+        source: 'TechCrunch',
+        date: 'Jan 22, 2026',
+        title: 'Startup develops biodegradable plastic that dissolves in 6 months',
+        description: 'New polymer breaks down in ocean water, potentially solving marine pollution crisis.',
+        url: 'https://techcrunch.com/biodegradable-plastic-startup'
+      }
+    ];
+
+    let mockArticles = [];
     let nextArticleId = 1;
+
+    function generateMockArticles(count) {
+      const newArticles = [];
+      const availableArticles = articlePool.filter(article => 
+        !mockArticles.some(existing => existing.title === article.title)
+      );
+      
+      // If we've used all unique articles, start recycling with modified titles
+      const articlesToUse = availableArticles.length >= count 
+        ? availableArticles.slice(0, count)
+        : [
+            ...availableArticles,
+            ...articlePool.slice(0, count - availableArticles.length).map(a => ({
+              ...a,
+              title: `[Update] ${a.title}`
+            }))
+          ];
+      
+      articlesToUse.forEach(article => {
+        newArticles.push({
+          ...article,
+          id: nextArticleId++
+        });
+      });
+      
+      return newArticles;
+    }
 
     let selectedArticles = new Set();
 
@@ -2652,7 +3026,7 @@
     const selectedCount = document.getElementById('selected-count');
 
     function renderArticles() {
-      articlesGrid.innerHTML = articles.map(article => `
+      articlesGrid.innerHTML = mockArticles.map(article => `
         <div class="article-card ${selectedArticles.has(article.id) ? 'selected' : ''}" data-id="${article.id}">
           <div class="article-select"></div>
           ${article.isManual ? '<div class="manual-badge">Manual</div>' : ''}
@@ -2670,7 +3044,7 @@
 
       // Show select all button if there are articles
       const selectAllBtn = document.getElementById('fetch-select-all-btn');
-      if (articles.length > 0) {
+      if (mockArticles.length > 0) {
         selectAllBtn.style.display = 'block';
         updateFetchSelectAllBtn();
       }
@@ -2715,7 +3089,7 @@
 
     function updateFetchSelectAllBtn() {
       const selectAllBtn = document.getElementById('fetch-select-all-btn');
-      const allSelected = articles.length > 0 && selectedArticles.size === articles.length;
+      const allSelected = mockArticles.length > 0 && selectedArticles.size === mockArticles.length;
       
       if (allSelected) {
         selectAllBtn.textContent = 'Deselect All';
@@ -2737,44 +3111,32 @@
       }
     }
 
-    fetchBtn.addEventListener('click', async () => {
-      const FETCH_SVG = '<span class="fetch-pulse-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></span>';
-      fetchBtn.innerHTML = `${FETCH_SVG}Fetching...`;
+    fetchBtn.addEventListener('click', () => {
+      fetchBtn.innerHTML = '<span class="fetch-pulse-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></span>Fetching...';
       fetchBtn.disabled = true;
       if (fetchStatus) { fetchStatus.innerHTML = '<span class="status-dot"></span>Fetching'; fetchStatus.classList.add('fetching'); }
 
-      try {
+      setTimeout(() => {
+        // Generate fresh articles based on settings count
         const count = parseInt(document.getElementById('article-count-input').value) || 10;
-        const topic = (document.getElementById('custom-tone-input').value.trim() || settings.topic || 'latest technology and AI news');
-
-        const response = await fetch('/api/fetch-news', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ topic, count })
-        });
-
-        const data = await response.json();
-
-        if (!data.success) throw new Error(data.error || 'Fetch failed');
-
-        // Keep selected articles, replace the rest
-        const selectedArticlesList = articles.filter(a => selectedArticles.has(a.id));
-        articles = [...selectedArticlesList, ...data.articles];
+        const newArticles = generateMockArticles(count);
+        
+        // Keep only the selected articles, discard all unselected
+        const selectedArticlesList = mockArticles.filter(a => selectedArticles.has(a.id));
+        
+        // Selected articles stay at top, fresh articles replace everything else
+        mockArticles = [...selectedArticlesList, ...newArticles];
+        
         renderArticles();
-
-      } catch (error) {
-        console.error('Fetch error:', error);
-        articlesGrid.innerHTML = `<div style="color:#ef4444;padding:24px;font-family:Inter,sans-serif;">Error fetching news: ${error.message}</div>`;
-      } finally {
-        fetchBtn.innerHTML = `${FETCH_SVG}Fetch News`;
+        fetchBtn.innerHTML = '<span class="fetch-pulse-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></span>Fetch News';
         fetchBtn.disabled = false;
         if (fetchStatus) { fetchStatus.innerHTML = '<span class="status-dot"></span>Idle'; fetchStatus.classList.remove('fetching'); }
-      }
+      }, 2000);
     });
 
     // Fetch Select All functionality
     document.getElementById('fetch-select-all-btn').addEventListener('click', function() {
-      const allSelected = articles.length > 0 && selectedArticles.size === articles.length;
+      const allSelected = mockArticles.length > 0 && selectedArticles.size === mockArticles.length;
       
       if (allSelected) {
         // Deselect all
@@ -2784,7 +3146,7 @@
         });
       } else {
         // Select all
-        articles.forEach(article => selectedArticles.add(article.id));
+        mockArticles.forEach(article => selectedArticles.add(article.id));
         document.querySelectorAll('.article-card').forEach(card => {
           card.classList.add('selected');
         });
@@ -2813,7 +3175,7 @@
         
         // Add to persistent manual articles array
         manualArticles.unshift(newArticle);
-        articles.unshift(newArticle);
+        mockArticles.unshift(newArticle);
         
         // Re-render articles (this will preserve selections)
         renderArticles();
@@ -2874,47 +3236,31 @@
       }
     }
 
-    document.getElementById('generate-btn').addEventListener('click', async () => {
+    document.getElementById('generate-btn').addEventListener('click', () => {
       if (selectedArticles.size === 0) return;
-
-      const generateBtn = document.getElementById('generate-btn');
-      generateBtn.textContent = 'Generating...';
-      generateBtn.disabled = true;
-
+      
       const statusSelect = document.getElementById('draft-status-select');
-      if (statusSelect) statusSelect.value = 'draft';
+      if (statusSelect) {
+        statusSelect.value = 'draft';
+      }
 
-      try {
-        const selectedData = articles.filter(a => selectedArticles.has(a.id));
-        const tone = document.getElementById('regen-tone').value.trim() || 'professional';
-        const summaryLength = document.getElementById('regen-length').value || 'medium';
-
-        const response = await fetch('/api/generate-summaries', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ articles: selectedData, tone, summaryLength })
-        });
-
-        const data = await response.json();
-        if (!data.success) throw new Error(data.error || 'Generation failed');
-
-        // Merge summaries into article data
-        data.summaries.forEach(s => {
-          const article = selectedData.find(a => a.id === s.id);
-          if (article) article.summary = s.summary;
-        });
-
-        draftData = selectedData;
-        selectedDrafts.clear();
-
-        selectedData.forEach(article => {
-          if (!draftStatuses[article.id]) draftStatuses[article.id] = 'draft';
-        });
-
+      setTimeout(() => {
         // Switch to drafts screen
         document.querySelector('[data-screen="drafts"]').click();
-
+        
+        // Populate drafts
         const draftList = document.getElementById('draft-list');
+        const selectedData = mockArticles.filter(a => selectedArticles.has(a.id));
+        draftData = selectedData;
+        selectedDrafts.clear(); // Clear selections
+        
+        // Initialize statuses
+        selectedData.forEach(article => {
+          if (!draftStatuses[article.id]) {
+            draftStatuses[article.id] = 'draft';
+          }
+        });
+        
         draftList.innerHTML = selectedData.map((article, index) => `
           <div class="article-list-item ${index === 0 ? 'active' : ''}" data-draft-id="${article.id}">
             <div class="draft-checkbox"></div>
@@ -2924,25 +3270,40 @@
           </div>
         `).join('');
 
+        // Load first draft
         if (selectedData.length > 0) {
           currentEditingId = selectedData[0].id;
           loadDraft(selectedData[0]);
-          setTimeout(() => { if (typeof syncSummaryBox === 'function') syncSummaryBox(); }, 100);
+          // Initialize summary box with first article
+          setTimeout(() => {
+            if (typeof syncSummaryBox === 'function') syncSummaryBox();
+          }, 100);
         }
 
+        // Show select all and info
         document.getElementById('select-all-btn').style.display = 'block';
         updateDraftSelectionUI();
 
+        // Setup draft list clicks
         document.querySelectorAll('.article-list-item').forEach(item => {
           const checkbox = item.querySelector('.draft-checkbox');
+          
+          // Checkbox click - toggle selection
           checkbox.addEventListener('click', (e) => {
             e.stopPropagation();
             const id = parseInt(item.dataset.draftId);
-            if (selectedDrafts.has(id)) { selectedDrafts.delete(id); item.classList.remove('selected-for-send'); }
-            else { selectedDrafts.add(id); item.classList.add('selected-for-send'); }
+            if (selectedDrafts.has(id)) {
+              selectedDrafts.delete(id);
+              item.classList.remove('selected-for-send');
+            } else {
+              selectedDrafts.add(id);
+              item.classList.add('selected-for-send');
+            }
             updateDraftSelectionUI();
             if (typeof syncSummaryBox === 'function') syncSummaryBox();
           });
+
+          // Item click - view/edit
           item.addEventListener('click', () => {
             document.querySelectorAll('.article-list-item').forEach(i => i.classList.remove('active'));
             item.classList.add('active');
@@ -2950,17 +3311,11 @@
             currentEditingId = id;
             const article = selectedData.find(a => a.id === id);
             loadDraft(article);
+            // Update summary box to reflect selected article
             if (typeof syncSummaryBox === 'function') syncSummaryBox();
           });
         });
-
-      } catch (error) {
-        console.error('Generate error:', error);
-        alert(`Error generating summaries: ${error.message}`);
-      } finally {
-        generateBtn.textContent = 'Generate Article Summaries';
-        generateBtn.disabled = false;
-      }
+      }, 1500);
     });
 
     // Select All functionality
@@ -3032,8 +3387,8 @@
       statusSelect.disabled = false;
       
       titleInput.value = article.title;
-      urlInput.value = article.url || '';
-      contentInput.value = article.summary || `• ${article.description}`;
+      urlInput.value = article.url || `https://example.com/article/${article.id}`;
+      contentInput.value = `• ${article.description}\n\n• Key insight about the development and its implications for the industry.\n\n• Analysis of how this will affect the market and competitors.`;
       
       // Set status
       statusSelect.value = draftStatuses[article.id] || 'draft';
@@ -3078,14 +3433,30 @@
     let sendMode = 'single'; // 'single' or 'batch'
 
     sendNowBtn.addEventListener('click', () => {
+      // Check if channel ID is set
+      if (!settings.telegramChannelId || settings.telegramChannelId.trim() === '') {
+        // Show channel setup modal
+        document.getElementById('channel-setup-modal').classList.add('visible');
+        return;
+      }
+      
       sendMode = 'single';
-      modalMessage.textContent = 'This will post the summary to your Telegram channel. This action cannot be undone.';
+      const channelId = settings.telegramChannelId;
+      modalMessage.textContent = `This will post the summary to Telegram Channel: ${channelId}. This action cannot be undone.`;
       confirmModal.classList.add('visible');
     });
 
     sendSelectedBtn.addEventListener('click', () => {
+      // Check if channel ID is set
+      if (!settings.telegramChannelId || settings.telegramChannelId.trim() === '') {
+        // Show channel setup modal
+        document.getElementById('channel-setup-modal').classList.add('visible');
+        return;
+      }
+      
       sendMode = 'batch';
-      modalMessage.textContent = `This will post ${selectedDrafts.size} summaries to your Telegram channel. This action cannot be undone.`;
+      const channelId = settings.telegramChannelId;
+      modalMessage.textContent = `This will post ${selectedDrafts.size} summaries to Telegram Channel: ${channelId}. This action cannot be undone.`;
       confirmModal.classList.add('visible');
     });
 
@@ -3099,82 +3470,143 @@
       }
     });
 
-    confirmSendBtn.addEventListener('click', async () => {
+    confirmSendBtn.addEventListener('click', () => {
       statusSelect.value = 'in-progress';
       const draftStatus = document.getElementById('draft-status');
       draftStatus.classList.add('sending');
       confirmModal.classList.remove('visible');
-      confirmSendBtn.disabled = true;
-      confirmSendBtn.textContent = 'Sending...';
 
-      try {
-        let articlesToSend = [];
+      setTimeout(() => {
+        const sentList = document.getElementById('sent-list');
+        const now = new Date().toLocaleString('en-US', { 
+          month: 'short', 
+          day: 'numeric', 
+          hour: 'numeric', 
+          minute: '2-digit' 
+        });
 
         if (sendMode === 'single') {
-          const title   = document.getElementById('draft-title').value;
+          // Send current draft
+          const title = document.getElementById('draft-title').value;
           const content = document.getElementById('draft-content').value;
-          const url     = document.getElementById('draft-url').value;
-          const draft   = draftData.find(d => d.id === currentEditingId);
-          articlesToSend = [{ title, summary: content, url, source: draft?.source || '' }];
-        } else {
-          articlesToSend = draftData
-            .filter(a => selectedDrafts.has(a.id))
-            .map(a => ({ title: a.title, summary: a.summary || `• ${a.description}`, url: a.url, source: a.source }));
-        }
 
-        const response = await fetch('/api/send-telegram', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ articles: articlesToSend })
-        });
-
-        const data = await response.json();
-
-        if (!data.success && !data.results) {
-          throw new Error(data.error || 'Failed to send to Telegram');
-        }
-
-        // Add to sent list
-        const sentList = document.getElementById('sent-list');
-        const now = new Date().toLocaleString('en-US', { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' });
-
-        articlesToSend.forEach(article => {
-          const preview = (article.summary || '').substring(0, 150);
-          const safeTitle = article.title.replace(/`/g, "'");
-          const safeContent = article.summary ? article.summary.replace(/`/g, "'") : '';
-          sentList.insertAdjacentHTML('afterbegin', `
+          const sentItem = `
             <div class="sent-item">
               <div class="sent-header">
-                <div class="sent-title">${article.title}</div>
+                <div class="sent-title">${title}</div>
                 <div class="sent-time">${now}</div>
               </div>
-              <div class="sent-preview">${preview}${preview.length >= 150 ? '...' : ''}</div>
-              <button class="copy-btn" onclick="copyText(\`${safeTitle}\n\n${safeContent}\`)">Copy Text</button>
+              <div class="sent-preview">${content.substring(0, 150)}...</div>
+              <button class="copy-btn" onclick="copyText(\`${title}\\n\\n${content}\`)">Copy Text</button>
             </div>
-          `);
-        });
+          `;
 
-        if (sendMode === 'batch') {
+          sentList.insertAdjacentHTML('afterbegin', sentItem);
+          
+          // Remove sent item from drafts if it was selected
+          if (currentEditingId) {
+            selectedDrafts.delete(currentEditingId);
+          }
+        } else {
+          // Send all selected drafts
+          const itemsToSend = draftData.filter(article => selectedDrafts.has(article.id));
+          
+          itemsToSend.forEach(article => {
+            const content = `• ${article.description}\n\n• Key insight about the development and its implications for the industry.\n\n• Analysis of how this will affect the market and competitors.`;
+            
+            const sentItem = `
+              <div class="sent-item">
+                <div class="sent-header">
+                  <div class="sent-title">${article.title}</div>
+                  <div class="sent-time">${now}</div>
+                </div>
+                <div class="sent-preview">${content.substring(0, 150)}...</div>
+                <button class="copy-btn" onclick="copyText(\`${article.title}\\n\\n${content}\`)">Copy Text</button>
+              </div>
+            `;
+
+            sentList.insertAdjacentHTML('afterbegin', sentItem);
+          });
+
+          // Clear selected drafts
           selectedDrafts.clear();
-          document.querySelectorAll('.article-list-item').forEach(item => item.classList.remove('selected-for-send'));
+          document.querySelectorAll('.article-list-item').forEach(item => {
+            item.classList.remove('selected-for-send');
+          });
           updateDraftSelectionUI();
         }
 
+        // Clear article selection from fetch page and update UI
         selectedArticles.clear();
-        document.querySelectorAll('.article-card').forEach(card => card.classList.remove('selected'));
+        document.querySelectorAll('.article-card').forEach(card => {
+          card.classList.remove('selected');
+        });
         updateSelectionBar();
-
+        
+        // Go to sent page to show results
         document.querySelector('[data-screen="sent"]').click();
-        statusSelect.value = 'ready';
 
-      } catch (error) {
-        alert(`Send failed: ${error.message}`);
-        statusSelect.value = 'draft';
-      } finally {
+        statusSelect.value = 'ready';
         draftStatus.classList.remove('sending');
-        confirmSendBtn.disabled = false;
-        confirmSendBtn.textContent = 'Send to Telegram';
+      }, 1500);
+    });
+
+    // Channel Setup Modal
+    const channelSetupModal = document.getElementById('channel-setup-modal');
+    const channelSetupInput = document.getElementById('channel-setup-input');
+    const cancelChannelSetupBtn = document.getElementById('cancel-channel-setup');
+    const saveChannelSetupBtn = document.getElementById('save-channel-setup');
+
+    cancelChannelSetupBtn.addEventListener('click', () => {
+      channelSetupModal.classList.remove('visible');
+      channelSetupInput.value = '';
+    });
+
+    channelSetupModal.addEventListener('click', (e) => {
+      if (e.target === channelSetupModal) {
+        channelSetupModal.classList.remove('visible');
+        channelSetupInput.value = '';
       }
+    });
+
+    saveChannelSetupBtn.addEventListener('click', () => {
+      const channelId = channelSetupInput.value.trim();
+      if (channelId) {
+        settings.telegramChannelId = channelId;
+        saveSettings();
+        
+        // Update all three channel inputs
+        document.getElementById('telegram-channel-id').value = channelId;
+        document.getElementById('telegram-channel-id-editor').value = channelId;
+        document.getElementById('telegram-channel-id-sent').value = channelId;
+        
+        // Close setup modal
+        channelSetupModal.classList.remove('visible');
+        channelSetupInput.value = '';
+        
+        // Now trigger the original send action
+        if (sendMode === 'single') {
+          sendNowBtn.click();
+        } else {
+          sendSelectedBtn.click();
+        }
+      }
+    });
+
+    // Edit Channel ID Buttons
+    const editButtons = [
+      { btn: document.getElementById('edit-channel-btn'), input: document.getElementById('telegram-channel-id') },
+      { btn: document.getElementById('edit-channel-btn-editor'), input: document.getElementById('telegram-channel-id-editor') },
+      { btn: document.getElementById('edit-channel-btn-sent'), input: document.getElementById('telegram-channel-id-sent') }
+    ];
+
+    editButtons.forEach(({ btn, input }) => {
+      btn.addEventListener('click', () => {
+        // Show channel setup modal with current value
+        channelSetupInput.value = settings.telegramChannelId || '';
+        channelSetupModal.classList.add('visible');
+        channelSetupInput.focus();
+      });
     });
 
     // Status change handler
@@ -3251,6 +3683,21 @@
       };
     }
 
+    // Generate a mock summary (replace with real API call)
+    function makeSummary(title, length, tone) {
+      const counts = { short: 2, medium: 3, long: 5 };
+      const n = counts[length] || 3;
+      const bank = [
+        `${title} represents a pivotal shift in the current landscape.`,
+        `Early data shows strong momentum, with analysts revising forecasts upward.`,
+        `Key players are repositioning ahead of the next major development.`,
+        `Market sentiment remains cautious but optimistic on long-term prospects.`,
+        `Downstream implications could reshape the competitive dynamics through Q3.`
+      ];
+      const lines = bank.slice(0, n).map(l => `• ${l}`).join('\n');
+      return tone ? `${lines}\n\n[Style: ${tone.slice(0, 50)}]` : lines;
+    }
+
     function flashGreen(el) {
       el.style.transition = 'border-color 0.2s, box-shadow 0.2s';
       el.style.borderColor = 'var(--color-green)';
@@ -3262,109 +3709,86 @@
       }, 900);
     }
 
-    async function regenerateSingleArticle(id, length, tone) {
+    function regenerateSingleArticle(id, length, tone) {
       const listItem = document.querySelector(`[data-draft-id="${id}"]`);
       if (listItem) listItem.classList.add('regenerating');
       regenerateBtn.classList.add('spinning');
       regenerateBtn.disabled = true;
+      
+      // Update button text
       regenerateBtnText.textContent = 'Regenerating...';
 
-      try {
+      setTimeout(() => {
+        const title = document.getElementById('draft-title').value;
+        const newContent = makeSummary(title, length, tone);
         const draft = draftData.find(d => d.id === id);
-        if (!draft) return;
-
-        const response = await fetch('/api/generate-summaries', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            articles: [draft],
-            tone: tone || 'professional',
-            summaryLength: length || 'medium',
-            customInstructions: tone
-          })
-        });
-
-        const data = await response.json();
-        if (!data.success) throw new Error(data.error);
-
-        const newSummary = data.summaries[0]?.summary || '';
-        draft.summary = newSummary;
-
+        if (draft) draft.content = newContent;
+        
         const contentEl = document.getElementById('draft-content');
-        contentEl.value = newSummary;
+        contentEl.value = newContent;
         flashGreen(contentEl);
 
-      } catch (err) {
-        console.error('Regen error:', err);
-      } finally {
+        // Show completion state
         if (listItem) {
           listItem.classList.remove('regenerating');
           listItem.classList.add('regen-complete');
           setTimeout(() => listItem.classList.remove('regen-complete'), 600);
         }
+        
         regenerateBtn.classList.remove('spinning');
         regenerateBtn.disabled = false;
-        updateRegenerateButton();
-      }
+        updateRegenerateButton(); // Reset button text
+      }, 1000);
     }
 
-    async function regenerateMultipleArticles(ids, length, tone) {
+    function regenerateMultipleArticles(ids, length, tone) {
       regenerateBtn.classList.add('spinning');
       regenerateBtn.disabled = true;
+      
+      // Update button text with count
       regenerateBtnText.textContent = `Regenerating ${ids.length}...`;
-
-      ids.forEach(id => {
-        const el = document.querySelector(`[data-draft-id="${id}"]`);
-        if (el) el.classList.add('regenerating');
+      
+      document.querySelectorAll('.article-list-item').forEach(el => {
+        const id = parseInt(el.dataset.draftId);
+        if (ids.includes(id)) {
+          el.classList.add('regenerating');
+        }
       });
 
-      try {
-        const draftsToRegen = draftData.filter(d => ids.includes(d.id));
-
-        const response = await fetch('/api/generate-summaries', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            articles: draftsToRegen,
-            tone: tone || 'professional',
-            summaryLength: length || 'medium',
-            customInstructions: tone
-          })
-        });
-
-        const data = await response.json();
-        if (!data.success) throw new Error(data.error);
-
-        data.summaries.forEach(s => {
-          const draft = draftData.find(d => d.id === s.id);
+      let completed = 0;
+      ids.forEach((id, i) => {
+        setTimeout(() => {
+          const draft = draftData.find(d => d.id === id);
           if (draft) {
-            draft.summary = s.summary;
-            if (s.id === currentEditingId) {
+            draft.content = makeSummary(draft.title, length, tone);
+            
+            if (id === currentEditingId) {
               const contentEl = document.getElementById('draft-content');
-              contentEl.value = s.summary;
+              contentEl.value = draft.content;
               flashGreen(contentEl);
             }
           }
-          const listItem = document.querySelector(`[data-draft-id="${s.id}"]`);
+
+          const listItem = document.querySelector(`[data-draft-id="${id}"]`);
           if (listItem) {
             listItem.classList.remove('regenerating');
             listItem.classList.add('regen-complete');
             setTimeout(() => listItem.classList.remove('regen-complete'), 600);
           }
-        });
 
-      } catch (err) {
-        console.error('Regen error:', err);
-        ids.forEach(id => {
-          const el = document.querySelector(`[data-draft-id="${id}"]`);
-          if (el) el.classList.remove('regenerating');
-        });
-      } finally {
-        regenerateBtn.classList.remove('spinning');
-        regenerateBtn.disabled = false;
-        updateRegenerateButton();
-        syncSummaryBox();
-      }
+          completed++;
+          
+          // Update progress in button text
+          regenerateBtnText.textContent = `Regenerating ${completed}/${ids.length}`;
+          
+          if (completed === ids.length) {
+            regenerateBtn.classList.remove('spinning');
+            regenerateBtn.disabled = false;
+            updateRegenerateButton(); // Reset button text
+            syncSummaryBox();
+          }
+        }, i * 500);
+      });
     }
 
     function performRegeneration() {
@@ -3392,49 +3816,26 @@
     // Initialize
     syncSummaryBox();
 
-    // Sent list starts empty — items added as articles are sent
+    // Initialize with some sent items
     const sentList = document.getElementById('sent-list');
-
-    // Info icon tooltips — show styled tooltip on hover for .info-icon elements with title=""
-    const infoTip = document.createElement('div');
-    infoTip.style.cssText = `
-      position:fixed;padding:10px 14px;background:rgba(22,21,20,0.98);border:1px solid var(--color-green);
-      border-radius:8px;color:var(--text-primary);font-family:'Inter',sans-serif;font-size:12px;
-      line-height:1.5;white-space:nowrap;pointer-events:none;opacity:0;visibility:hidden;
-      transition:opacity 0.15s ease,visibility 0.15s ease;z-index:10000;
-      box-shadow:0 4px 24px rgba(3,210,111,0.4);backdrop-filter:blur(12px);max-width:280px;white-space:normal;
+    sentList.innerHTML = `
+      <div class="sent-item">
+        <div class="sent-header">
+          <div class="sent-title">Meta unveils new AR glasses with neural interface technology</div>
+          <div class="sent-time">Jan 27, 3:42 PM</div>
+        </div>
+        <div class="sent-preview">• Revolutionary brain-computer interface allows hands-free control of digital content through thought patterns...</div>
+        <button class="copy-btn">Copy Text</button>
+      </div>
+      <div class="sent-item">
+        <div class="sent-header">
+          <div class="sent-title">Anthropic releases Claude 4.0 with extended context window</div>
+          <div class="sent-time">Jan 26, 11:15 AM</div>
+        </div>
+        <div class="sent-preview">• New model supports up to 2 million tokens, enabling analysis of entire codebases and long documents...</div>
+        <button class="copy-btn">Copy Text</button>
+      </div>
     `;
-    document.body.appendChild(infoTip);
-
-    document.querySelectorAll('.info-icon[title]').forEach(el => {
-      const text = el.getAttribute('title');
-      if (!text) return;
-      el.removeAttribute('title'); // prevent native browser tooltip
-
-      el.addEventListener('mouseenter', (e) => {
-        infoTip.textContent = text;
-        infoTip.style.opacity = '1';
-        infoTip.style.visibility = 'visible';
-        positionTip(e);
-      });
-      el.addEventListener('mousemove', positionTip);
-      el.addEventListener('mouseleave', () => {
-        infoTip.style.opacity = '0';
-        infoTip.style.visibility = 'hidden';
-      });
-    });
-
-    function positionTip(e) {
-      const pad = 12;
-      const tw = infoTip.offsetWidth || 200;
-      const th = infoTip.offsetHeight || 40;
-      let x = e.clientX + pad;
-      let y = e.clientY - th - pad;
-      if (x + tw > window.innerWidth - pad) x = e.clientX - tw - pad;
-      if (y < pad) y = e.clientY + pad;
-      infoTip.style.left = x + 'px';
-      infoTip.style.top  = y + 'px';
-    }
   </script>
 </body>
 </html>
