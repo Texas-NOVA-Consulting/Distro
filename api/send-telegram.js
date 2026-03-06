@@ -6,14 +6,13 @@ export default async function handler(req, res) {
   if (req.method === 'OPTIONS') return res.status(200).end();
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
-  const token = process.env.TELEGRAM_BOT_TOKEN;
-
-  if (!token) {
-    return res.status(500).json({ success: false, error: 'TELEGRAM_BOT_TOKEN not configured in Vercel environment variables.' });
-  }
-
   try {
-    const { articles, chatId: bodyChatId } = req.body;
+    const { articles, chatId: bodyChatId, botToken: bodyBotToken } = req.body;
+    const token = bodyBotToken || process.env.TELEGRAM_BOT_TOKEN;
+
+    if (!token) {
+      return res.status(400).json({ success: false, error: 'No bot token provided. Enter your bot token in the app or set TELEGRAM_BOT_TOKEN in Vercel environment variables.' });
+    }
     const chatId = bodyChatId || process.env.TELEGRAM_CHAT_ID;
 
     if (!chatId) {

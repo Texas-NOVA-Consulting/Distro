@@ -2721,19 +2721,31 @@
   <!-- Channel Setup Modal -->
   <div class="modal-overlay" id="channel-setup-modal">
     <div class="modal">
-      <h3>Set Up Telegram Channel</h3>
-      <p style="color: var(--text-secondary); margin-bottom: 16px;">Please enter your Telegram channel ID before sending.</p>
-      <div class="inline-control-group" style="margin-bottom: 20px;">
+      <h3>Set Up Telegram</h3>
+      <p style="color: var(--text-secondary); margin-bottom: 16px;">Enter your Telegram channel ID and bot token to send messages.</p>
+      <div class="inline-control-group" style="margin-bottom: 16px;">
         <label class="inline-label">
           Channel ID
           <span class="info-icon" style="margin-left: 4px; opacity: 0.6; cursor: help; font-size: 9px;">
             <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/>
             </svg>
-            <div class="info-tooltip">Your Telegram channel ID (e.g. @yourchannel)</div>
+            <div class="info-tooltip">Your Telegram channel ID (e.g. @yourchannel or -1001234567890)</div>
           </span>
         </label>
         <input type="text" class="telegram-channel-field" id="channel-setup-input" placeholder="@yourchannel or -1001234567890" style="width: 100%;">
+      </div>
+      <div class="inline-control-group" style="margin-bottom: 20px;">
+        <label class="inline-label">
+          Bot Token
+          <span class="info-icon" style="margin-left: 4px; opacity: 0.6; cursor: help; font-size: 9px;">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/>
+            </svg>
+            <div class="info-tooltip">Your Telegram bot token from @BotFather (e.g. 123456789:ABC...)</div>
+          </span>
+        </label>
+        <input type="password" class="telegram-channel-field" id="bot-token-setup-input" placeholder="123456789:ABCDef..." style="width: 100%;">
       </div>
       <div class="modal-actions">
         <button class="btn btn-secondary" id="cancel-channel-setup">Cancel</button>
@@ -2805,6 +2817,7 @@
     document.getElementById('telegram-channel-id').value = telegramChannelId;
     document.getElementById('telegram-channel-id-editor').value = telegramChannelId;
     document.getElementById('telegram-channel-id-sent').value = telegramChannelId;
+    // (Bot token is stored in settings.telegramBotToken but not displayed in headers for security)
 
     // Highlight active tag if matches saved topic
     if (settings.topic) {
@@ -3334,10 +3347,11 @@
         }
 
         const chatId = settings.telegramChannelId || '';
+        const botToken = settings.telegramBotToken || '';
         const res = await fetch('/api/send-telegram', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ articles: articlesToSend, chatId })
+          body: JSON.stringify({ articles: articlesToSend, chatId, botToken })
         });
         const data = await res.json();
         if (!data.success && !data.results) throw new Error(data.error || 'Send failed');
@@ -3387,30 +3401,35 @@
     cancelChannelSetupBtn.addEventListener('click', () => {
       channelSetupModal.classList.remove('visible');
       channelSetupInput.value = '';
+      document.getElementById('bot-token-setup-input').value = '';
     });
 
     channelSetupModal.addEventListener('click', (e) => {
       if (e.target === channelSetupModal) {
         channelSetupModal.classList.remove('visible');
         channelSetupInput.value = '';
+        document.getElementById('bot-token-setup-input').value = '';
       }
     });
 
     saveChannelSetupBtn.addEventListener('click', () => {
       const channelId = channelSetupInput.value.trim();
+      const botToken = document.getElementById('bot-token-setup-input').value.trim();
       if (channelId) {
         settings.telegramChannelId = channelId;
+        if (botToken) settings.telegramBotToken = botToken;
         saveSettings();
-        
+
         // Update all three channel inputs
         document.getElementById('telegram-channel-id').value = channelId;
         document.getElementById('telegram-channel-id-editor').value = channelId;
         document.getElementById('telegram-channel-id-sent').value = channelId;
-        
+
         // Close setup modal
         channelSetupModal.classList.remove('visible');
         channelSetupInput.value = '';
-        
+        document.getElementById('bot-token-setup-input').value = '';
+
         // Now trigger the original send action
         if (sendMode === 'single') {
           sendNowBtn.click();
@@ -3429,8 +3448,9 @@
 
     editButtons.forEach(({ btn, input }) => {
       btn.addEventListener('click', () => {
-        // Show channel setup modal with current value
+        // Show channel setup modal with current values
         channelSetupInput.value = settings.telegramChannelId || '';
+        document.getElementById('bot-token-setup-input').value = settings.telegramBotToken || '';
         channelSetupModal.classList.add('visible');
         channelSetupInput.focus();
       });
