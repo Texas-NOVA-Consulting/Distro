@@ -34,7 +34,6 @@ export default async function handler(req, res) {
         body: JSON.stringify({
           chat_id: chatId,
           text: message,
-          parse_mode: 'Markdown',
           disable_web_page_preview: false
         })
       });
@@ -62,8 +61,8 @@ export default async function handler(req, res) {
 function formatMessage(article) {
   const lines = [];
 
-  lines.push(`*${escapeMarkdown(article.title)}*`);
-  if (article.source) lines.push(`_${escapeMarkdown(article.source)}_`);
+  lines.push(article.title || '');
+  if (article.source) lines.push(article.source);
   lines.push('');
 
   if (article.summary) {
@@ -76,8 +75,4 @@ function formatMessage(article) {
   }
 
   return lines.join('\n');
-}
-
-function escapeMarkdown(text) {
-  return (text || '').replace(/[_*[\]()~`>#+\-=|{}.!]/g, '\\$&');
 }

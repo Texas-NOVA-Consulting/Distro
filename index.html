@@ -3352,7 +3352,10 @@
           body: JSON.stringify({ articles: articlesToSend, chatId, botToken })
         });
         const data = await res.json();
-        if (!data.success && !data.results) throw new Error(data.error || 'Send failed');
+        if (!data.success) {
+          const firstError = data.results?.find(r => !r.success)?.error;
+          throw new Error(firstError || data.error || 'Send failed');
+        }
 
         const sentList = document.getElementById('sent-list');
         const now = new Date().toLocaleString('en-US', { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' });
