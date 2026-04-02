@@ -2342,6 +2342,280 @@
       opacity: 1;
       visibility: visible;
     }
+
+    /* ─── Theme Toggle Button ──────────────────────── */
+    .theme-toggle-btn {
+      margin: auto 16px 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 16px;
+      background: rgba(1, 70, 81, 0.3);
+      border: 1px solid var(--border-teal);
+      border-radius: 8px;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      width: calc(100% - 32px);
+    }
+
+    .theme-toggle-btn:hover {
+      background: rgba(3, 210, 111, 0.1);
+      border-color: var(--color-green);
+      color: var(--color-green);
+    }
+
+    /* ─── Light Mode ───────────────────────────────── */
+    body.light {
+      --bg-primary:    #f0f7f4;
+      --bg-secondary:  #e8f5f0;
+      --bg-card:       rgba(255, 255, 255, 0.92);
+      --bg-hover:      rgba(3, 210, 111, 0.08);
+      --border:        rgba(3, 210, 111, 0.3);
+      --border-teal:   rgba(1, 70, 81, 0.2);
+      --text-primary:  #0d1f1a;
+      --text-secondary: rgba(13, 31, 26, 0.65);
+      --text-tertiary: rgba(13, 31, 26, 0.4);
+      --accent-glow:   rgba(3, 210, 111, 0.12);
+      --accent-glow-strong: rgba(3, 210, 111, 0.3);
+      --shadow:  0 8px 32px rgba(0, 0, 0, 0.1);
+    }
+
+    body.light::before {
+      background:
+        radial-gradient(ellipse at 15% 40%, rgba(3, 210, 111, 0.07) 0%, transparent 55%),
+        radial-gradient(ellipse at 85% 20%, rgba(1, 70, 81, 0.05) 0%, transparent 50%),
+        radial-gradient(ellipse at 50% 100%, rgba(206, 244, 49, 0.04) 0%, transparent 60%);
+    }
+
+    body.light .sidebar {
+      background: rgba(232, 245, 240, 0.98);
+      box-shadow: 4px 0 32px rgba(0, 0, 0, 0.08);
+    }
+
+    body.light .main {
+      background: rgba(240, 247, 244, 0.5);
+    }
+
+    body.light .header {
+      background: rgba(240, 247, 244, 0.92);
+    }
+
+    body.light .status {
+      background: rgba(1, 70, 81, 0.08);
+    }
+
+    body.light .status select option,
+    body.light .inline-select option {
+      background: #f0f7f4;
+      color: #0d1f1a;
+    }
+
+    body.light .btn-secondary {
+      background: rgba(1, 70, 81, 0.1);
+      color: var(--text-primary);
+    }
+
+    body.light .btn-secondary:hover {
+      background: rgba(1, 70, 81, 0.18);
+    }
+
+    body.light .header-url-field,
+    body.light .telegram-channel-field {
+      background: rgba(1, 70, 81, 0.07);
+    }
+
+    body.light .telegram-channel-field[readonly] {
+      background: rgba(1, 70, 81, 0.04);
+    }
+
+    body.light .channel-edit-btn {
+      background: rgba(1, 70, 81, 0.07);
+    }
+
+    body.light .inline-number-input,
+    body.light .inline-select {
+      background: rgba(1, 70, 81, 0.07);
+    }
+
+    body.light .ai-prompt-wrap {
+      background: rgba(255, 255, 255, 0.9);
+    }
+
+    body.light .ai-prompt-input::placeholder {
+      color: rgba(3, 210, 111, 0.4);
+    }
+
+    body.light .inline-input {
+      background: rgba(1, 70, 81, 0.07);
+      color: var(--text-primary);
+    }
+
+    body.light .inline-input::placeholder {
+      color: rgba(13, 31, 26, 0.3);
+    }
+
+    body.light .inline-input:focus {
+      background: rgba(1, 70, 81, 0.1);
+    }
+
+    body.light .info-tooltip,
+    body.light .nav-tooltip {
+      background: rgba(240, 247, 244, 0.99);
+    }
+
+    body.light .settings-status-bar {
+      background: rgba(1, 70, 81, 0.06);
+    }
+
+    body.light .settings-edit-btn {
+      background: rgba(1, 70, 81, 0.07);
+    }
+
+    body.light .form-input {
+      background: rgba(1, 70, 81, 0.06);
+    }
+
+    body.light .form-input:focus {
+      background: rgba(1, 70, 81, 0.1);
+    }
+
+    body.light .radio-option {
+      background: rgba(1, 70, 81, 0.06);
+    }
+
+    body.light .radio-option:hover {
+      background: rgba(1, 70, 81, 0.1);
+    }
+
+    body.light .tone-card {
+      background: rgba(1, 70, 81, 0.06);
+    }
+
+    body.light .tone-card:hover {
+      background: rgba(1, 70, 81, 0.1);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+    }
+
+    body.light .tone-card-custom {
+      background: linear-gradient(135deg, rgba(3, 210, 111, 0.07) 0%, rgba(1, 70, 81, 0.06) 100%);
+    }
+
+    body.light .tone-preset-btn {
+      background: rgba(1, 70, 81, 0.06);
+    }
+
+    body.light .tone-preset-btn:hover {
+      background: rgba(1, 70, 81, 0.12);
+    }
+
+    body.light .article-card {
+      background: rgba(255, 255, 255, 0.92);
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.07);
+    }
+
+    body.light .article-card:hover {
+      box-shadow: 0 8px 28px rgba(3, 210, 111, 0.12), 0 0 0 1px rgba(3, 210, 111, 0.1);
+    }
+
+    body.light .bottom-bar {
+      background: rgba(240, 247, 244, 0.98);
+      box-shadow: 0 -4px 32px rgba(0, 0, 0, 0.1), 0 -1px 0 rgba(3, 210, 111, 0.15);
+    }
+
+    body.light .article-list-item {
+      background: rgba(1, 70, 81, 0.05);
+    }
+
+    body.light .article-list-item:hover {
+      background: rgba(1, 70, 81, 0.09);
+    }
+
+    body.light .article-list-item.active {
+      background: rgba(3, 210, 111, 0.07);
+    }
+
+    body.light .article-list-item.selected-for-send {
+      background: rgba(3, 210, 111, 0.05);
+    }
+
+    body.light .article-list-item.active.selected-for-send {
+      background: rgba(3, 210, 111, 0.09);
+    }
+
+    body.light .drafts-left,
+    body.light .editor-left {
+      background: rgba(240, 247, 244, 0.5);
+    }
+
+    body.light .editor {
+      background: rgba(255, 255, 255, 0.72);
+    }
+
+    body.light .editor-tabs {
+      background: rgba(1, 70, 81, 0.08);
+    }
+
+    body.light .editor-tab:hover {
+      background: rgba(1, 70, 81, 0.1);
+    }
+
+    body.light .editor-tab.active {
+      color: #f0f7f4;
+    }
+
+    body.light .editor-input,
+    body.light .editor-url,
+    body.light .editor-content {
+      background: rgba(255, 255, 255, 0.8);
+    }
+
+    body.light .editor-input:focus,
+    body.light .editor-url:focus,
+    body.light .editor-content:focus {
+      background: rgba(255, 255, 255, 0.97);
+    }
+
+    body.light .editor-footer {
+      background: rgba(1, 70, 81, 0.08);
+    }
+
+    body.light .expand-editor-btn {
+      background: rgba(1, 70, 81, 0.08);
+    }
+
+    body.light .ai-summary-bar {
+      background: rgba(255, 255, 255, 0.95);
+    }
+
+    body.light .telegram-preview {
+      background: rgba(1, 70, 81, 0.05);
+    }
+
+    body.light .modal {
+      background: rgba(240, 247, 244, 0.99);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15), 0 0 40px rgba(3, 210, 111, 0.12);
+    }
+
+    body.light .sent-item {
+      background: rgba(1, 70, 81, 0.05);
+    }
+
+    body.light .copy-btn {
+      background: rgba(1, 70, 81, 0.07);
+    }
+
+    body.light .add-url {
+      background: rgba(255, 255, 255, 0.7);
+    }
+
+    body.light .theme-toggle-btn {
+      background: rgba(1, 70, 81, 0.08);
+    }
   </style>
 
 </head>
@@ -2393,6 +2667,15 @@
         </svg>
         Settings
       </div>
+      <button class="theme-toggle-btn" id="theme-toggle-btn" title="Toggle light/dark mode">
+        <svg id="theme-icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+        </svg>
+        <svg id="theme-icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none;">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+        </svg>
+        <span id="theme-label">Light</span>
+      </button>
     </div>
 
     <!-- Main Content -->
@@ -3909,6 +4192,29 @@
           }
         });
       }
+    });
+
+    // ─── Theme Toggle ────────────────────────────────
+    const themeToggleBtn = document.getElementById('theme-toggle-btn');
+    const themeSun  = document.getElementById('theme-icon-sun');
+    const themeMoon = document.getElementById('theme-icon-moon');
+    const themeLabel = document.getElementById('theme-label');
+
+    function applyTheme(theme) {
+      const isLight = theme === 'light';
+      document.body.classList.toggle('light', isLight);
+      themeSun.style.display  = isLight ? 'none' : '';
+      themeMoon.style.display = isLight ? '' : 'none';
+      themeLabel.textContent  = isLight ? 'Dark' : 'Light';
+    }
+
+    applyTheme(localStorage.getItem('distroTheme') || 'dark');
+
+    themeToggleBtn.addEventListener('click', () => {
+      const isLight = document.body.classList.contains('light');
+      const next = isLight ? 'dark' : 'light';
+      localStorage.setItem('distroTheme', next);
+      applyTheme(next);
     });
   </script>
 </body>
