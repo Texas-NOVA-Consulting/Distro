@@ -13,23 +13,21 @@
     }
 
     :root {
-      --color-green:   #03d26f;
+      --color-green:   #02a356;
       --color-lime:    #cef431;
       --color-teal:    #014651;
-      --color-dark:    #161514;
-      --color-light:   #eaf4f4;
 
-      --bg-primary:    #161514;
-      --bg-secondary:  #1a1918;
-      --bg-card:       rgba(22, 21, 20, 0.95);
-      --bg-hover:      rgba(1, 70, 81, 0.4);
+      --bg-primary:    #f5faf9;
+      --bg-secondary:  #ffffff;
+      --bg-card:       rgba(255, 255, 255, 0.92);
+      --bg-hover:      rgba(1, 70, 81, 0.15);
 
-      --border:        rgba(3, 210, 111, 0.2);
-      --border-teal:   rgba(1, 70, 81, 0.6);
+      --border:        rgba(3, 210, 111, 0.25);
+      --border-teal:   rgba(1, 70, 81, 0.25);
 
-      --text-primary:  #eaf4f4;
-      --text-secondary: rgba(234, 244, 244, 0.65);
-      --text-tertiary: rgba(234, 244, 244, 0.4);
+      --text-primary:  #0d2e33;
+      --text-secondary: rgba(13, 46, 51, 0.60);
+      --text-tertiary: rgba(13, 46, 51, 0.38);
 
       --accent:        #03d26f;
       --accent-lime:   #cef431;
@@ -42,7 +40,57 @@
 
       --radius:  12px;
       --radius-btn: 10px;
+      --shadow:  0 8px 32px rgba(3, 210, 111, 0.15);
+    }
+
+    /* Dark mode */
+    body.dark-mode {
+      --color-green:   #03d26f;
+      
+      --bg-primary:    #161514;
+      --bg-secondary:  #1a1918;
+      --bg-card:       rgba(22, 21, 20, 0.95);
+      --bg-hover:      rgba(1, 70, 81, 0.4);
+
+      --border:        rgba(3, 210, 111, 0.2);
+      --border-teal:   rgba(1, 70, 81, 0.6);
+
+      --text-primary:  #eaf4f4;
+      --text-secondary: rgba(234, 244, 244, 0.65);
+      --text-tertiary: rgba(234, 244, 244, 0.4);
+
       --shadow:  0 8px 32px rgba(0, 0, 0, 0.4);
+    }
+      --accent-glow:   rgba(3, 210, 111, 0.2);
+      --accent-glow-strong: rgba(3, 210, 111, 0.5);
+
+      --error:   #ef4444;
+      --warning: #fbbf24;
+      --info:    #2dd4bf;
+
+      --radius:  12px;
+      --radius-btn: 10px;
+      --shadow:  0 8px 32px rgba(0, 0, 0, 0.4);
+    }
+
+    /* Light Mode */
+    body.light-mode {
+      --bg-primary:    #f5f7f5;
+      --bg-secondary:  #ffffff;
+      --bg-card:       rgba(255, 255, 255, 0.95);
+      --bg-hover:      rgba(3, 210, 111, 0.1);
+
+      --border:        rgba(3, 210, 111, 0.3);
+      --border-teal:   rgba(1, 70, 81, 0.2);
+
+      --text-primary:  #161514;
+      --text-secondary: rgba(22, 21, 20, 0.7);
+      --text-tertiary: rgba(22, 21, 20, 0.5);
+
+      --accent-glow:   rgba(3, 210, 111, 0.15);
+      --accent-glow-strong: rgba(3, 210, 111, 0.3);
+
+      --shadow:  0 8px 32px rgba(0, 0, 0, 0.1);
     }
 
     body {
@@ -59,11 +107,18 @@
       position: absolute;
       inset: 0;
       background:
+        radial-gradient(ellipse at 15% 40%, rgba(3, 210, 111, 0.08) 0%, transparent 55%),
+        radial-gradient(ellipse at 85% 20%, rgba(1, 70, 81, 0.12) 0%, transparent 50%),
+        radial-gradient(ellipse at 50% 100%, rgba(206, 244, 49, 0.06) 0%, transparent 60%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    body.dark-mode::before {
+      background:
         radial-gradient(ellipse at 15% 40%, rgba(3, 210, 111, 0.06) 0%, transparent 55%),
         radial-gradient(ellipse at 85% 20%, rgba(1, 70, 81, 0.3) 0%, transparent 50%),
         radial-gradient(ellipse at 50% 100%, rgba(206, 244, 49, 0.04) 0%, transparent 60%);
-      pointer-events: none;
-      z-index: 0;
     }
 
     .app {
@@ -76,15 +131,20 @@
     /* Sidebar */
     .sidebar {
       width: 220px;
-      background: rgba(22, 21, 20, 0.97);
+      background: rgba(255, 255, 255, 0.95);
       backdrop-filter: blur(20px);
       border-right: 1px solid var(--border-teal);
       display: flex;
       flex-direction: column;
       padding: 28px 0;
-      box-shadow: 4px 0 32px rgba(0, 0, 0, 0.5);
+      box-shadow: 4px 0 32px rgba(3, 210, 111, 0.08);
       position: relative;
       z-index: 100;
+    }
+
+    body.dark-mode .sidebar {
+      background: rgba(22, 21, 20, 0.97);
+      box-shadow: 4px 0 32px rgba(0, 0, 0, 0.5);
     }
 
     /* Corner bracket decoration on sidebar */
@@ -115,6 +175,39 @@
       letter-spacing: 0.08em;
       text-transform: uppercase;
       line-height: 1.3;
+    }
+
+    .theme-toggle {
+      position: fixed;
+      top: 24px;
+      right: 24px;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(2, 163, 86, 0.1);
+      border: 1px solid rgba(2, 163, 86, 0.3);
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      color: var(--color-green);
+      z-index: 1000;
+    }
+
+    body.dark-mode .theme-toggle {
+      background: rgba(3, 210, 111, 0.1);
+      border-color: rgba(3, 210, 111, 0.3);
+    }
+
+    .theme-toggle:hover {
+      background: rgba(2, 163, 86, 0.2);
+      border-color: var(--color-green);
+      transform: scale(1.05);
+    }
+
+    body.dark-mode .theme-toggle:hover {
+      background: rgba(3, 210, 111, 0.2);
     }
 
     .nav-item {
@@ -161,8 +254,12 @@
     .main {
       flex: 1;
       overflow-y: auto;
-      background: rgba(22, 21, 20, 0.6);
+      background: rgba(245, 250, 249, 0.4);
       backdrop-filter: blur(8px);
+    }
+
+    body.dark-mode .main {
+      background: rgba(22, 21, 20, 0.6);
     }
 
     .screen {
@@ -184,11 +281,16 @@
       padding: 24px 40px;
       border-bottom: 1px solid var(--border-teal);
       display: flex;
-      justify-content: space-between;
+      justify-content: flex-start;
       align-items: center;
-      background: rgba(22, 21, 20, 0.85);
+      background: rgba(255, 255, 255, 0.85);
       backdrop-filter: blur(12px);
       position: relative;
+      gap: 0;
+    }
+
+    body.dark-mode .header {
+      background: rgba(22, 21, 20, 0.85);
     }
 
     /* Corner brackets on header */
@@ -211,11 +313,14 @@
       letter-spacing: 0.06em;
       text-transform: uppercase;
       color: var(--text-primary);
+      flex-shrink: 0;
+      margin-right: 24px;
+      min-width: fit-content;
     }
 
     .header-actions {
       display: flex;
-      gap: 10px;
+      gap: 12px;
       align-items: center;
     }
 
@@ -225,7 +330,7 @@
       font-size: 10px;
       padding: 7px 14px;
       border-radius: 20px;
-      background: rgba(1, 70, 81, 0.5);
+      background: rgba(1, 70, 81, 0.15);
       border: 1px solid var(--border-teal);
       color: var(--text-secondary);
       display: flex;
@@ -258,7 +363,7 @@
     }
 
     .status select option {
-      background: #161514;
+      background: #ffffff;
       color: var(--text-primary);
     }
 
@@ -298,27 +403,27 @@
     .btn-primary {
       background: var(--color-green);
       color: #001a0d;
-      box-shadow: 0 0 20px rgba(3, 210, 111, 0.3);
+      box-shadow: 0 0 20px rgba(3, 210, 111, 0.25);
     }
 
     .btn-primary:hover {
-      background: #04e87a;
+      background: #02bd63;
       transform: translateY(-2px);
-      box-shadow: 0 0 35px rgba(3, 210, 111, 0.55);
+      box-shadow: 0 0 35px rgba(3, 210, 111, 0.45);
     }
 
     .btn-secondary {
-      background: rgba(1, 70, 81, 0.5);
+      background: rgba(1, 70, 81, 0.12);
       color: var(--text-primary);
       border: 1px solid var(--border-teal);
       backdrop-filter: blur(8px);
     }
 
     .btn-secondary:hover {
-      background: rgba(1, 70, 81, 0.8);
+      background: rgba(1, 70, 81, 0.2);
       border-color: var(--color-green);
-      box-shadow: 0 0 16px rgba(3, 210, 111, 0.2);
-      color: var(--color-green);
+      box-shadow: 0 0 16px rgba(3, 210, 111, 0.15);
+      color: var(--color-teal);
     }
 
     .btn:disabled {
@@ -339,7 +444,7 @@
       width: 220px;
       height: 40px;
       padding: 0 14px;
-      background: rgba(1, 70, 81, 0.4);
+      background: rgba(1, 70, 81, 0.08);
       border: 1px solid var(--border-teal);
       border-radius: 8px;
       color: var(--text-primary);
@@ -362,15 +467,16 @@
     /* Telegram Channel Input */
     .telegram-channel-input {
       display: flex;
-      flex-direction: column;
-      gap: 2px;
+      flex-direction: row;
+      gap: 6px;
+      align-items: center;
     }
 
     .telegram-channel-field {
       width: 180px;
       height: 40px;
       padding: 0 14px;
-      background: rgba(1, 70, 81, 0.4);
+      background: rgba(1, 70, 81, 0.08);
       border: 1px solid var(--border-teal);
       border-radius: 8px;
       color: var(--text-primary);
@@ -381,7 +487,7 @@
     }
 
     .telegram-channel-field[readonly] {
-      background: rgba(1, 70, 81, 0.2);
+      background: rgba(1, 70, 81, 0.05);
       cursor: default;
     }
 
@@ -401,7 +507,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      background: rgba(1, 70, 81, 0.3);
+      background: rgba(1, 70, 81, 0.08);
       border: 1px solid var(--border-teal);
       border-radius: 8px;
       cursor: pointer;
@@ -518,13 +624,15 @@
       text-transform: uppercase;
       letter-spacing: 0.1em;
       color: var(--text-tertiary);
+      white-space: nowrap;
+      flex-shrink: 0;
     }
 
     .inline-number-input {
       width: 90px;
       height: 44px;
       padding: 0 10px;
-      background: rgba(1, 70, 81, 0.35);
+      background: rgba(1, 70, 81, 0.08);
       border: 1px solid var(--border-teal);
       border-radius: var(--radius);
       color: var(--text-primary);
@@ -552,7 +660,7 @@
     .inline-select {
       height: 44px;
       padding: 0 36px 0 14px;
-      background: rgba(1, 70, 81, 0.35);
+      background: rgba(1, 70, 81, 0.08);
       border: 1px solid var(--border-teal);
       border-radius: var(--radius);
       color: var(--text-primary);
@@ -576,7 +684,7 @@
     }
 
     .inline-select option {
-      background: #161514;
+      background: #ffffff;
     }
 
     /* AI Prompt Box */
@@ -687,11 +795,11 @@
 
     /* Custom tooltip for info icons */
     .info-tooltip {
-      position: fixed;
+      position: fixed !important;
       top: 0;
       left: 0;
       padding: 10px 14px;
-      background: rgba(22, 21, 20, 0.98);
+      background: rgba(255, 255, 255, 0.98);
       border: 1px solid var(--color-green);
       border-radius: 6px;
       color: var(--text-primary);
@@ -699,20 +807,31 @@
       font-size: 11px;
       line-height: 1.5;
       white-space: normal;
-      max-width: 280px;
+      max-width: 500px;
+      max-height: 400px;
+      overflow-y: auto;
       text-align: left;
       pointer-events: none;
       opacity: 0;
       visibility: hidden;
       transition: opacity 0.2s ease, visibility 0.2s ease;
-      z-index: 99999;
-      box-shadow: 0 4px 20px rgba(3, 210, 111, 0.3);
+      z-index: 999999 !important;
+      box-shadow: 0 4px 20px rgba(3, 210, 111, 0.2);
       backdrop-filter: blur(12px);
     }
 
-    .info-icon:hover .info-tooltip {
-      opacity: 1;
-      visibility: visible;
+    body.dark-mode .info-tooltip {
+      background: rgba(22, 21, 20, 0.98);
+      box-shadow: 0 4px 20px rgba(3, 210, 111, 0.3);
+    }
+
+    .info-tooltip strong {
+      color: var(--color-green);
+      font-weight: 600;
+    }
+
+    .info-tooltip br {
+      line-height: 1.8;
     }
 
     /* Tooltip arrow pointing left */
@@ -749,7 +868,7 @@
 
     /* Settings Status Bar */
     .settings-status-bar {
-      background: rgba(1, 70, 81, 0.3);
+      background: rgba(1, 70, 81, 0.08);
       border-bottom: 1px solid var(--border-teal);
       padding: 10px 48px;
       display: flex;
@@ -802,7 +921,7 @@
       font-family: 'Orbitron', sans-serif;
       font-size: 10px;
       padding: 8px 14px;
-      background: rgba(1, 70, 81, 0.4);
+      background: rgba(1, 70, 81, 0.08);
       border: 1px solid var(--border-teal);
       border-radius: 6px;
       color: var(--text-secondary);
@@ -885,7 +1004,7 @@
 
     .form-input {
       width: 100%;
-      background: rgba(1, 70, 81, 0.35);
+      background: rgba(1, 70, 81, 0.06);
       border: 1px solid var(--border-teal);
       border-radius: var(--radius);
       padding: 11px 16px;
@@ -900,7 +1019,7 @@
       outline: none;
       border-color: var(--color-green);
       box-shadow: 0 0 0 3px rgba(3, 210, 111, 0.15);
-      background: rgba(1, 70, 81, 0.5);
+      background: rgba(1, 70, 81, 0.1);
     }
 
     textarea.form-input {
@@ -1074,7 +1193,7 @@
     .radio-option {
       flex: 1;
       padding: 12px;
-      background: rgba(1, 70, 81, 0.35);
+      background: rgba(1, 70, 81, 0.06);
       border: 1px solid var(--border-teal);
       border-radius: var(--radius);
       cursor: pointer;
@@ -1087,15 +1206,15 @@
 
     .radio-option:hover {
       border-color: var(--color-green);
-      background: rgba(1, 70, 81, 0.4);
+      background: rgba(1, 70, 81, 0.1);
       transform: translateY(-2px);
     }
 
     .radio-option.active {
-      background: rgba(3, 210, 111, 0.2);
+      background: rgba(3, 210, 111, 0.15);
       border-color: var(--color-green);
       color: var(--color-green);
-      box-shadow: 0 0 20px rgba(3, 210, 111, 0.2);
+      box-shadow: 0 0 20px rgba(3, 210, 111, 0.15);
     }
 
     /* Tone Cards */
@@ -1107,7 +1226,7 @@
 
     .tone-card {
       padding: 20px;
-      background: rgba(1, 70, 81, 0.35);
+      background: rgba(1, 70, 81, 0.06);
       border: 2px solid var(--border-teal);
       border-radius: var(--radius);
       cursor: pointer;
@@ -1117,25 +1236,25 @@
 
     .tone-card:hover {
       border-color: var(--color-green);
-      background: rgba(1, 70, 81, 0.4);
+      background: rgba(1, 70, 81, 0.1);
       transform: translateY(-4px);
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+      box-shadow: 0 8px 24px rgba(3, 210, 111, 0.15);
     }
 
     .tone-card.active {
-      background: rgba(3, 210, 111, 0.2);
+      background: rgba(3, 210, 111, 0.15);
       border-color: var(--color-green);
-      box-shadow: 0 0 30px rgba(3, 210, 111, 0.2);
+      box-shadow: 0 0 30px rgba(3, 210, 111, 0.15);
     }
 
     .tone-card-custom {
-      background: linear-gradient(135deg, rgba(3, 210, 111, 0.1) 0%, rgba(1, 70, 81, 0.35) 100%);
-      border-color: rgba(3, 210, 111, 0.25);
+      background: linear-gradient(135deg, rgba(3, 210, 111, 0.08) 0%, rgba(1, 70, 81, 0.06) 100%);
+      border-color: rgba(3, 210, 111, 0.3);
     }
 
     .tone-card-custom:hover {
       border-color: var(--color-green);
-      box-shadow: 0 8px 32px rgba(3, 210, 111, 0.2);
+      box-shadow: 0 8px 32px rgba(3, 210, 111, 0.15);
     }
 
     .tone-card-title {
@@ -1163,7 +1282,7 @@
       font-family: 'Orbitron', sans-serif;
       font-size: 11px;
       padding: 8px 16px;
-      background: rgba(1, 70, 81, 0.35);
+      background: rgba(1, 70, 81, 0.06);
       border: 1px solid var(--border-teal);
       border-radius: 6px;
       color: var(--text-secondary);
@@ -1174,14 +1293,14 @@
     }
 
     .tone-preset-btn:hover {
-      background: rgba(1, 70, 81, 0.55);
+      background: rgba(1, 70, 81, 0.12);
       border-color: var(--color-green);
       color: var(--color-green);
       transform: translateY(-2px);
     }
 
     .tone-preset-btn.active {
-      background: rgba(3, 210, 111, 0.2);
+      background: rgba(3, 210, 111, 0.15);
       border-color: var(--color-green);
       color: var(--color-green);
     }
@@ -1239,7 +1358,7 @@
     }
 
     .article-card {
-      background: rgba(22, 21, 20, 0.85);
+      background: rgba(255, 255, 255, 0.85);
       border: 1px solid var(--border-teal);
       border-radius: var(--radius);
       padding: 20px;
@@ -1247,6 +1366,11 @@
       cursor: pointer;
       position: relative;
       backdrop-filter: blur(12px);
+      box-shadow: 0 4px 16px rgba(3, 210, 111, 0.08);
+    }
+
+    body.dark-mode .article-card {
+      background: rgba(22, 21, 20, 0.85);
       box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
     }
 
@@ -1392,16 +1516,21 @@
       bottom: 0;
       left: 220px;
       right: 0;
-      background: rgba(22, 21, 20, 0.97);
+      background: rgba(255, 255, 255, 0.97);
       border-top: 1px solid rgba(3, 210, 111, 0.25);
       padding: 16px 40px;
       display: none;
       justify-content: space-between;
       align-items: center;
       backdrop-filter: blur(20px);
-      box-shadow: 0 -4px 32px rgba(0, 0, 0, 0.5), 0 -1px 0 rgba(3, 210, 111, 0.15);
+      box-shadow: 0 -4px 32px rgba(3, 210, 111, 0.15), 0 -1px 0 rgba(3, 210, 111, 0.15);
       z-index: 100;
       transition: opacity 0.3s ease;
+    }
+
+    body.dark-mode .bottom-bar {
+      background: rgba(22, 21, 20, 0.97);
+      box-shadow: 0 -4px 32px rgba(0, 0, 0, 0.5), 0 -1px 0 rgba(3, 210, 111, 0.15);
     }
 
     .bottom-bar.visible {
@@ -1574,6 +1703,10 @@
       display: flex;
       flex-direction: column;
       overflow: hidden;
+      background: rgba(245, 250, 249, 0.5);
+    }
+
+    body.dark-mode .drafts-left {
       background: rgba(22, 21, 20, 0.5);
     }
 
@@ -1604,7 +1737,7 @@
       align-items: center;
       justify-content: space-between;
       gap: 20px;
-      background: rgba(22, 21, 20, 0.95);
+      background: rgba(255, 255, 255, 0.95);
       border: 1px solid rgba(3, 210, 111, 0.25);
       border-radius: var(--radius);
       padding: 18px 24px;
@@ -1614,6 +1747,10 @@
       backdrop-filter: blur(12px);
       box-shadow: 0 0 24px rgba(3, 210, 111, 0.08);
       min-height: 70px;
+    }
+
+    body.dark-mode .ai-summary-bar {
+      background: rgba(22, 21, 20, 0.95);
     }
 
     /* Scanline sweep */
@@ -1645,7 +1782,7 @@
     .inline-input {
       height: 38px;
       padding: 0 14px;
-      background: rgba(1, 70, 81, 0.3);
+      background: rgba(1, 70, 81, 0.06);
       border: 1px solid var(--border-teal);
       border-radius: 8px;
       color: var(--text-primary);
@@ -1656,13 +1793,13 @@
     }
 
     .inline-input::placeholder {
-      color: rgba(234, 244, 244, 0.25);
+      color: rgba(13, 46, 51, 0.35);
       font-style: italic;
     }
 
     .inline-input:focus {
       border-color: rgba(3, 210, 111, 0.45);
-      background: rgba(3, 210, 111, 0.04);
+      background: rgba(3, 210, 111, 0.06);
     }
 
     .regenerate-action-btn-horizontal {
@@ -1720,9 +1857,13 @@
       display: flex;
       flex-direction: column;
       overflow: hidden;
-      background: rgba(22, 21, 20, 0.5);
+      background: rgba(255, 255, 255, 0.5);
       border: 1px solid var(--border-teal);
       border-radius: var(--radius);
+    }
+
+    body.dark-mode .editor-left {
+      background: rgba(22, 21, 20, 0.5);
     }
 
     .editor-left-header {
@@ -1746,7 +1887,7 @@
     /* ── Draft List Items ──────────────────────────────── */
     .article-list-item {
       padding: 14px 14px 14px 42px;
-      background: rgba(1, 70, 81, 0.2);
+      background: rgba(1, 70, 81, 0.05);
       border: 1px solid var(--border-teal);
       border-radius: var(--radius);
       margin-bottom: 8px;
@@ -1761,27 +1902,27 @@
 
     .article-list-item:hover {
       border-color: rgba(3, 210, 111, 0.4);
-      background: rgba(1, 70, 81, 0.35);
+      background: rgba(1, 70, 81, 0.1);
       opacity: 1;
       transform: translateX(3px);
     }
 
     .article-list-item.active {
       border-color: var(--color-green);
-      background: rgba(3, 210, 111, 0.07);
+      background: rgba(3, 210, 111, 0.1);
       opacity: 1;
       box-shadow: 0 0 16px rgba(3, 210, 111, 0.12);
     }
 
     .article-list-item.selected-for-send {
       border-color: rgba(3, 210, 111, 0.5);
-      background: rgba(3, 210, 111, 0.05);
+      background: rgba(3, 210, 111, 0.08);
       opacity: 0.9;
     }
 
     .article-list-item.active.selected-for-send {
       border-color: var(--color-green);
-      background: rgba(3, 210, 111, 0.09);
+      background: rgba(3, 210, 111, 0.12);
       opacity: 1;
       box-shadow: 0 0 20px rgba(3, 210, 111, 0.15);
     }
@@ -1899,7 +2040,7 @@
 
     /* ── Editor ────────────────────────────────────────── */
     .editor {
-      background: rgba(22, 21, 20, 0.7);
+      background: rgba(255, 255, 255, 0.7);
       border: 1px solid var(--border-teal);
       border-radius: var(--radius);
       flex: 1;
@@ -1908,6 +2049,10 @@
       flex-direction: column;
       overflow: hidden;
       backdrop-filter: blur(12px);
+    }
+
+    body.dark-mode .editor {
+      background: rgba(22, 21, 20, 0.7);
     }
 
     .article-list-title {
@@ -1935,10 +2080,14 @@
       gap: 12px;
       padding: 20px 24px;
       border-top: 1px solid var(--border-teal);
-      background: rgba(1, 70, 81, 0.8);
+      background: rgba(1, 70, 81, 0.08);
       backdrop-filter: blur(10px);
       flex-shrink: 0;
       justify-content: flex-end;
+    }
+
+    body.dark-mode .editor-footer {
+      background: rgba(1, 70, 81, 0.8);
     }
 
     .editor-controls {
@@ -1953,7 +2102,7 @@
       right: 24px;
       width: 36px;
       height: 36px;
-      background: rgba(1, 70, 81, 0.4);
+      background: rgba(1, 70, 81, 0.08);
       border: 1px solid var(--border-teal);
       border-radius: 8px;
       color: var(--text-secondary);
@@ -2002,7 +2151,7 @@
     .editor-tabs {
       display: flex;
       gap: 8px;
-      background: rgba(1, 70, 81, 0.4);
+      background: rgba(1, 70, 81, 0.08);
       padding: 6px;
       border-radius: 10px;
     }
@@ -2023,20 +2172,20 @@
     }
 
     .editor-tab:hover {
-      background: rgba(1, 70, 81, 0.4);
+      background: rgba(1, 70, 81, 0.1);
       color: var(--text-primary);
     }
 
     .editor-tab.active {
       background: var(--color-green);
-      color: #161514;
+      color: #001a0d;
       border-color: var(--color-green);
-      box-shadow: 0 4px 15px rgba(3, 210, 111, 0.25);
+      box-shadow: 0 4px 15px rgba(3, 210, 111, 0.2);
     }
 
     .editor-input {
       width: 100%;
-      background: rgba(30, 80, 80, 0.5);
+      background: rgba(1, 70, 81, 0.06);
       border: 1px solid var(--border-teal);
       border-radius: var(--radius);
       color: var(--text-primary);
@@ -2054,12 +2203,12 @@
       outline: none;
       border-color: var(--color-green);
       box-shadow: 0 0 0 2px rgba(3, 210, 111, 0.2);
-      background: rgba(30, 80, 80, 0.7);
+      background: rgba(1, 70, 81, 0.1);
     }
 
     .editor-url {
       width: 100%;
-      background: rgba(30, 80, 80, 0.5);
+      background: rgba(1, 70, 81, 0.06);
       border: 1px solid var(--border-teal);
       border-radius: var(--radius);
       color: var(--text-secondary);
@@ -2075,7 +2224,7 @@
       outline: none;
       border-color: var(--color-green);
       box-shadow: 0 0 0 2px rgba(3, 210, 111, 0.2);
-      background: rgba(30, 80, 80, 0.7);
+      background: rgba(1, 70, 81, 0.1);
     }
 
     .editor-content {
@@ -2086,7 +2235,7 @@
       resize: vertical;
       max-height: none;
       font-family: 'Inter', sans-serif;
-      background: rgba(30, 80, 80, 0.5);
+      background: rgba(1, 70, 81, 0.06);
       border: 1px solid var(--border-teal);
       border-radius: var(--radius);
       padding: 14px 16px;
@@ -2098,19 +2247,19 @@
       outline: none;
       border-color: var(--color-green);
       box-shadow: 0 0 0 2px rgba(3, 210, 111, 0.2);
-      background: rgba(30, 80, 80, 0.7);
+      background: rgba(1, 70, 81, 0.1);
     }
 
     /* Telegram Preview */
     .telegram-preview {
-      background: rgba(1, 70, 81, 0.35);
+      background: rgba(1, 70, 81, 0.1);
       border: 1px solid var(--color-green);
       color: var(--text-primary);
       padding: 24px;
       border-radius: var(--radius);
       font-family: 'Inter', sans-serif;
       backdrop-filter: blur(10px);
-      box-shadow: 0 8px 30px rgba(3, 210, 111, 0.2);
+      box-shadow: 0 8px 30px rgba(3, 210, 111, 0.15);
     }
 
     .telegram-header {
@@ -2139,7 +2288,7 @@
       left: 0;
       right: 0;
       bottom: 0;
-      background: rgba(0, 0, 0, 0.8);
+      background: rgba(13, 46, 51, 0.7);
       display: none;
       align-items: center;
       justify-content: center;
@@ -2147,12 +2296,16 @@
       backdrop-filter: blur(4px);
     }
 
+    body.dark-mode .modal-overlay {
+      background: rgba(0, 0, 0, 0.8);
+    }
+
     .modal-overlay.visible {
       display: flex;
     }
 
     .modal {
-      background: rgba(22, 21, 20, 0.97);
+      background: rgba(255, 255, 255, 0.97);
       border: 1px solid var(--color-green);
       border-radius: var(--radius);
       padding: 32px;
@@ -2160,6 +2313,11 @@
       width: 90%;
       animation: modalIn 0.3s ease;
       backdrop-filter: blur(20px);
+      box-shadow: 0 20px 60px rgba(3, 210, 111, 0.2), 0 0 40px rgba(3, 210, 111, 0.15);
+    }
+
+    body.dark-mode .modal {
+      background: rgba(22, 21, 20, 0.97);
       box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5), 0 0 40px rgba(3, 210, 111, 0.2);
     }
 
@@ -2192,7 +2350,7 @@
 
     /* Sent Items */
     .sent-item {
-      background: rgba(1, 70, 81, 0.35);
+      background: rgba(1, 70, 81, 0.08);
       border: 1px solid var(--border-teal);
       border-radius: var(--radius);
       padding: 20px;
@@ -2203,7 +2361,7 @@
 
     .sent-item:hover {
       border-color: var(--color-green);
-      box-shadow: 0 4px 20px rgba(3, 210, 111, 0.2);
+      box-shadow: 0 4px 20px rgba(3, 210, 111, 0.15);
     }
 
     .sent-header {
@@ -2240,7 +2398,7 @@
       font-family: 'Orbitron', sans-serif;
       font-size: 11px;
       padding: 8px 16px;
-      background: rgba(1, 70, 81, 0.4);
+      background: rgba(1, 70, 81, 0.08);
       border: 1px solid var(--border-teal);
       border-radius: 8px;
       color: var(--text-secondary);
@@ -2251,15 +2409,15 @@
     }
 
     .copy-btn:hover {
-      background: rgba(3, 210, 111, 0.2);
+      background: rgba(3, 210, 111, 0.15);
       color: var(--color-green);
       border-color: var(--color-green);
-      box-shadow: 0 0 15px rgba(3, 210, 111, 0.2);
+      box-shadow: 0 0 15px rgba(3, 210, 111, 0.15);
     }
 
     /* Add URL Section */
     .add-url {
-      background: rgba(22, 21, 20, 0.7);
+      background: rgba(255, 255, 255, 0.7);
       border: 1px solid var(--border-teal);
       border-radius: var(--radius);
       padding: 16px;
@@ -2267,6 +2425,10 @@
       display: flex;
       gap: 10px;
       backdrop-filter: blur(12px);
+    }
+
+    body.dark-mode .add-url {
+      background: rgba(22, 21, 20, 0.7);
     }
 
     .add-url input {
@@ -2321,7 +2483,7 @@
       position: fixed;
       left: 230px;
       padding: 10px 14px;
-      background: rgba(22, 21, 20, 0.98);
+      background: rgba(255, 255, 255, 0.98);
       border: 1px solid var(--color-green);
       border-radius: 8px;
       color: var(--text-primary);
@@ -2334,287 +2496,18 @@
       visibility: hidden;
       transition: opacity 0.2s ease, visibility 0.2s ease;
       z-index: 10000;
-      box-shadow: 0 4px 24px rgba(3, 210, 111, 0.4);
+      box-shadow: 0 4px 24px rgba(3, 210, 111, 0.25);
       backdrop-filter: blur(12px);
+    }
+
+    body.dark-mode .nav-tooltip {
+      background: rgba(22, 21, 20, 0.98);
+      box-shadow: 0 4px 24px rgba(3, 210, 111, 0.4);
     }
 
     .nav-info-icon:hover + .nav-tooltip {
       opacity: 1;
       visibility: visible;
-    }
-
-    /* ─── Theme Toggle Button ──────────────────────── */
-    .theme-toggle-btn {
-      margin: auto 16px 16px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      padding: 10px 16px;
-      background: rgba(1, 70, 81, 0.3);
-      border: 1px solid var(--border-teal);
-      border-radius: 8px;
-      color: var(--text-secondary);
-      cursor: pointer;
-      transition: all 0.2s ease;
-      font-family: 'Orbitron', sans-serif;
-      font-size: 10px;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      width: calc(100% - 32px);
-    }
-
-    .theme-toggle-btn:hover {
-      background: rgba(3, 210, 111, 0.1);
-      border-color: var(--color-green);
-      color: var(--color-green);
-    }
-
-    /* ─── Light Mode ───────────────────────────────── */
-    body.light {
-      --bg-primary:    #f0f7f4;
-      --bg-secondary:  #e8f5f0;
-      --bg-card:       rgba(255, 255, 255, 0.92);
-      --bg-hover:      rgba(3, 210, 111, 0.08);
-      --border:        rgba(3, 210, 111, 0.3);
-      --border-teal:   rgba(1, 70, 81, 0.2);
-      --text-primary:  #0d1f1a;
-      --text-secondary: rgba(13, 31, 26, 0.65);
-      --text-tertiary: rgba(13, 31, 26, 0.4);
-      --accent-glow:   rgba(3, 210, 111, 0.12);
-      --accent-glow-strong: rgba(3, 210, 111, 0.3);
-      --shadow:  0 8px 32px rgba(0, 0, 0, 0.1);
-    }
-
-    body.light::before {
-      background:
-        radial-gradient(ellipse at 15% 40%, rgba(3, 210, 111, 0.07) 0%, transparent 55%),
-        radial-gradient(ellipse at 85% 20%, rgba(1, 70, 81, 0.05) 0%, transparent 50%),
-        radial-gradient(ellipse at 50% 100%, rgba(206, 244, 49, 0.04) 0%, transparent 60%);
-    }
-
-    body.light .sidebar {
-      background: rgba(232, 245, 240, 0.98);
-      box-shadow: 4px 0 32px rgba(0, 0, 0, 0.08);
-    }
-
-    body.light .main {
-      background: rgba(240, 247, 244, 0.5);
-    }
-
-    body.light .header {
-      background: rgba(240, 247, 244, 0.92);
-    }
-
-    body.light .status {
-      background: rgba(1, 70, 81, 0.08);
-    }
-
-    body.light .status select option,
-    body.light .inline-select option {
-      background: #f0f7f4;
-      color: #0d1f1a;
-    }
-
-    body.light .btn-secondary {
-      background: rgba(1, 70, 81, 0.1);
-      color: var(--text-primary);
-    }
-
-    body.light .btn-secondary:hover {
-      background: rgba(1, 70, 81, 0.18);
-    }
-
-    body.light .header-url-field,
-    body.light .telegram-channel-field {
-      background: rgba(1, 70, 81, 0.07);
-    }
-
-    body.light .telegram-channel-field[readonly] {
-      background: rgba(1, 70, 81, 0.04);
-    }
-
-    body.light .channel-edit-btn {
-      background: rgba(1, 70, 81, 0.07);
-    }
-
-    body.light .inline-number-input,
-    body.light .inline-select {
-      background: rgba(1, 70, 81, 0.07);
-    }
-
-    body.light .ai-prompt-wrap {
-      background: rgba(255, 255, 255, 0.9);
-    }
-
-    body.light .ai-prompt-input::placeholder {
-      color: rgba(3, 210, 111, 0.4);
-    }
-
-    body.light .inline-input {
-      background: rgba(1, 70, 81, 0.07);
-      color: var(--text-primary);
-    }
-
-    body.light .inline-input::placeholder {
-      color: rgba(13, 31, 26, 0.3);
-    }
-
-    body.light .inline-input:focus {
-      background: rgba(1, 70, 81, 0.1);
-    }
-
-    body.light .info-tooltip,
-    body.light .nav-tooltip {
-      background: rgba(240, 247, 244, 0.99);
-    }
-
-    body.light .settings-status-bar {
-      background: rgba(1, 70, 81, 0.06);
-    }
-
-    body.light .settings-edit-btn {
-      background: rgba(1, 70, 81, 0.07);
-    }
-
-    body.light .form-input {
-      background: rgba(1, 70, 81, 0.06);
-    }
-
-    body.light .form-input:focus {
-      background: rgba(1, 70, 81, 0.1);
-    }
-
-    body.light .radio-option {
-      background: rgba(1, 70, 81, 0.06);
-    }
-
-    body.light .radio-option:hover {
-      background: rgba(1, 70, 81, 0.1);
-    }
-
-    body.light .tone-card {
-      background: rgba(1, 70, 81, 0.06);
-    }
-
-    body.light .tone-card:hover {
-      background: rgba(1, 70, 81, 0.1);
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
-    }
-
-    body.light .tone-card-custom {
-      background: linear-gradient(135deg, rgba(3, 210, 111, 0.07) 0%, rgba(1, 70, 81, 0.06) 100%);
-    }
-
-    body.light .tone-preset-btn {
-      background: rgba(1, 70, 81, 0.06);
-    }
-
-    body.light .tone-preset-btn:hover {
-      background: rgba(1, 70, 81, 0.12);
-    }
-
-    body.light .article-card {
-      background: rgba(255, 255, 255, 0.92);
-      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.07);
-    }
-
-    body.light .article-card:hover {
-      box-shadow: 0 8px 28px rgba(3, 210, 111, 0.12), 0 0 0 1px rgba(3, 210, 111, 0.1);
-    }
-
-    body.light .bottom-bar {
-      background: rgba(240, 247, 244, 0.98);
-      box-shadow: 0 -4px 32px rgba(0, 0, 0, 0.1), 0 -1px 0 rgba(3, 210, 111, 0.15);
-    }
-
-    body.light .article-list-item {
-      background: rgba(1, 70, 81, 0.05);
-    }
-
-    body.light .article-list-item:hover {
-      background: rgba(1, 70, 81, 0.09);
-    }
-
-    body.light .article-list-item.active {
-      background: rgba(3, 210, 111, 0.07);
-    }
-
-    body.light .article-list-item.selected-for-send {
-      background: rgba(3, 210, 111, 0.05);
-    }
-
-    body.light .article-list-item.active.selected-for-send {
-      background: rgba(3, 210, 111, 0.09);
-    }
-
-    body.light .drafts-left,
-    body.light .editor-left {
-      background: rgba(240, 247, 244, 0.5);
-    }
-
-    body.light .editor {
-      background: rgba(255, 255, 255, 0.72);
-    }
-
-    body.light .editor-tabs {
-      background: rgba(1, 70, 81, 0.08);
-    }
-
-    body.light .editor-tab:hover {
-      background: rgba(1, 70, 81, 0.1);
-    }
-
-    body.light .editor-tab.active {
-      color: #f0f7f4;
-    }
-
-    body.light .editor-input,
-    body.light .editor-url,
-    body.light .editor-content {
-      background: rgba(255, 255, 255, 0.8);
-    }
-
-    body.light .editor-input:focus,
-    body.light .editor-url:focus,
-    body.light .editor-content:focus {
-      background: rgba(255, 255, 255, 0.97);
-    }
-
-    body.light .editor-footer {
-      background: rgba(1, 70, 81, 0.08);
-    }
-
-    body.light .expand-editor-btn {
-      background: rgba(1, 70, 81, 0.08);
-    }
-
-    body.light .ai-summary-bar {
-      background: rgba(255, 255, 255, 0.95);
-    }
-
-    body.light .telegram-preview {
-      background: rgba(1, 70, 81, 0.05);
-    }
-
-    body.light .modal {
-      background: rgba(240, 247, 244, 0.99);
-      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15), 0 0 40px rgba(3, 210, 111, 0.12);
-    }
-
-    body.light .sent-item {
-      background: rgba(1, 70, 81, 0.05);
-    }
-
-    body.light .copy-btn {
-      background: rgba(1, 70, 81, 0.07);
-    }
-
-    body.light .add-url {
-      background: rgba(255, 255, 255, 0.7);
-    }
-
-    body.light .theme-toggle-btn {
-      background: rgba(1, 70, 81, 0.08);
     }
   </style>
 
@@ -2624,6 +2517,7 @@
     <!-- Sidebar -->
     <div class="sidebar">
       <div class="logo">DISTRO<br><span style="font-size: 10px; letter-spacing: 0.2em; opacity: 0.5; font-weight: 400; font-family: 'Inter', sans-serif;">BeatSweep</span></div>
+      
       <div class="nav-item active" data-screen="fetch">
         <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
@@ -2667,16 +2561,25 @@
         </svg>
         Settings
       </div>
-      <button class="theme-toggle-btn" id="theme-toggle-btn" title="Toggle light/dark mode">
-        <svg id="theme-icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
-        </svg>
-        <svg id="theme-icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none;">
-          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
-        </svg>
-        <span id="theme-label">Light</span>
-      </button>
     </div>
+
+    <!-- Theme Toggle (Top Right Corner) -->
+    <button class="theme-toggle" id="theme-toggle" title="Toggle theme">
+      <svg class="theme-icon sun-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="5"></circle>
+        <line x1="12" y1="1" x2="12" y2="3"></line>
+        <line x1="12" y1="21" x2="12" y2="23"></line>
+        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+        <line x1="1" y1="12" x2="3" y2="12"></line>
+        <line x1="21" y1="12" x2="23" y2="12"></line>
+        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+      </svg>
+      <svg class="theme-icon moon-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: none;">
+        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+      </svg>
+    </button>
 
     <!-- Main Content -->
     <div class="main">
@@ -2697,24 +2600,22 @@
             </div>
             <!-- Telegram Channel ID -->
             <div class="telegram-channel-input">
-              <label class="inline-label" style="margin-bottom: 6px;">
+              <label class="inline-label">
                 Channel ID
                 <span class="info-icon" style="margin-left: 4px; opacity: 0.6; cursor: help; font-size: 9px;">
                   <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/>
                   </svg>
-                  <div class="info-tooltip">Enter your Telegram channel username (e.g. @mynewschannel) or numeric ID (e.g. -1001234567890). To find: open Telegram → search for your channel → tap channel name → copy username or ID. For bot token: search @BotFather → /newbot → follow steps.</div>
+                  <div class="info-tooltip"><strong>Channel ID:</strong><br>1. Open Telegram<br>2. Search for your channel<br>3. Tap channel name<br>4. Copy username (e.g. @mynewschannel) or ID (e.g. -100123...)<br><br><strong>Bot Token:</strong><br>1. Search @BotFather<br>2. Type /newbot<br>3. Follow steps to create bot</div>
                 </span>
               </label>
-              <div style="display: flex; align-items: center; gap: 6px;">
-                <input type="text" class="telegram-channel-field" id="telegram-channel-id" placeholder="@yourchannel" readonly>
-                <button class="channel-edit-btn" id="edit-channel-btn" title="Edit channel ID">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
-                    <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
-                  </svg>
-                </button>
-              </div>
+              <input type="text" class="telegram-channel-field" id="telegram-channel-id" placeholder="@yourchannel" readonly>
+              <button class="channel-edit-btn" id="edit-channel-btn" title="Edit channel ID">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                  <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                </svg>
+              </button>
             </div>
             <!-- Manual URL moved to header -->
             <div class="header-url-input">
@@ -2742,10 +2643,11 @@
               <div class="ai-indicator">
                 <span class="ai-pulse"></span>
                 Article Discovery
-                <span class="info-icon" style="margin-left: 8px; font-size: 10px; opacity: 0.6; cursor: help;" title="AI will search for articles matching these criteria">
+                <span class="info-icon" style="margin-left: 8px; font-size: 10px; opacity: 0.6; cursor: help;">
                   <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/>
                   </svg>
+                  <div class="info-tooltip">AI will search for articles matching these criteria</div>
                 </span>
               </div>
               <span class="ai-badge">AI</span>
@@ -2760,13 +2662,14 @@
                 <div class="inline-control-group">
                   <label class="inline-label">
                     Articles
-                    <span class="info-icon" style="margin-left: 4px; opacity: 0.5; cursor: help; font-size: 9px;" title="How many articles do you want to generate?">
+                    <span class="info-icon" style="margin-left: 4px; opacity: 0.5; cursor: help; font-size: 9px;">
                       <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/>
                       </svg>
+                      <div class="info-tooltip">How many articles do you want to generate?</div>
                     </span>
                   </label>
-                  <input type="number" class="inline-number-input" id="article-count-input" min="1" max="40" value="10" maxlength="2" oninput="if(this.value.length > 2) this.value = this.value.slice(0,2); if(this.value > 40) this.value = 40; if(this.value < 1) this.value = 1;" style="width: 70px;">
+                  <input type="number" class="inline-number-input" id="article-count-input" min="1" max="40" value="10" oninput="if(this.value.length > 2) this.value = this.value.slice(0,2); if(parseInt(this.value) > 40) this.value = 40;" onblur="if(this.value === '' || this.value < 1) this.value = 1; if(this.value > 40) this.value = 40;" style="width: 70px;">
                 </div>
               </div>
               <button class="fetch-pulse-btn" id="fetch-btn">
@@ -2794,24 +2697,22 @@
           <div class="header-actions">
             <!-- Telegram Channel ID -->
             <div class="telegram-channel-input">
-              <label class="inline-label" style="margin-bottom: 6px;">
+              <label class="inline-label">
                 Channel ID
                 <span class="info-icon" style="margin-left: 4px; opacity: 0.6; cursor: help; font-size: 9px;">
                   <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/>
                   </svg>
-                  <div class="info-tooltip">Enter your Telegram channel username (e.g. @mynewschannel) or numeric ID (e.g. -1001234567890). To find: open Telegram → search for your channel → tap channel name → copy username or ID. For bot token: search @BotFather → /newbot → follow steps.</div>
+                  <div class="info-tooltip"><strong>Channel ID:</strong><br>1. Open Telegram<br>2. Search for your channel<br>3. Tap channel name<br>4. Copy username (e.g. @mynewschannel) or ID (e.g. -100123...)<br><br><strong>Bot Token:</strong><br>1. Search @BotFather<br>2. Type /newbot<br>3. Follow steps to create bot</div>
                 </span>
               </label>
-              <div style="display: flex; align-items: center; gap: 6px;">
-                <input type="text" class="telegram-channel-field" id="telegram-channel-id-editor" placeholder="@yourchannel" readonly>
-                <button class="channel-edit-btn" id="edit-channel-btn-editor" title="Edit channel ID">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
-                    <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
-                  </svg>
-                </button>
-              </div>
+              <input type="text" class="telegram-channel-field" id="telegram-channel-id-editor" placeholder="@yourchannel" readonly>
+              <button class="channel-edit-btn" id="edit-channel-btn-editor" title="Edit channel ID">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                  <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                </svg>
+              </button>
             </div>
             <button class="btn btn-secondary" id="select-all-btn" style="display: none;">Select All</button>
             <button class="btn btn-primary" id="send-selected-btn" style="display: none;">Send Selected</button>
@@ -2950,24 +2851,22 @@
           <div class="header-actions">
             <!-- Telegram Channel ID -->
             <div class="telegram-channel-input">
-              <label class="inline-label" style="margin-bottom: 6px;">
+              <label class="inline-label">
                 Channel ID
                 <span class="info-icon" style="margin-left: 4px; opacity: 0.6; cursor: help; font-size: 9px;">
                   <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/>
                   </svg>
-                  <div class="info-tooltip">Enter your Telegram channel username (e.g. @mynewschannel) or numeric ID (e.g. -1001234567890). To find: open Telegram → search for your channel → tap channel name → copy username or ID. For bot token: search @BotFather → /newbot → follow steps.</div>
+                  <div class="info-tooltip"><strong>Channel ID:</strong><br>1. Open Telegram<br>2. Search for your channel<br>3. Tap channel name<br>4. Copy username (e.g. @mynewschannel) or ID (e.g. -100123...)<br><br><strong>Bot Token:</strong><br>1. Search @BotFather<br>2. Type /newbot<br>3. Follow steps to create bot</div>
                 </span>
               </label>
-              <div style="display: flex; align-items: center; gap: 6px;">
-                <input type="text" class="telegram-channel-field" id="telegram-channel-id-sent" placeholder="@yourchannel" readonly>
-                <button class="channel-edit-btn" id="edit-channel-btn-sent" title="Edit channel ID">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
-                    <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
-                  </svg>
-                </button>
-              </div>
+              <input type="text" class="telegram-channel-field" id="telegram-channel-id-sent" placeholder="@yourchannel" readonly>
+              <button class="channel-edit-btn" id="edit-channel-btn-sent" title="Edit channel ID">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                  <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                </svg>
+              </button>
             </div>
           </div>
         </div>
@@ -3003,31 +2902,19 @@
   <!-- Channel Setup Modal -->
   <div class="modal-overlay" id="channel-setup-modal">
     <div class="modal">
-      <h3>Set Up Telegram</h3>
-      <p style="color: var(--text-secondary); margin-bottom: 16px;">Enter your channel ID and bot token to start sending.</p>
-      <div class="inline-control-group" style="margin-bottom: 16px;">
+      <h3>Set Up Telegram Channel</h3>
+      <p style="color: var(--text-secondary); margin-bottom: 16px;">Please enter your Telegram channel ID before sending.</p>
+      <div class="inline-control-group" style="margin-bottom: 20px;">
         <label class="inline-label">
           Channel ID
           <span class="info-icon" style="margin-left: 4px; opacity: 0.6; cursor: help; font-size: 9px;">
             <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/>
             </svg>
-            <div class="info-tooltip">Your Telegram channel username (e.g. @mynewschannel) or numeric ID (e.g. -1001234567890). Open Telegram → find your channel → copy the username or ID.</div>
+            <div class="info-tooltip"><strong>Channel ID:</strong><br>1. Open Telegram<br>2. Search for your channel<br>3. Tap channel name<br>4. Copy username (e.g. @mynewschannel) or ID (e.g. -100123...)<br><br><strong>Bot Token:</strong><br>1. Search @BotFather<br>2. Type /newbot<br>3. Follow steps to create bot</div>
           </span>
         </label>
         <input type="text" class="telegram-channel-field" id="channel-setup-input" placeholder="@yourchannel or -1001234567890" style="width: 100%;">
-      </div>
-      <div class="inline-control-group" style="margin-bottom: 20px;">
-        <label class="inline-label">
-          Bot Token
-          <span class="info-icon" style="margin-left: 4px; opacity: 0.6; cursor: help; font-size: 9px;">
-            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/>
-            </svg>
-            <div class="info-tooltip">Your bot token from @BotFather on Telegram. Message @BotFather → /newbot → follow the steps → copy the token. Then add your bot as an admin to your channel.</div>
-          </span>
-        </label>
-        <input type="password" class="telegram-channel-field" id="bot-token-setup-input" placeholder="123456789:ABCDef..." style="width: 100%;">
       </div>
       <div class="modal-actions">
         <button class="btn btn-secondary" id="cancel-channel-setup">Cancel</button>
@@ -3090,6 +2977,39 @@
       } catch(e) {}
     }
 
+    // Theme Toggle
+    const themeToggle = document.getElementById('theme-toggle');
+    const sunIcon = themeToggle.querySelector('.sun-icon');
+    const moonIcon = themeToggle.querySelector('.moon-icon');
+    
+    // Load saved theme or default to dark
+    const savedTheme = localStorage.getItem('distro-theme') || 'dark';
+    if (savedTheme === 'dark') {
+      document.body.classList.add('dark-mode');
+      sunIcon.style.display = 'block';
+      moonIcon.style.display = 'none';
+    } else {
+      document.body.classList.remove('dark-mode');
+      sunIcon.style.display = 'none';
+      moonIcon.style.display = 'block';
+    }
+    
+    themeToggle.addEventListener('click', () => {
+      document.body.classList.toggle('dark-mode');
+      const isDark = document.body.classList.contains('dark-mode');
+      
+      // Toggle icons
+      if (isDark) {
+        sunIcon.style.display = 'block';
+        moonIcon.style.display = 'none';
+        localStorage.setItem('distro-theme', 'dark');
+      } else {
+        sunIcon.style.display = 'none';
+        moonIcon.style.display = 'block';
+        localStorage.setItem('distro-theme', 'light');
+      }
+    });
+
     // Populate controls from saved settings
     document.getElementById('article-count-input').value = settings.articleCount || 10;
     document.getElementById('custom-tone-input').value = settings.customTone || '';
@@ -3113,9 +3033,7 @@
     function saveSettings() {
       settings.articleCount = parseInt(document.getElementById('article-count-input').value) || 10;
       settings.customTone = document.getElementById('custom-tone-input').value.trim();
-      // telegramChannelId and telegramBotToken are updated directly on the settings object
-      // before saveSettings() is called — don't re-read from DOM here or we risk saving a
-      // stale value (DOM update happens after the settings object is updated).
+      settings.telegramChannelId = document.getElementById('telegram-channel-id').value.trim();
       localStorage.setItem('newsAppSettings', JSON.stringify(settings));
     }
 
@@ -3280,6 +3198,139 @@
         title: 'Startup develops biodegradable plastic that dissolves in 6 months',
         description: 'New polymer breaks down in ocean water, potentially solving marine pollution crisis.',
         url: 'https://techcrunch.com/biodegradable-plastic-startup'
+      },
+      {
+        source: 'The Information',
+        date: 'Jan 22, 2026',
+        title: 'Google unveils Gemini 2.0 with multimodal reasoning breakthrough',
+        description: 'New AI model seamlessly processes text, images, video, and audio with unprecedented accuracy.',
+        url: 'https://theinformation.com/google-gemini-2-launch'
+      },
+      {
+        source: 'Protocol',
+        date: 'Jan 21, 2026',
+        title: 'Autonomous cargo ships begin transatlantic routes',
+        description: 'First fully autonomous container vessel completes journey from Rotterdam to New York.',
+        url: 'https://protocol.com/autonomous-cargo-ships-transatlantic'
+      },
+      {
+        source: 'MIT Technology Review',
+        date: 'Jan 21, 2026',
+        title: 'Researchers achieve 99.9% accuracy in early cancer detection AI',
+        description: 'Machine learning model detects 12 cancer types from blood samples years before symptoms.',
+        url: 'https://technologyreview.com/ai-cancer-detection-breakthrough'
+      },
+      {
+        source: 'Bloomberg',
+        date: 'Jan 20, 2026',
+        title: 'Bitcoin reaches $150K as institutions increase crypto holdings',
+        description: 'Major pension funds and sovereign wealth funds announce significant Bitcoin allocations.',
+        url: 'https://bloomberg.com/bitcoin-150k-institutional-adoption'
+      },
+      {
+        source: 'The Verge',
+        date: 'Jan 20, 2026',
+        title: 'Samsung Galaxy S26 features holographic display technology',
+        description: 'New flagship phone projects 3D images without glasses using advanced light-field display.',
+        url: 'https://theverge.com/samsung-galaxy-s26-holographic-display'
+      },
+      {
+        source: 'Nature Medicine',
+        date: 'Jan 19, 2026',
+        title: 'Universal flu vaccine shows 95% efficacy in Phase 3 trials',
+        description: 'One-time shot provides lifetime protection against all influenza strains.',
+        url: 'https://nature.com/articles/universal-flu-vaccine-trial'
+      },
+      {
+        source: 'WSJ',
+        date: 'Jan 19, 2026',
+        title: 'Flying taxi services launch in Dubai and Singapore',
+        description: 'Electric vertical takeoff aircraft begin commercial passenger operations in two cities.',
+        url: 'https://wsj.com/flying-taxi-commercial-launch'
+      },
+      {
+        source: 'TechCrunch',
+        date: 'Jan 18, 2026',
+        title: 'Neuralink receives FDA approval for consumer brain implants',
+        description: 'First non-medical brain-computer interface cleared for general use to enhance cognitive function.',
+        url: 'https://techcrunch.com/neuralink-fda-consumer-approval'
+      },
+      {
+        source: 'Reuters',
+        date: 'Jan 18, 2026',
+        title: 'Hydrogen-powered aircraft completes first commercial flight',
+        description: 'Zero-emission passenger plane flies 800 miles on liquid hydrogen fuel.',
+        url: 'https://reuters.com/hydrogen-aircraft-commercial-flight'
+      },
+      {
+        source: 'Wired',
+        date: 'Jan 17, 2026',
+        title: 'Quantum computer solves protein folding in seconds',
+        description: 'Breakthrough could accelerate drug discovery and disease treatment development.',
+        url: 'https://wired.com/quantum-protein-folding-breakthrough'
+      },
+      {
+        source: 'The Guardian',
+        date: 'Jan 17, 2026',
+        title: 'Ocean cleanup project removes 10 million tons of plastic',
+        description: 'Automated systems successfully clear Great Pacific Garbage Patch ahead of schedule.',
+        url: 'https://theguardian.com/ocean-cleanup-milestone'
+      },
+      {
+        source: 'Ars Technica',
+        date: 'Jan 16, 2026',
+        title: 'Breakthrough material harvests electricity from humidity',
+        description: 'New generator produces continuous power from atmospheric moisture in any climate.',
+        url: 'https://arstechnica.com/humidity-electricity-generator'
+      },
+      {
+        source: 'CNBC',
+        date: 'Jan 16, 2026',
+        title: 'Amazon announces carbon-neutral delivery in 100 major cities',
+        description: 'Electric vehicles and drones achieve zero-emission last-mile delivery milestone.',
+        url: 'https://cnbc.com/amazon-carbon-neutral-delivery'
+      },
+      {
+        source: 'Science',
+        date: 'Jan 15, 2026',
+        title: 'Asteroid mining company extracts first platinum payload',
+        description: 'Space Resources Inc. returns $2B worth of rare metals from near-Earth asteroid.',
+        url: 'https://science.org/asteroid-mining-first-payload'
+      },
+      {
+        source: 'Financial Times',
+        date: 'Jan 15, 2026',
+        title: 'AI-designed drug cures antibiotic-resistant infections',
+        description: 'Machine learning creates novel compound effective against superbugs in clinical trials.',
+        url: 'https://ft.com/ai-designed-antibiotic-breakthrough'
+      },
+      {
+        source: 'IEEE Spectrum',
+        date: 'Jan 14, 2026',
+        title: 'Photonic chips achieve 1000x faster AI processing',
+        description: 'Light-based processors eliminate heat and power constraints of traditional semiconductors.',
+        url: 'https://spectrum.ieee.org/photonic-chip-ai-processing'
+      },
+      {
+        source: 'VentureBeat',
+        date: 'Jan 14, 2026',
+        title: 'Voice cloning technology banned in 50 countries',
+        description: 'International agreement restricts deepfake audio after fraud epidemic.',
+        url: 'https://venturebeat.com/voice-cloning-international-ban'
+      },
+      {
+        source: 'BBC',
+        date: 'Jan 13, 2026',
+        title: 'Smart contact lenses with AR displays enter mass production',
+        description: 'Augmented reality eyewear becomes invisible with micro-LED contact lens technology.',
+        url: 'https://bbc.com/smart-contact-lenses-ar-production'
+      },
+      {
+        source: 'TechCrunch',
+        date: 'Jan 13, 2026',
+        title: 'Generative AI creates first Oscar-nominated animated film',
+        description: 'AI-assisted production tools revolutionize animation industry workflow.',
+        url: 'https://techcrunch.com/ai-animated-film-oscar-nomination'
       }
     ];
 
@@ -3408,42 +3459,27 @@
       }
     }
 
-    fetchBtn.addEventListener('click', async () => {
+    fetchBtn.addEventListener('click', () => {
       fetchBtn.innerHTML = '<span class="fetch-pulse-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></span>Fetching...';
       fetchBtn.disabled = true;
       if (fetchStatus) { fetchStatus.innerHTML = '<span class="status-dot"></span>Fetching'; fetchStatus.classList.add('fetching'); }
 
-      try {
+      setTimeout(() => {
+        // Generate fresh articles based on settings count
         const count = parseInt(document.getElementById('article-count-input').value) || 10;
-        const topic = document.getElementById('custom-tone-input').value.trim() || 'latest technology and AI news';
-
-        const res = await fetch('/api/fetch-news', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ topic, count })
-        });
-
-        const data = await res.json();
-
-        if (!data.success) throw new Error(data.error || 'Failed to fetch articles');
-
-        const newArticles = data.articles.map(a => ({ ...a, id: nextArticleId++ }));
-
+        const newArticles = generateMockArticles(count);
+        
         // Keep only the selected articles, discard all unselected
         const selectedArticlesList = mockArticles.filter(a => selectedArticles.has(a.id));
-
+        
         // Selected articles stay at top, fresh articles replace everything else
         mockArticles = [...selectedArticlesList, ...newArticles];
-
+        
         renderArticles();
+        fetchBtn.innerHTML = '<span class="fetch-pulse-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></span>Fetch News';
+        fetchBtn.disabled = false;
         if (fetchStatus) { fetchStatus.innerHTML = '<span class="status-dot"></span>Idle'; fetchStatus.classList.remove('fetching'); }
-      } catch (err) {
-        console.error('Fetch error:', err);
-        if (fetchStatus) { fetchStatus.innerHTML = `<span class="status-dot" style="background:var(--error)"></span>Error: ${err.message}`; fetchStatus.classList.remove('fetching'); }
-      }
-
-      fetchBtn.innerHTML = '<span class="fetch-pulse-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></span>Fetch News';
-      fetchBtn.disabled = false;
+      }, 2000);
     });
 
     // Fetch Select All functionality
@@ -3782,75 +3818,85 @@
       }
     });
 
-    confirmSendBtn.addEventListener('click', async () => {
+    confirmSendBtn.addEventListener('click', () => {
       statusSelect.value = 'in-progress';
       const draftStatus = document.getElementById('draft-status');
       draftStatus.classList.add('sending');
       confirmModal.classList.remove('visible');
-      confirmSendBtn.disabled = true;
-      confirmSendBtn.textContent = 'Sending...';
 
-      try {
-        let articlesToSend = [];
-        if (sendMode === 'single') {
-          const title   = document.getElementById('draft-title').value;
-          const content = document.getElementById('draft-content').value;
-          const url     = document.getElementById('draft-url') ? document.getElementById('draft-url').value : '';
-          const draft   = draftData.find(d => d.id === currentEditingId);
-          articlesToSend = [{ title, summary: content, url, source: draft?.source || '' }];
-        } else {
-          articlesToSend = draftData
-            .filter(a => selectedDrafts.has(a.id))
-            .map(a => ({ title: a.title, summary: a.summary || `• ${a.description}`, url: a.url, source: a.source }));
-        }
-
-        const chatId   = settings.telegramChannelId || '';
-        const botToken = settings.telegramBotToken || '';
-        const res  = await fetch('/api/send-telegram', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ articles: articlesToSend, chatId, botToken })
-        });
-        const data = await res.json();
-        if (!data.success) {
-          const firstError = data.results?.find(r => !r.success)?.error;
-          throw new Error(firstError || data.error || 'Send failed');
-        }
-
+      setTimeout(() => {
         const sentList = document.getElementById('sent-list');
-        const now = new Date().toLocaleString('en-US', { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' });
-        articlesToSend.forEach(article => {
-          const preview = (article.summary || '').substring(0, 150);
-          const t = article.title.replace(/`/g, "'");
-          const c = (article.summary || '').replace(/`/g, "'");
-          sentList.insertAdjacentHTML('afterbegin', `
-            <div class="sent-item">
-              <div class="sent-header"><div class="sent-title">${article.title}</div><div class="sent-time">${now}</div></div>
-              <div class="sent-preview">${preview}${preview.length >= 150 ? '...' : ''}</div>
-              <button class="copy-btn" onclick="copyText(\`${t}\n\n${c}\`)">Copy Text</button>
-            </div>
-          `);
+        const now = new Date().toLocaleString('en-US', { 
+          month: 'short', 
+          day: 'numeric', 
+          hour: 'numeric', 
+          minute: '2-digit' 
         });
 
-        if (sendMode === 'batch') {
+        if (sendMode === 'single') {
+          // Send current draft
+          const title = document.getElementById('draft-title').value;
+          const content = document.getElementById('draft-content').value;
+
+          const sentItem = `
+            <div class="sent-item">
+              <div class="sent-header">
+                <div class="sent-title">${title}</div>
+                <div class="sent-time">${now}</div>
+              </div>
+              <div class="sent-preview">${content.substring(0, 150)}...</div>
+              <button class="copy-btn" onclick="copyText(\`${title}\\n\\n${content}\`)">Copy Text</button>
+            </div>
+          `;
+
+          sentList.insertAdjacentHTML('afterbegin', sentItem);
+          
+          // Remove sent item from drafts if it was selected
+          if (currentEditingId) {
+            selectedDrafts.delete(currentEditingId);
+          }
+        } else {
+          // Send all selected drafts
+          const itemsToSend = draftData.filter(article => selectedDrafts.has(article.id));
+          
+          itemsToSend.forEach(article => {
+            const content = `• ${article.description}\n\n• Key insight about the development and its implications for the industry.\n\n• Analysis of how this will affect the market and competitors.`;
+            
+            const sentItem = `
+              <div class="sent-item">
+                <div class="sent-header">
+                  <div class="sent-title">${article.title}</div>
+                  <div class="sent-time">${now}</div>
+                </div>
+                <div class="sent-preview">${content.substring(0, 150)}...</div>
+                <button class="copy-btn" onclick="copyText(\`${article.title}\\n\\n${content}\`)">Copy Text</button>
+              </div>
+            `;
+
+            sentList.insertAdjacentHTML('afterbegin', sentItem);
+          });
+
+          // Clear selected drafts
           selectedDrafts.clear();
-          document.querySelectorAll('.article-list-item').forEach(i => i.classList.remove('selected-for-send'));
+          document.querySelectorAll('.article-list-item').forEach(item => {
+            item.classList.remove('selected-for-send');
+          });
           updateDraftSelectionUI();
         }
-        selectedArticles.clear();
-        document.querySelectorAll('.article-card').forEach(c => c.classList.remove('selected'));
-        updateSelectionBar();
-        document.querySelector('[data-screen="sent"]').click();
-        statusSelect.value = 'ready';
 
-      } catch (err) {
-        alert(`Send failed: ${err.message}`);
-        statusSelect.value = 'draft';
-      } finally {
-        confirmSendBtn.disabled = false;
-        confirmSendBtn.textContent = 'Confirm & Send';
+        // Clear article selection from fetch page and update UI
+        selectedArticles.clear();
+        document.querySelectorAll('.article-card').forEach(card => {
+          card.classList.remove('selected');
+        });
+        updateSelectionBar();
+        
+        // Go to sent page to show results
+        document.querySelector('[data-screen="sent"]').click();
+
+        statusSelect.value = 'ready';
         draftStatus.classList.remove('sending');
-      }
+      }, 1500);
     });
 
     // Channel Setup Modal
@@ -3862,34 +3908,29 @@
     cancelChannelSetupBtn.addEventListener('click', () => {
       channelSetupModal.classList.remove('visible');
       channelSetupInput.value = '';
-      document.getElementById('bot-token-setup-input').value = '';
     });
 
     channelSetupModal.addEventListener('click', (e) => {
       if (e.target === channelSetupModal) {
         channelSetupModal.classList.remove('visible');
         channelSetupInput.value = '';
-        document.getElementById('bot-token-setup-input').value = '';
       }
     });
 
     saveChannelSetupBtn.addEventListener('click', () => {
       const channelId = channelSetupInput.value.trim();
-      const botToken = document.getElementById('bot-token-setup-input').value.trim();
       if (channelId) {
         settings.telegramChannelId = channelId;
-        settings.telegramBotToken = botToken; // always overwrite so stale tokens can't linger
         saveSettings();
-
+        
         // Update all three channel inputs
         document.getElementById('telegram-channel-id').value = channelId;
         document.getElementById('telegram-channel-id-editor').value = channelId;
         document.getElementById('telegram-channel-id-sent').value = channelId;
-
+        
         // Close setup modal
         channelSetupModal.classList.remove('visible');
         channelSetupInput.value = '';
-        document.getElementById('bot-token-setup-input').value = '';
         
         // Only trigger send action if we came from a send button
         // sendMode will be set if user clicked Send Now/Send Selected
@@ -3917,9 +3958,8 @@
         // Clear sendMode so we don't trigger send after editing
         sendMode = null;
         
-        // Show channel setup modal pre-filled with current values
+        // Show channel setup modal with current value
         channelSetupInput.value = settings.telegramChannelId || '';
-        document.getElementById('bot-token-setup-input').value = settings.telegramBotToken || '';
         channelSetupModal.classList.add('visible');
         channelSetupInput.focus();
       });
@@ -4154,67 +4194,92 @@
     `;
 
     // Tooltip positioning for info icons
-    function positionTooltip(icon, tooltip) {
-      const rect = icon.getBoundingClientRect();
-      const tooltipRect = tooltip.getBoundingClientRect();
-      
-      // Position to the right of the icon, vertically centered
-      const top = rect.top + (rect.height / 2) - (tooltipRect.height / 2);
-      const left = rect.right + 10;
-      
-      tooltip.style.top = top + 'px';
-      tooltip.style.left = left + 'px';
-      tooltip.style.transform = 'none';
+    function setupTooltips() {
+      document.querySelectorAll('.info-icon').forEach(icon => {
+        const tooltip = icon.querySelector('.info-tooltip');
+        if (!tooltip) return;
+        
+        // Remove old event listeners by cloning (prevents duplicates)
+        const newIcon = icon.cloneNode(true);
+        icon.parentNode.replaceChild(newIcon, icon);
+        const newTooltip = newIcon.querySelector('.info-tooltip');
+        
+        // Move tooltip to body to escape stacking contexts
+        document.body.appendChild(newTooltip);
+        
+        newIcon.addEventListener('mouseenter', function(e) {
+          // Get icon position
+          const iconRect = this.getBoundingClientRect();
+          
+          // Make tooltip briefly visible to measure it
+          newTooltip.style.visibility = 'visible';
+          newTooltip.style.opacity = '0';
+          const tooltipRect = newTooltip.getBoundingClientRect();
+          
+          // Calculate position - default to right side, vertically centered
+          let top = iconRect.top + (iconRect.height / 2);
+          let left = iconRect.right + 10;
+          let transform = 'translateY(-50%)';
+          
+          const viewportWidth = window.innerWidth;
+          const viewportHeight = window.innerHeight;
+          
+          // Check if tooltip would go off right edge of screen
+          if (left + tooltipRect.width > viewportWidth - 20) {
+            // Position on LEFT side of icon instead
+            left = iconRect.left - tooltipRect.width - 10;
+          }
+          
+          // Check if tooltip would go off left edge
+          if (left < 20) {
+            // Position below icon instead, centered
+            top = iconRect.bottom + 10;
+            left = iconRect.left + (iconRect.width / 2);
+            transform = 'translateX(-50%)';
+          }
+          
+          // Check if vertically centered tooltip would go off top edge
+          const topEdge = top - (tooltipRect.height / 2);
+          if (topEdge < 20 && transform === 'translateY(-50%)') {
+            // Align top of tooltip with top of icon
+            top = iconRect.top;
+            transform = 'translateY(0)';
+          }
+          
+          // Check if tooltip would go off bottom edge
+          const bottomEdge = top + tooltipRect.height;
+          if (bottomEdge > viewportHeight - 20 && transform === 'translateY(0)') {
+            // Position above icon instead
+            top = iconRect.top - tooltipRect.height - 10;
+            transform = 'translateY(0)';
+          }
+          
+          // Apply position styles only (preserve other styles)
+          newTooltip.style.position = 'fixed';
+          newTooltip.style.top = top + 'px';
+          newTooltip.style.left = left + 'px';
+          newTooltip.style.transform = transform;
+          newTooltip.style.opacity = '1';
+          newTooltip.style.visibility = 'visible';
+          newTooltip.style.zIndex = '999999';
+        });
+        
+        newIcon.addEventListener('mouseleave', function() {
+          newTooltip.style.opacity = '0';
+          newTooltip.style.visibility = 'hidden';
+        });
+      });
     }
     
-    document.querySelectorAll('.info-icon').forEach(icon => {
-      const tooltip = icon.querySelector('.info-tooltip');
-      if (tooltip) {
-        icon.addEventListener('mouseenter', () => {
-          // Force a reflow to get accurate measurements
-          tooltip.style.opacity = '0';
-          tooltip.style.visibility = 'visible';
-          setTimeout(() => {
-            positionTooltip(icon, tooltip);
-            tooltip.style.opacity = '';
-          }, 0);
-        });
-        
-        icon.addEventListener('mouseleave', () => {
-          tooltip.style.visibility = 'hidden';
-        });
-        
-        // Update position on scroll if visible
-        window.addEventListener('scroll', () => {
-          const isVisible = tooltip.style.visibility === 'visible';
-          if (isVisible) {
-            positionTooltip(icon, tooltip);
-          }
-        });
-      }
-    });
-
-    // ─── Theme Toggle ────────────────────────────────
-    const themeToggleBtn = document.getElementById('theme-toggle-btn');
-    const themeSun  = document.getElementById('theme-icon-sun');
-    const themeMoon = document.getElementById('theme-icon-moon');
-    const themeLabel = document.getElementById('theme-label');
-
-    function applyTheme(theme) {
-      const isLight = theme === 'light';
-      document.body.classList.toggle('light', isLight);
-      themeSun.style.display  = isLight ? 'none' : '';
-      themeMoon.style.display = isLight ? '' : 'none';
-      themeLabel.textContent  = isLight ? 'Dark' : 'Light';
-    }
-
-    applyTheme(localStorage.getItem('distroTheme') || 'dark');
-
-    themeToggleBtn.addEventListener('click', () => {
-      const isLight = document.body.classList.contains('light');
-      const next = isLight ? 'dark' : 'light';
-      localStorage.setItem('distroTheme', next);
-      applyTheme(next);
+    // Setup tooltips on page load
+    document.addEventListener('DOMContentLoaded', setupTooltips);
+    setupTooltips(); // Also run immediately in case DOM already loaded
+    
+    // Re-setup tooltips when navigating between screens
+    document.querySelectorAll('.nav-item').forEach(navItem => {
+      navItem.addEventListener('click', () => {
+        setTimeout(setupTooltips, 100);
+      });
     });
   </script>
 </body>
