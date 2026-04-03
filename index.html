@@ -2918,20 +2918,17 @@
   <!-- Channel Setup Modal -->
   <div class="modal-overlay" id="channel-setup-modal">
     <div class="modal">
-      <h3>Set Up Telegram Channel</h3>
-      <p style="color: var(--text-secondary); margin-bottom: 16px;">Please enter your Telegram channel ID before sending.</p>
+      <h3>Set Up Telegram</h3>
+      <p style="color: var(--text-secondary); margin-bottom: 20px;">Enter your bot token and channel ID. Credentials are saved locally in your browser.</p>
+      <div class="inline-control-group" style="margin-bottom: 16px;">
+        <label class="inline-label">Bot Token</label>
+        <input type="password" class="telegram-channel-field" id="bot-token-setup-input" placeholder="123456789:ABCdef..." style="width: 100%;">
+      </div>
       <div class="inline-control-group" style="margin-bottom: 20px;">
-        <label class="inline-label">
-          Channel ID
-          <span class="info-icon" style="margin-left: 4px; opacity: 0.6; cursor: help; font-size: 9px;">
-            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/>
-            </svg>
-            <div class="info-tooltip"><strong>Channel ID:</strong><br>1. Open Telegram<br>2. Search for your channel<br>3. Tap channel name<br>4. Copy username (e.g. @mynewschannel) or ID (e.g. -100123...)<br><br><strong>Bot Token:</strong><br>1. Search @BotFather<br>2. Type /newbot<br>3. Follow steps to create bot</div>
-          </span>
-        </label>
+        <label class="inline-label">Channel ID</label>
         <input type="text" class="telegram-channel-field" id="channel-setup-input" placeholder="@yourchannel or -1001234567890" style="width: 100%;">
       </div>
+      <p id="channel-setup-error" style="color: var(--error); font-size: 12px; margin-bottom: 12px; display: none;"></p>
       <div class="modal-actions">
         <button class="btn btn-secondary" id="cancel-channel-setup">Cancel</button>
         <button class="btn btn-primary" id="save-channel-setup">Save & Continue</button>
@@ -3030,7 +3027,7 @@
     document.getElementById('article-count-input').value = settings.articleCount || 10;
     document.getElementById('custom-tone-input').value = settings.customTone || '';
 
-    // Populate Telegram Channel ID from settings
+    // Populate Telegram credentials from settings
     const telegramChannelId = settings.telegramChannelId || '';
     document.getElementById('telegram-channel-id').value = telegramChannelId;
     document.getElementById('telegram-channel-id-editor').value = telegramChannelId;
@@ -3503,13 +3500,15 @@
     let sendMode = null; // 'single', 'batch', or null
 
     sendNowBtn.addEventListener('click', () => {
-      // Check if channel ID is set
-      if (!settings.telegramChannelId || settings.telegramChannelId.trim() === '') {
-        // Show channel setup modal
+      // Check credentials are set
+      if (!settings.telegramChannelId || !settings.telegramBotToken) {
+        channelSetupInput.value = settings.telegramChannelId || '';
+        document.getElementById('bot-token-setup-input').value = settings.telegramBotToken || '';
+        document.getElementById('channel-setup-error').style.display = 'none';
         document.getElementById('channel-setup-modal').classList.add('visible');
         return;
       }
-      
+
       sendMode = 'single';
       const channelId = settings.telegramChannelId;
       modalMessage.textContent = `This will post the summary to Telegram Channel: ${channelId}. This action cannot be undone.`;
@@ -3517,9 +3516,11 @@
     });
 
     sendSelectedBtn.addEventListener('click', () => {
-      // Check if channel ID is set
-      if (!settings.telegramChannelId || settings.telegramChannelId.trim() === '') {
-        // Show channel setup modal
+      // Check credentials are set
+      if (!settings.telegramChannelId || !settings.telegramBotToken) {
+        channelSetupInput.value = settings.telegramChannelId || '';
+        document.getElementById('bot-token-setup-input').value = settings.telegramBotToken || '';
+        document.getElementById('channel-setup-error').style.display = 'none';
         document.getElementById('channel-setup-modal').classList.add('visible');
         return;
       }
@@ -3540,85 +3541,75 @@
       }
     });
 
-    confirmSendBtn.addEventListener('click', () => {
-      statusSelect.value = 'in-progress';
+    confirmSendBtn.addEventListener('click', async () => {
       const draftStatus = document.getElementById('draft-status');
-      draftStatus.classList.add('sending');
       confirmModal.classList.remove('visible');
+      confirmSendBtn.disabled = true;
+      draftStatus.classList.add('sending');
 
-      setTimeout(() => {
-        const sentList = document.getElementById('sent-list');
-        const now = new Date().toLocaleString('en-US', { 
-          month: 'short', 
-          day: 'numeric', 
-          hour: 'numeric', 
-          minute: '2-digit' 
+      const chatId    = settings.telegramChannelId;
+      const botToken  = settings.telegramBotToken;
+
+      // Build articles list
+      let articles = [];
+      if (sendMode === 'single') {
+        articles = [{
+          title:   document.getElementById('draft-title').value,
+          summary: document.getElementById('draft-content').value,
+          url:     document.getElementById('draft-url').value,
+          source:  ''
+        }];
+      } else {
+        articles = draftData
+          .filter(a => selectedDrafts.has(a.id))
+          .map(a => ({ title: a.title, summary: a.summary || a.description || '', url: a.url || '', source: a.source || '' }));
+      }
+
+      try {
+        const res = await fetch('/api/send-telegram', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ articles, chatId, botToken })
         });
+        const data = await res.json();
 
-        if (sendMode === 'single') {
-          // Send current draft
-          const title = document.getElementById('draft-title').value;
-          const content = document.getElementById('draft-content').value;
+        const sentList = document.getElementById('sent-list');
+        const now = new Date().toLocaleString('en-US', { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' });
 
-          const sentItem = `
+        if (!data.success) throw new Error(data.error || 'Send failed');
+
+        articles.forEach(article => {
+          const preview = (article.summary || '').substring(0, 150);
+          sentList.insertAdjacentHTML('afterbegin', `
             <div class="sent-item">
               <div class="sent-header">
-                <div class="sent-title">${title}</div>
+                <div class="sent-title">${article.title}</div>
                 <div class="sent-time">${now}</div>
               </div>
-              <div class="sent-preview">${content.substring(0, 150)}...</div>
-              <button class="copy-btn" onclick="copyText(\`${title}\\n\\n${content}\`)">Copy Text</button>
+              <div class="sent-preview">${preview}${preview.length === 150 ? '...' : ''}</div>
+              <button class="copy-btn" onclick="copyText(\`${article.title}\\n\\n${article.summary}\`)">Copy Text</button>
             </div>
-          `;
+          `);
+        });
 
-          sentList.insertAdjacentHTML('afterbegin', sentItem);
-          
-          // Remove sent item from drafts if it was selected
-          if (currentEditingId) {
-            selectedDrafts.delete(currentEditingId);
-          }
-        } else {
-          // Send all selected drafts
-          const itemsToSend = draftData.filter(article => selectedDrafts.has(article.id));
-          
-          itemsToSend.forEach(article => {
-            const content = `• ${article.description}\n\n• Key insight about the development and its implications for the industry.\n\n• Analysis of how this will affect the market and competitors.`;
-            
-            const sentItem = `
-              <div class="sent-item">
-                <div class="sent-header">
-                  <div class="sent-title">${article.title}</div>
-                  <div class="sent-time">${now}</div>
-                </div>
-                <div class="sent-preview">${content.substring(0, 150)}...</div>
-                <button class="copy-btn" onclick="copyText(\`${article.title}\\n\\n${content}\`)">Copy Text</button>
-              </div>
-            `;
-
-            sentList.insertAdjacentHTML('afterbegin', sentItem);
-          });
-
-          // Clear selected drafts
+        if (sendMode === 'batch') {
           selectedDrafts.clear();
-          document.querySelectorAll('.article-list-item').forEach(item => {
-            item.classList.remove('selected-for-send');
-          });
+          document.querySelectorAll('.article-list-item').forEach(item => item.classList.remove('selected-for-send'));
           updateDraftSelectionUI();
         }
 
-        // Clear article selection from fetch page and update UI
         selectedArticles.clear();
-        document.querySelectorAll('.article-card').forEach(card => {
-          card.classList.remove('selected');
-        });
+        document.querySelectorAll('.article-card').forEach(card => card.classList.remove('selected'));
         updateSelectionBar();
-        
-        // Go to sent page to show results
         document.querySelector('[data-screen="sent"]').click();
 
-        statusSelect.value = 'ready';
-        draftStatus.classList.remove('sending');
-      }, 1500);
+      } catch (err) {
+        alert(`Failed to send to Telegram: ${err.message}`);
+      }
+
+      confirmSendBtn.disabled = false;
+      draftStatus.classList.remove('sending');
+      if (statusSelect) statusSelect.value = 'ready';
     });
 
     // Channel Setup Modal
@@ -3630,41 +3621,53 @@
     cancelChannelSetupBtn.addEventListener('click', () => {
       channelSetupModal.classList.remove('visible');
       channelSetupInput.value = '';
+      document.getElementById('bot-token-setup-input').value = '';
+      document.getElementById('channel-setup-error').style.display = 'none';
     });
 
     channelSetupModal.addEventListener('click', (e) => {
       if (e.target === channelSetupModal) {
         channelSetupModal.classList.remove('visible');
         channelSetupInput.value = '';
+        document.getElementById('bot-token-setup-input').value = '';
+        document.getElementById('channel-setup-error').style.display = 'none';
       }
     });
 
     saveChannelSetupBtn.addEventListener('click', () => {
       const channelId = channelSetupInput.value.trim();
-      if (channelId) {
-        settings.telegramChannelId = channelId;
-        saveSettings();
-        
-        // Update all three channel inputs
-        document.getElementById('telegram-channel-id').value = channelId;
-        document.getElementById('telegram-channel-id-editor').value = channelId;
-        document.getElementById('telegram-channel-id-sent').value = channelId;
-        
-        // Close setup modal
-        channelSetupModal.classList.remove('visible');
-        channelSetupInput.value = '';
-        
-        // Only trigger send action if we came from a send button
-        // sendMode will be set if user clicked Send Now/Send Selected
-        if (sendMode) {
-          if (sendMode === 'single') {
-            sendNowBtn.click();
-          } else {
-            sendSelectedBtn.click();
-          }
-          // Reset sendMode after triggering
-          sendMode = null;
+      const botToken  = document.getElementById('bot-token-setup-input').value.trim();
+      const errorEl   = document.getElementById('channel-setup-error');
+
+      if (!botToken || !channelId) {
+        errorEl.textContent = 'Both bot token and channel ID are required.';
+        errorEl.style.display = 'block';
+        return;
+      }
+      errorEl.style.display = 'none';
+
+      settings.telegramChannelId = channelId;
+      settings.telegramBotToken  = botToken;
+      saveSettings();
+
+      // Update all three channel inputs
+      document.getElementById('telegram-channel-id').value = channelId;
+      document.getElementById('telegram-channel-id-editor').value = channelId;
+      document.getElementById('telegram-channel-id-sent').value = channelId;
+
+      // Close setup modal
+      channelSetupModal.classList.remove('visible');
+      channelSetupInput.value = '';
+      document.getElementById('bot-token-setup-input').value = '';
+
+      // Only trigger send action if we came from a send button
+      if (sendMode) {
+        if (sendMode === 'single') {
+          sendNowBtn.click();
+        } else {
+          sendSelectedBtn.click();
         }
+        sendMode = null;
       }
     });
 
@@ -3677,11 +3680,10 @@
 
     editButtons.forEach(({ btn, input }) => {
       btn.addEventListener('click', () => {
-        // Clear sendMode so we don't trigger send after editing
         sendMode = null;
-        
-        // Show channel setup modal with current value
         channelSetupInput.value = settings.telegramChannelId || '';
+        document.getElementById('bot-token-setup-input').value = settings.telegramBotToken || '';
+        document.getElementById('channel-setup-error').style.display = 'none';
         channelSetupModal.classList.add('visible');
         channelSetupInput.focus();
       });
