@@ -3545,10 +3545,8 @@
     });
 
     confirmSendBtn.addEventListener('click', async () => {
-      const draftStatus = document.getElementById('draft-status');
       confirmModal.classList.remove('visible');
       confirmSendBtn.disabled = true;
-      draftStatus.classList.add('sending');
 
       const chatId    = settings.telegramChannelId;
       const botToken  = settings.telegramBotToken;
@@ -3611,7 +3609,6 @@
       }
 
       confirmSendBtn.disabled = false;
-      draftStatus.classList.remove('sending');
       if (statusSelect) statusSelect.value = 'ready';
     });
 
