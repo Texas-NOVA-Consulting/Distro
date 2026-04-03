@@ -3176,7 +3176,9 @@
 
       try {
         const count = parseInt(document.getElementById('article-count-input').value) || 10;
-        const topic = document.getElementById('custom-tone-input').value.trim() || 'latest technology and AI news';
+        const customPrompt = document.getElementById('custom-tone-input').value.trim();
+        const activeTag = settings.topic;
+        const topic = [activeTag, customPrompt].filter(Boolean).join(' — ') || 'latest technology and AI news';
 
         const res = await fetch('/api/fetch-news', {
           method: 'POST',
