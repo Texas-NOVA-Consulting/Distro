@@ -13,7 +13,7 @@
     }
 
     :root {
-      --color-green:   #02a356;
+      --color-green:   #017a42;
       --color-lime:    #cef431;
       --color-teal:    #014651;
 
@@ -186,8 +186,8 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      background: rgba(2, 163, 86, 0.1);
-      border: 1px solid rgba(2, 163, 86, 0.3);
+      background: rgba(1, 122, 66, 0.1);
+      border: 1px solid rgba(1, 122, 66, 0.3);
       border-radius: 8px;
       cursor: pointer;
       transition: all 0.2s ease;
@@ -201,7 +201,7 @@
     }
 
     .theme-toggle:hover {
-      background: rgba(2, 163, 86, 0.2);
+      background: rgba(1, 122, 66, 0.2);
       border-color: var(--color-green);
       transform: scale(1.05);
     }
@@ -691,15 +691,25 @@
     .ai-prompt-wrap {
       margin-bottom: 16px;
       border-radius: var(--radius);
-      border: 1px solid rgba(3, 210, 111, 0.25);
+      border: 2px solid rgba(1, 122, 66, 0.4);
       background: var(--bg-card);
       overflow: hidden;
       position: relative;
       transition: all 0.3s ease;
+      box-shadow: 0 0 24px rgba(1, 122, 66, 0.12), inset 0 0 40px rgba(1, 122, 66, 0.04);
+    }
+
+    body.dark-mode .ai-prompt-wrap {
+      border-color: rgba(3, 210, 111, 0.25);
       box-shadow: 0 0 20px rgba(3, 210, 111, 0.06), inset 0 0 40px rgba(3, 210, 111, 0.02);
     }
 
     .ai-prompt-wrap:focus-within {
+      border-color: var(--color-green);
+      box-shadow: 0 0 32px rgba(1, 122, 66, 0.25), 0 0 60px rgba(1, 122, 66, 0.1), inset 0 0 40px rgba(1, 122, 66, 0.06);
+    }
+
+    body.dark-mode .ai-prompt-wrap:focus-within {
       border-color: rgba(3, 210, 111, 0.7);
       box-shadow: 0 0 30px rgba(3, 210, 111, 0.18), 0 0 60px rgba(3, 210, 111, 0.06), inset 0 0 40px rgba(3, 210, 111, 0.04);
     }
@@ -741,11 +751,16 @@
       font-size: 9px;
       font-weight: 700;
       letter-spacing: 0.15em;
-      color: #001a0d;
+      color: #ffffff;
       background: var(--color-green);
-      padding: 3px 8px;
+      padding: 4px 10px;
       border-radius: 4px;
       text-transform: uppercase;
+      box-shadow: 0 0 12px rgba(1, 122, 66, 0.3);
+    }
+
+    body.dark-mode .ai-badge {
+      color: #001a0d;
       box-shadow: 0 0 10px rgba(3, 210, 111, 0.2);
     }
 
@@ -754,11 +769,12 @@
       align-items: center;
       gap: 8px;
       font-family: 'Orbitron', sans-serif;
-      font-size: 10px;
+      font-size: 11px;
       text-transform: uppercase;
       letter-spacing: 0.12em;
       color: var(--color-green);
-      opacity: 0.85;
+      opacity: 1;
+      font-weight: 600;
     }
 
     .ai-pulse {
@@ -862,7 +878,7 @@
     }
 
     .ai-prompt-input::placeholder {
-      color: rgba(3, 210, 111, 0.25);
+      color: rgba(3, 210, 111, 0.60);
       font-style: italic;
     }
 
