@@ -3046,7 +3046,8 @@
     function saveSettings() {
       settings.articleCount = parseInt(document.getElementById('article-count-input').value) || 10;
       settings.customTone = document.getElementById('custom-tone-input').value.trim();
-      settings.telegramChannelId = document.getElementById('telegram-channel-id').value.trim();
+      // telegramChannelId and telegramBotToken are set directly on the settings object
+      // before saveSettings() is called — don't re-read from DOM to avoid clobbering them
       localStorage.setItem('newsAppSettings', JSON.stringify(settings));
     }
 
@@ -3650,12 +3651,12 @@
 
       settings.telegramChannelId = channelId;
       settings.telegramBotToken  = botToken;
-      saveSettings();
 
-      // Update all three channel inputs
+      // Update all three channel inputs before saving so DOM is in sync
       document.getElementById('telegram-channel-id').value = channelId;
       document.getElementById('telegram-channel-id-editor').value = channelId;
       document.getElementById('telegram-channel-id-sent').value = channelId;
+      saveSettings();
 
       // Close setup modal
       channelSetupModal.classList.remove('visible');
