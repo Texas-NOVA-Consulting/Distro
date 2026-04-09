@@ -3306,15 +3306,44 @@
       }
     }
 
-    document.getElementById('generate-btn').addEventListener('click', () => {
-      if (selectedArticles.size === 0) return;
-      
-      const statusSelect = document.getElementById('draft-status-select');
-      if (statusSelect) {
-        statusSelect.value = 'draft';
-      }
+    document.getElementById('generate-btn').addEventListener('click', async () => {
+  if (selectedArticles.size === 0) return;
 
-      setTimeout(() => {
+  const generateBtn = document.getElementById('generate-btn');
+  generateBtn.textContent = 'Generating...';
+  generateBtn.disabled = true;
+
+  const selectedData = mockArticles.filter(a => selectedArticles.has(a.id));
+
+  try {
+    const res = await fetch('/api/generate-summaries', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        articles: selectedData,
+        tone: 'professional',
+        summaryLength: document.getElementById('regen-length')?.value || 'medium',
+        customInstructions: ''
+      })
+    });
+    const data = await res.json();
+    if (data.success) {
+      data.summaries.forEach(s => {
+        const article = selectedData.find(a => a.id === s.id);
+        if (article) article.summary = s.summary;
+      });
+    }
+  } catch (err) {
+    console.error('Summary generation failed:', err);
+  }
+
+  generateBtn.textContent = 'Generate Article Summaries';
+  generateBtn.disabled = false;
+
+  const statusSelect = document.getElementById('draft-status-select');
+  if (statusSelect) statusSelect.value = 'draft';
+
+  setTimeout(() => {
         // Switch to drafts screen
         document.querySelector('[data-screen="drafts"]').click();
         
@@ -3458,7 +3487,7 @@
       
       titleInput.value = article.title;
       urlInput.value = article.url || `https://example.com/article/${article.id}`;
-      contentInput.value = `• ${article.description}\n\n• Key insight about the development and its implications for the industry.\n\n• Analysis of how this will affect the market and competitors.`;
+      contentInput.value = article.summary || article.description || '';
       
       // Set status
       statusSelect.value = draftStatuses[article.id] || 'draft';
@@ -3774,7 +3803,7 @@
         `Market sentiment remains cautious but optimistic on long-term prospects.`,
         `Downstream implications could reshape the competitive dynamics through Q3.`
       ];
-      const lines = bank.slice(0, n).map(l => `• ${l}`).join('\n');
+      const lines = bank.slice(0, n).join(' ');
       return tone ? `${lines}\n\n[Style: ${tone.slice(0, 50)}]` : lines;
     }
 
