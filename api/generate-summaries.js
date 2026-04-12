@@ -44,7 +44,7 @@ export default async function handler(req, res) {
       long: '2 paragraphs — the first covering the news itself, the second covering broader implications and context',
     };
 
-    const toneStyle = toneInstructions[tone] || toneInstructions.professional;
+    const toneStyle = toneInstructions[tone] || tone || toneInstructions.professional;
     const paragraphFormat = lengthInstructions[summaryLength] || lengthInstructions.medium;
 
     const summaries = [];
