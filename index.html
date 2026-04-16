@@ -93,6 +93,12 @@
       --shadow:  0 8px 32px rgba(0, 0, 0, 0.1);
     }
 
+    /* Standard Font Mode */
+    body.standard-font *:not(.logo):not(.logo *) {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', system-ui, sans-serif !important;
+      letter-spacing: normal !important;
+    }
+
     body {
       font-family: 'Inter', system-ui, sans-serif;
       background: var(--bg-primary);
@@ -609,6 +615,273 @@
       border-color: var(--color-green);
       font-weight: 700;
       box-shadow: 0 0 16px rgba(3, 210, 111, 0.2);
+    }
+
+    /* Discovery Separator (OR line) */
+    .discovery-separator {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 16px 16px 12px;
+      margin: 0;
+    }
+
+    .separator-line {
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, 
+        transparent, 
+        rgba(3, 210, 111, 0.2) 20%, 
+        rgba(3, 210, 111, 0.2) 80%, 
+        transparent
+      );
+    }
+
+    .separator-text {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 9px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--text-tertiary);
+      font-weight: 600;
+      white-space: nowrap;
+      opacity: 0.7;
+    }
+
+    /* Settings Page Styles */
+    .settings-section {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 28px;
+      margin-bottom: 24px;
+      backdrop-filter: blur(10px);
+    }
+
+    .settings-section-header {
+      margin-bottom: 24px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .settings-section-title {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin: 0 0 8px 0;
+      letter-spacing: 0.03em;
+    }
+
+    .settings-section-desc {
+      font-size: 13px;
+      color: var(--text-secondary);
+      margin: 0;
+      line-height: 1.5;
+    }
+
+    .settings-group {
+      margin-bottom: 24px;
+    }
+
+    .settings-group:last-child {
+      margin-bottom: 0;
+    }
+
+    .settings-label {
+      display: block;
+      font-family: 'Inter', sans-serif;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+    }
+
+    .settings-textarea {
+      width: 100%;
+      padding: 14px;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text-primary);
+      font-family: 'Inter', sans-serif;
+      font-size: 13px;
+      line-height: 1.6;
+      resize: vertical;
+      transition: all 0.2s ease;
+    }
+
+    .settings-textarea:focus {
+      outline: none;
+      border-color: var(--color-green);
+      background: var(--bg-primary);
+    }
+
+    .settings-textarea::placeholder {
+      color: var(--text-tertiary);
+      font-style: italic;
+    }
+
+    .settings-select {
+      width: 100%;
+      padding: 12px 14px;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text-primary);
+      font-family: 'Inter', sans-serif;
+      font-size: 13px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .settings-select:focus {
+      outline: none;
+      border-color: var(--color-green);
+      background: var(--bg-primary);
+    }
+
+    /* Radio Groups */
+    .radio-group {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .radio-group-inline {
+      flex-direction: row;
+      gap: 16px;
+    }
+
+    .radio-option {
+      display: flex;
+      align-items: flex-start;
+      padding: 14px 16px;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      position: relative;
+    }
+
+    .radio-option:hover {
+      border-color: var(--color-green);
+      background: var(--bg-primary);
+    }
+
+    .radio-option input[type="radio"] {
+      position: absolute;
+      opacity: 0;
+      cursor: pointer;
+    }
+
+    .radio-custom {
+      width: 18px;
+      height: 18px;
+      border: 2px solid var(--border);
+      border-radius: 50%;
+      margin-right: 12px;
+      flex-shrink: 0;
+      position: relative;
+      margin-top: 2px;
+      transition: all 0.2s ease;
+    }
+
+    .radio-option input[type="radio"]:checked + .radio-custom {
+      border-color: var(--color-green);
+    }
+
+    .radio-option input[type="radio"]:checked + .radio-custom::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 8px;
+      height: 8px;
+      background: var(--color-green);
+      border-radius: 50%;
+    }
+
+    .radio-label-content {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      flex: 1;
+    }
+
+    .radio-label-content strong {
+      font-size: 13px;
+      color: var(--text-primary);
+      font-weight: 600;
+    }
+
+    .radio-desc {
+      font-size: 12px;
+      color: var(--text-secondary);
+      line-height: 1.4;
+    }
+
+    .radio-option-compact {
+      flex: 1;
+      padding: 12px;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .radio-option-compact .radio-custom {
+      margin-right: 8px;
+      margin-top: 0;
+    }
+
+    .radio-option-compact .radio-label-content {
+      flex-direction: row;
+      gap: 0;
+    }
+
+    /* Settings Footer */
+    .settings-footer {
+      margin-top: 32px;
+      padding-top: 24px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .btn-large {
+      padding: 14px 32px;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .settings-footer-note {
+      font-size: 12px;
+      color: var(--text-tertiary);
+      margin: 0;
+      text-align: center;
+    }
+
+    /* Settings Preview Badges */
+    .settings-badge {
+      padding: 4px 10px;
+      background: rgba(3, 210, 111, 0.08);
+      border: 1px solid rgba(3, 210, 111, 0.2);
+      border-radius: 12px;
+      font-size: 11px;
+      color: var(--text-primary);
+      font-weight: 500;
+      white-space: nowrap;
+    }
+
+    body.dark-mode .settings-badge {
+      background: rgba(3, 210, 111, 0.1);
     }
 
     /* Inline Controls */
@@ -1746,126 +2019,13 @@
       gap: 12px;
     }
 
-    /* ── Regen Bar ─────────────────────────────────────── */
-    /* ── AI Summary Customization Bar (Horizontal, Green) ──────── */
-    .ai-summary-bar {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 20px;
-      background: rgba(255, 255, 255, 0.95);
-      border: 1px solid rgba(3, 210, 111, 0.25);
-      border-radius: var(--radius);
-      padding: 18px 24px;
-      margin: 0 32px 16px;
-      position: relative;
-      overflow: hidden;
-      backdrop-filter: blur(12px);
-      box-shadow: 0 0 24px rgba(3, 210, 111, 0.08);
-      min-height: 70px;
-    }
-
-    body.dark-mode .ai-summary-bar {
-      background: rgba(22, 21, 20, 0.95);
-    }
-
-    /* Scanline sweep */
-    .ai-summary-bar::before {
-      content: '';
-      position: absolute;
-      top: 0; left: -60%;
-      width: 40%; height: 1px;
-      background: linear-gradient(90deg, transparent, rgba(3, 210, 111, 0.7), transparent);
-      animation: scanline-sweep 4s linear infinite;
-    }
-
-    .ai-summary-bar-left {
-      display: flex;
-      align-items: center;
-      gap: 24px;
-      flex: 1;
-      min-width: 0;
-    }
-
-    .ai-summary-controls {
-      display: flex;
-      align-items: flex-end;
-      gap: 16px;
-      flex: 1;
-      min-width: 0;
-    }
-
-    .inline-input {
-      height: 38px;
-      padding: 0 14px;
-      background: rgba(1, 70, 81, 0.06);
-      border: 1px solid var(--border-teal);
-      border-radius: 8px;
-      color: var(--text-primary);
-      font-family: 'Inter', sans-serif;
-      font-size: 13px;
-      outline: none;
-      transition: all 0.2s ease;
-    }
-
-    .inline-input::placeholder {
-      color: rgba(13, 46, 51, 0.35);
-      font-style: italic;
-    }
-
-    .inline-input:focus {
-      border-color: rgba(3, 210, 111, 0.45);
-      background: rgba(3, 210, 111, 0.06);
-    }
-
-    .regenerate-action-btn-horizontal {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      padding: 10px 20px;
-      background: var(--color-green);
-      border: none;
-      border-radius: var(--radius-btn);
-      color: #001a0d;
-      font-family: 'Orbitron', sans-serif;
-      font-size: 11px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      box-shadow: 0 0 20px rgba(3, 210, 111, 0.25);
-      white-space: nowrap;
-      flex-shrink: 0;
-    }
-
-    .regenerate-action-btn-horizontal:hover:not(:disabled) {
-      background: #04e87a;
-      box-shadow: 0 0 32px rgba(3, 210, 111, 0.4);
-      transform: translateY(-1px);
-    }
-
-    .regenerate-action-btn-horizontal:disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
-    }
-
-    .regenerate-action-btn-horizontal.spinning svg {
-      animation: spin 0.8s linear infinite;
-    }
-
-    @keyframes spin {
-      from { transform: rotate(0deg); }
-      to   { transform: rotate(360deg); }
-    }
-
     /* ── New Editor Layout ──────────────────────────────── */
     .editor-layout {
       display: grid;
       grid-template-columns: 300px 1fr;
       height: calc(100vh - 180px);
       overflow: hidden;
-      margin: 0 32px;
+      margin: 16px 32px 0;
       gap: 16px;
     }
 
@@ -1941,46 +2101,6 @@
       background: rgba(3, 210, 111, 0.12);
       opacity: 1;
       box-shadow: 0 0 20px rgba(3, 210, 111, 0.15);
-    }
-
-    /* Regenerating shimmer state */
-    .article-list-item.regenerating {
-      pointer-events: none;
-      opacity: 0.55;
-    }
-
-    .regen-item-indicator {
-      display: none;
-      position: absolute;
-      right: 12px;
-      top: 50%;
-      transform: translateY(-50%);
-      width: 7px;
-      height: 7px;
-      background: var(--color-green);
-      border-radius: 50%;
-      box-shadow: 0 0 8px var(--color-green);
-      animation: ai-pulse 1s ease-in-out infinite;
-    }
-
-    .article-list-item.regenerating .regen-item-indicator {
-      display: block;
-    }
-
-    /* Completion flash */
-    .article-list-item.regen-complete {
-      animation: regen-complete-flash 0.6s ease-out;
-    }
-
-    @keyframes regen-complete-flash {
-      0% {
-        border-color: var(--color-green);
-        box-shadow: 0 0 20px rgba(3, 210, 111, 0.4);
-      }
-      100% {
-        border-color: rgba(3, 210, 111, 0.2);
-        box-shadow: 0 0 20px rgba(3, 210, 111, 0.15);
-      }
     }
 
     .draft-checkbox {
@@ -2431,6 +2551,29 @@
       box-shadow: 0 0 15px rgba(3, 210, 111, 0.15);
     }
 
+    .sent-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 12px;
+    }
+
+    .sent-to-channel {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 10px;
+      color: var(--text-tertiary);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .sent-to-channel .channel-name {
+      color: var(--color-green);
+      font-weight: 600;
+    }
+
     /* Add URL Section */
     .add-url {
       background: rgba(255, 255, 255, 0.7);
@@ -2570,38 +2713,412 @@
         </span>
         <div class="nav-tooltip">View your posting history and past summaries</div>
       </div>
-      <div class="nav-item" data-screen="settings" style="display: none;">
+      <div class="nav-item" data-screen="settings">
         <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
         </svg>
         Settings
+        <span class="nav-info-icon">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/>
+          </svg>
+        </span>
+        <div class="nav-tooltip">Configure your default summary preferences and writing style</div>
       </div>
     </div>
-
-    <!-- Theme Toggle (Top Right Corner) -->
-    <button class="theme-toggle" id="theme-toggle" title="Toggle theme">
-      <svg class="theme-icon sun-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <circle cx="12" cy="12" r="5"></circle>
-        <line x1="12" y1="1" x2="12" y2="3"></line>
-        <line x1="12" y1="21" x2="12" y2="23"></line>
-        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-        <line x1="1" y1="12" x2="3" y2="12"></line>
-        <line x1="21" y1="12" x2="23" y2="12"></line>
-        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
-      </svg>
-      <svg class="theme-icon moon-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: none;">
-        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
-      </svg>
-    </button>
 
     <!-- Main Content -->
     <div class="main">
       <!-- Screen 1: Settings (HIDDEN - now embedded in Fetch News) -->
-      <div class="screen" id="screen-settings" style="display: none;">
-        <!-- Settings moved to Fetch News page -->
+      <div class="screen" id="screen-settings">
+        <div class="header">
+          <h1>Settings</h1>
+        </div>
+
+        <div class="content" style="max-width: 900px; margin: 0 auto;">
+          
+          <!-- Section 1: Summary Generation -->
+          <div class="settings-section">
+            <div class="settings-section-header">
+              <h2 class="settings-section-title">Summary Generation</h2>
+              <p class="settings-section-desc">Configure how AI writes your summaries. These settings will be applied automatically when generating.</p>
+            </div>
+
+            <!-- Style Presets -->
+            <div class="settings-group">
+              <label class="settings-label">Choose a style preset:</label>
+              <div class="radio-group">
+                <label class="radio-option">
+                  <input type="radio" name="style-preset" value="professional" id="style-professional">
+                  <span class="radio-custom"></span>
+                  <div class="radio-label-content">
+                    <strong>Professional & Formal</strong>
+                    <span class="radio-desc">Clear, objective tone. Focus on facts and data.</span>
+                  </div>
+                </label>
+                <label class="radio-option">
+                  <input type="radio" name="style-preset" value="casual" id="style-casual">
+                  <span class="radio-custom"></span>
+                  <div class="radio-label-content">
+                    <strong>Casual & Conversational</strong>
+                    <span class="radio-desc">Approachable, friendly tone. Easy to read.</span>
+                  </div>
+                </label>
+                <label class="radio-option">
+                  <input type="radio" name="style-preset" value="technical" id="style-technical">
+                  <span class="radio-custom"></span>
+                  <div class="radio-label-content">
+                    <strong>Technical & Data-Driven</strong>
+                    <span class="radio-desc">Detailed analysis. Numbers and metrics emphasized.</span>
+                  </div>
+                </label>
+                <label class="radio-option">
+                  <input type="radio" name="style-preset" value="custom" id="style-custom" checked>
+                  <span class="radio-custom"></span>
+                  <div class="radio-label-content">
+                    <strong>Custom Style</strong>
+                    <span class="radio-desc">Describe your own writing style below.</span>
+                  </div>
+                </label>
+              </div>
+            </div>
+
+            <!-- Custom Style Description -->
+            <div class="settings-group" id="custom-style-group">
+              <label class="settings-label">
+                Describe your writing style:
+                <span class="info-icon" style="margin-left: 6px; font-size: 10px; opacity: 0.6; cursor: help;">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/>
+                  </svg>
+                  <div class="info-tooltip">Describe how you want summaries to be written. Example: "Sharp and concise. Lead with numbers. Avoid jargon."</div>
+                </span>
+              </label>
+              <textarea 
+                id="custom-style-description" 
+                class="settings-textarea" 
+                placeholder="Example: Sharp and concise. Lead with numbers. Avoid jargon. Active voice only. Maximum 3 sentences per summary."
+                rows="4"
+              ></textarea>
+            </div>
+
+            <!-- Example Articles -->
+            <div class="settings-group">
+              <label class="settings-label">
+                Or paste example articles (optional):
+                <span class="info-icon" style="margin-left: 6px; font-size: 10px; opacity: 0.6; cursor: help;">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/>
+                  </svg>
+                  <div class="info-tooltip">Paste 1-3 example summaries that match your desired style. AI will learn from these examples.</div>
+                </span>
+              </label>
+              <textarea 
+                id="example-articles" 
+                class="settings-textarea" 
+                placeholder="Paste example summaries here that match how you want to write..."
+                rows="6"
+              ></textarea>
+            </div>
+
+            <!-- Summary Length -->
+            <div class="settings-group">
+              <label class="settings-label">Summary length:</label>
+              <div class="radio-group radio-group-inline">
+                <label class="radio-option radio-option-compact">
+                  <input type="radio" name="default-length" value="short" id="length-short">
+                  <span class="radio-custom"></span>
+                  <div class="radio-label-content">
+                    <strong>Short</strong>
+                  </div>
+                </label>
+                <label class="radio-option radio-option-compact">
+                  <input type="radio" name="default-length" value="medium" id="length-medium" checked>
+                  <span class="radio-custom"></span>
+                  <div class="radio-label-content">
+                    <strong>Medium</strong>
+                  </div>
+                </label>
+                <label class="radio-option radio-option-compact">
+                  <input type="radio" name="default-length" value="long" id="length-long">
+                  <span class="radio-custom"></span>
+                  <div class="radio-label-content">
+                    <strong>Long</strong>
+                  </div>
+                </label>
+              </div>
+            </div>
+
+            <!-- Summary Tone -->
+            <div class="settings-group">
+              <label class="settings-label">Tone:</label>
+              <select id="default-tone" class="settings-select">
+                <option value="objective">Objective & Neutral</option>
+                <option value="analytical">Analytical & Critical</option>
+                <option value="enthusiastic">Enthusiastic & Positive</option>
+                <option value="skeptical">Skeptical & Questioning</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Section 1.5: AI Configuration (Optional) -->
+          <div class="settings-section">
+            <div class="settings-section-header">
+              <h2 class="settings-section-title">AI Configuration <span style="font-size: 12px; color: var(--text-tertiary); font-weight: 400; font-family: 'Inter', sans-serif;">(Optional)</span></h2>
+              <p class="settings-section-desc">Use your own API keys for AI summarization. Leave blank to use default settings.</p>
+            </div>
+
+            <!-- AI Provider Selection -->
+            <div class="settings-group">
+              <label class="settings-label">AI Provider:</label>
+              <div class="radio-group radio-group-inline">
+                <label class="radio-option radio-option-compact">
+                  <input type="radio" name="ai-provider" value="claude" id="provider-claude" checked>
+                  <span class="radio-custom"></span>
+                  <div class="radio-label-content">
+                    <strong>Claude</strong>
+                  </div>
+                </label>
+                <label class="radio-option radio-option-compact">
+                  <input type="radio" name="ai-provider" value="gemini" id="provider-gemini">
+                  <span class="radio-custom"></span>
+                  <div class="radio-label-content">
+                    <strong>Gemini</strong>
+                  </div>
+                </label>
+              </div>
+            </div>
+
+            <!-- Anthropic API Key -->
+            <div class="settings-group">
+              <label class="settings-label">
+                Anthropic API Key (for Claude):
+                <span class="info-icon" style="margin-left: 6px; font-size: 10px; opacity: 0.6; cursor: help;">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/>
+                  </svg>
+                  <div class="info-tooltip">Get your API key from console.anthropic.com</div>
+                </span>
+              </label>
+              <div style="position: relative;">
+                <input 
+                  type="password" 
+                  id="anthropic-api-key" 
+                  class="settings-textarea" 
+                  placeholder="sk-ant-api03-..."
+                  rows="1"
+                  style="resize: none; font-family: 'Courier New', monospace; padding-right: 45px;"
+                >
+                <button 
+                  type="button"
+                  id="toggle-anthropic-key"
+                  style="
+                    position: absolute;
+                    right: 10px;
+                    top: 50%;
+                    transform: translateY(-50%);
+                    background: transparent;
+                    border: none;
+                    color: var(--text-tertiary);
+                    cursor: pointer;
+                    padding: 4px;
+                    display: flex;
+                    align-items: center;
+                  "
+                  title="Show/Hide API key"
+                >
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                    <circle cx="12" cy="12" r="3"></circle>
+                  </svg>
+                </button>
+              </div>
+            </div>
+
+            <!-- Google AI API Key -->
+            <div class="settings-group">
+              <label class="settings-label">
+                Google AI API Key (for Gemini):
+                <span class="info-icon" style="margin-left: 6px; font-size: 10px; opacity: 0.6; cursor: help;">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/>
+                  </svg>
+                  <div class="info-tooltip">Get your API key from aistudio.google.com</div>
+                </span>
+              </label>
+              <div style="position: relative;">
+                <input 
+                  type="password" 
+                  id="google-api-key" 
+                  class="settings-textarea" 
+                  placeholder="AIza..."
+                  rows="1"
+                  style="resize: none; font-family: 'Courier New', monospace; padding-right: 45px;"
+                >
+                <button 
+                  type="button"
+                  id="toggle-google-key"
+                  style="
+                    position: absolute;
+                    right: 10px;
+                    top: 50%;
+                    transform: translateY(-50%);
+                    background: transparent;
+                    border: none;
+                    color: var(--text-tertiary);
+                    cursor: pointer;
+                    padding: 4px;
+                    display: flex;
+                    align-items: center;
+                  "
+                  title="Show/Hide API key"
+                >
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                    <circle cx="12" cy="12" r="3"></circle>
+                  </svg>
+                </button>
+              </div>
+            </div>
+
+            <!-- Privacy Note -->
+            <div style="
+              background: rgba(3, 210, 111, 0.05);
+              border: 1px solid rgba(3, 210, 111, 0.2);
+              border-radius: 8px;
+              padding: 12px 16px;
+              margin-top: 8px;
+            ">
+              <div style="display: flex; gap: 10px; align-items: start;">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-green)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0; margin-top: 2px;">
+                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                </svg>
+                <div style="font-size: 12px; color: var(--text-secondary); line-height: 1.5;">
+                  <strong style="color: var(--text-primary);">Your keys are stored locally</strong><br>
+                  API keys are saved in your browser's local storage. They never leave your device.
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Section 2: Telegram Configuration -->
+          <div class="settings-section">
+            <div class="settings-section-header">
+              <h2 class="settings-section-title">Telegram Configuration</h2>
+              <p class="settings-section-desc">Connect your Telegram channel and bot for publishing summaries.</p>
+            </div>
+
+            <!-- Channel ID -->
+            <div class="settings-group">
+              <label class="settings-label">
+                Telegram Channel ID:
+                <span class="info-icon" style="margin-left: 6px; font-size: 10px; opacity: 0.6; cursor: help;">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/>
+                  </svg>
+                  <div class="info-tooltip">Your channel username (e.g. @mynewschannel) or numeric ID (e.g. -1001234567890)</div>
+                </span>
+              </label>
+              <input 
+                type="text" 
+                id="settings-channel-id" 
+                class="settings-textarea" 
+                placeholder="@yourchannel or -1001234567890"
+                rows="1"
+                style="resize: none; font-family: 'Courier New', monospace;"
+              >
+            </div>
+
+            <!-- Bot Token -->
+            <div class="settings-group">
+              <label class="settings-label">
+                Bot Token:
+                <span class="info-icon" style="margin-left: 6px; font-size: 10px; opacity: 0.6; cursor: help;">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/>
+                  </svg>
+                  <div class="info-tooltip"><strong>Get your bot token:</strong><br>1. Open Telegram and search @BotFather<br>2. Send /newbot and follow the steps<br>3. Copy the token (e.g. 123456:ABCdef...)</div>
+                </span>
+              </label>
+              <input 
+                type="text" 
+                id="settings-bot-token" 
+                class="settings-textarea" 
+                placeholder="123456789:ABCdefGHIjklMNOpqrsTUVwxyz"
+                rows="1"
+                style="resize: none; font-family: 'Courier New', monospace;"
+              >
+            </div>
+          </div>
+
+          <!-- Save Button -->
+          <div class="settings-footer">
+            <button class="btn btn-primary btn-large" id="save-settings-btn">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 8px;">
+                <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path>
+                <polyline points="17 21 17 13 7 13 7 21"></polyline>
+                <polyline points="7 3 7 8 15 8"></polyline>
+              </svg>
+              Save Settings
+            </button>
+            <p class="settings-footer-note">Changes to Summary Generation and Telegram settings require saving.</p>
+          </div>
+
+          <!-- Section 3: Appearance -->
+          <div class="settings-section">
+            <div class="settings-section-header">
+              <h2 class="settings-section-title">Appearance</h2>
+              <p class="settings-section-desc">Customize the look and feel. Changes apply instantly.</p>
+            </div>
+
+            <!-- Theme Selection -->
+            <div class="settings-group">
+              <label class="settings-label">Theme:</label>
+              <div class="radio-group radio-group-inline">
+                <label class="radio-option radio-option-compact">
+                  <input type="radio" name="theme-setting" value="light" id="theme-light">
+                  <span class="radio-custom"></span>
+                  <div class="radio-label-content">
+                    <strong>Light</strong>
+                  </div>
+                </label>
+                <label class="radio-option radio-option-compact">
+                  <input type="radio" name="theme-setting" value="dark" id="theme-dark" checked>
+                  <span class="radio-custom"></span>
+                  <div class="radio-label-content">
+                    <strong>Dark</strong>
+                  </div>
+                </label>
+              </div>
+            </div>
+
+            <!-- Font Selection -->
+            <div class="settings-group">
+              <label class="settings-label">Font Style:</label>
+              <div class="radio-group radio-group-inline">
+                <label class="radio-option radio-option-compact">
+                  <input type="radio" name="font-setting" value="tech" id="font-tech" checked>
+                  <span class="radio-custom"></span>
+                  <div class="radio-label-content">
+                    <strong style="font-family: 'Orbitron', sans-serif;">Tech</strong>
+                  </div>
+                </label>
+                <label class="radio-option radio-option-compact">
+                  <input type="radio" name="font-setting" value="standard" id="font-standard">
+                  <span class="radio-custom"></span>
+                  <div class="radio-label-content">
+                    <strong style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;">Standard</strong>
+                  </div>
+                </label>
+              </div>
+              <p style="font-size: 11px; color: var(--text-tertiary); margin-top: 8px; margin-bottom: 0;">
+                Tech uses Orbitron for headings, Standard uses system fonts.
+              </p>
+            </div>
+          </div>
+
+        </div>
       </div>
 
       <!-- Screen 2: Fetch News -->
@@ -2610,50 +3127,43 @@
           <h1>Fetch News</h1>
           <div class="header-actions">
             <button class="btn btn-secondary" id="fetch-select-all-btn" style="display: none;">Select All</button>
-            <div class="status" id="fetch-status">
-              <span class="status-dot"></span>
-              Idle
-            </div>
-            <!-- Telegram Channel ID -->
-            <div class="telegram-channel-input">
-              <label class="inline-label">
-                Channel ID
-                <span class="info-icon" style="margin-left: 4px; opacity: 0.6; cursor: help; font-size: 9px;">
-                  <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/>
-                  </svg>
-                  <div class="info-tooltip"><strong>Channel ID:</strong><br>1. Open Telegram<br>2. Search for your channel<br>3. Tap channel name<br>4. Copy username (e.g. @mynewschannel) or ID (e.g. -100123...)<br><br><strong>Bot Token:</strong><br>1. Search @BotFather<br>2. Type /newbot<br>3. Follow steps to create bot</div>
-                </span>
-              </label>
-              <input type="text" class="telegram-channel-field" id="telegram-channel-id" placeholder="@yourchannel" readonly>
-              <button class="channel-edit-btn" id="edit-channel-btn" title="Edit channel ID">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
-                  <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
-                </svg>
-              </button>
-            </div>
-            <!-- Manual URL moved to header -->
-            <div class="header-url-input">
-              <input type="text" class="header-url-field" id="manual-url" placeholder="Paste article URL...">
-              <button class="btn btn-secondary" id="add-url-btn">Add</button>
+          </div>
+        </div>
+
+        <!-- Active Settings Preview -->
+        <div id="active-settings-preview" style="
+          margin: 20px 32px 16px;
+          padding: 12px 16px;
+          background: var(--bg-card);
+          border: 1px solid var(--border);
+          border-radius: 8px;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          font-size: 12px;
+          color: var(--text-secondary);
+          gap: 16px;
+        ">
+          <div style="display: flex; align-items: center; gap: 16px; flex-wrap: wrap;">
+            <span style="font-family: 'Orbitron', sans-serif; font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-tertiary);">Active Settings:</span>
+            <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+              <span class="settings-badge" id="style-badge">Style: Custom</span>
+              <span class="settings-badge" id="length-badge">Length: Medium</span>
+              <span class="settings-badge" id="tone-badge">Tone: Objective</span>
             </div>
           </div>
+          <a href="#" onclick="event.preventDefault(); document.querySelector('[data-screen=settings]').click();" style="
+            font-size: 11px;
+            color: var(--color-green);
+            text-decoration: none;
+            font-weight: 600;
+            white-space: nowrap;
+          ">Edit →</a>
         </div>
 
         <div class="content">
 
-          <!-- Row 1: Topic Tags (above AI box) -->
-          <div class="topic-tags-row">
-            <span class="topic-tag" data-topic="AI">AI</span>
-            <span class="topic-tag" data-topic="Tech">Tech</span>
-            <span class="topic-tag" data-topic="Crypto">Crypto</span>
-            <span class="topic-tag" data-topic="Finance">Finance</span>
-            <span class="topic-tag" data-topic="Science">Science</span>
-            <span class="topic-tag" data-topic="Politics">Politics</span>
-          </div>
-
-          <!-- Row 2: Article Discovery -->
+          <!-- Article Discovery with integrated topic tags -->
           <div class="ai-prompt-wrap" id="ai-prompt-wrap">
             <div class="ai-prompt-header">
               <div class="ai-indicator">
@@ -2663,7 +3173,7 @@
                   <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/>
                   </svg>
-                  <div class="info-tooltip">AI will search for articles matching these criteria</div>
+                  <div class="info-tooltip">Describe articles you want OR select a category below</div>
                 </span>
               </div>
               <span class="ai-badge">AI</span>
@@ -2673,6 +3183,24 @@
               id="custom-tone-input"
               placeholder="Describe the types of articles you want to see — e.g. 'Recent AI funding rounds over $10M, focus on healthcare applications' or 'Breaking crypto news from the past 24 hours, regulatory developments'"
             ></textarea>
+            
+            <!-- OR Separator -->
+            <div class="discovery-separator">
+              <span class="separator-line"></span>
+              <span class="separator-text">OR SELECT A CATEGORY</span>
+              <span class="separator-line"></span>
+            </div>
+            
+            <!-- Topic Tags (moved inside) -->
+            <div class="topic-tags-row" style="margin-bottom: 0; padding: 0 16px 12px;">
+              <span class="topic-tag" data-topic="AI">AI</span>
+              <span class="topic-tag" data-topic="Tech">Tech</span>
+              <span class="topic-tag" data-topic="Crypto">Crypto</span>
+              <span class="topic-tag" data-topic="Finance">Finance</span>
+              <span class="topic-tag" data-topic="Science">Science</span>
+              <span class="topic-tag" data-topic="Politics">Politics</span>
+            </div>
+            
             <div class="ai-prompt-footer">
               <div class="ai-prompt-footer-left">
                 <div class="inline-control-group">
@@ -2699,6 +3227,57 @@
             </div>
           </div>
 
+          <!-- Add Manual Article Link -->
+          <div style="text-align: center; margin: -8px 0 24px; position: relative;">
+            <button id="add-manual-article-btn" style="
+              background: none;
+              border: none;
+              color: var(--text-tertiary);
+              font-family: 'Inter', sans-serif;
+              font-size: 12px;
+              cursor: pointer;
+              padding: 8px 12px;
+              border-radius: 6px;
+              transition: all 0.2s ease;
+              position: relative;
+            " onmouseover="this.style.color='var(--color-green)'; this.style.background='rgba(3, 210, 111, 0.05)'" onmouseout="this.style.color='var(--text-tertiary)'; this.style.background='none'">
+              + Add your own article
+              <span class="info-icon" style="margin-left: 4px; opacity: 0.5; cursor: help; font-size: 9px; position: relative; top: -1px;">
+                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/>
+                </svg>
+                <div class="info-tooltip">Have a specific article URL? Click to add it manually to your collection.</div>
+              </span>
+            </button>
+            
+            <!-- Expandable URL Input -->
+            <div id="manual-article-input" style="
+              display: none;
+              margin-top: 12px;
+              padding: 16px;
+              background: var(--bg-card);
+              border: 1px solid var(--border);
+              border-radius: 8px;
+              max-width: 600px;
+              margin-left: auto;
+              margin-right: auto;
+            ">
+              <div style="display: flex; gap: 8px; align-items: center;">
+                <input type="text" class="header-url-field" id="manual-url" placeholder="Paste article URL..." style="flex: 1;">
+                <button class="btn btn-secondary" id="add-url-btn">Add</button>
+                <button id="cancel-manual-url" style="
+                  background: none;
+                  border: none;
+                  color: var(--text-tertiary);
+                  cursor: pointer;
+                  padding: 8px;
+                  font-size: 20px;
+                  line-height: 1;
+                " title="Cancel">×</button>
+              </div>
+            </div>
+          </div>
+
           <!-- Articles Grid -->
           <div class="articles-grid" id="articles-grid">
             <!-- Articles will be populated here -->
@@ -2711,83 +3290,39 @@
         <div class="header">
           <h1>Editor</h1>
           <div class="header-actions">
-            <!-- Telegram Channel ID -->
-            <div class="telegram-channel-input">
-              <label class="inline-label">
-                Channel ID
-                <span class="info-icon" style="margin-left: 4px; opacity: 0.6; cursor: help; font-size: 9px;">
-                  <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/>
-                  </svg>
-                  <div class="info-tooltip"><strong>Channel ID:</strong><br>1. Open Telegram<br>2. Search for your channel<br>3. Tap channel name<br>4. Copy username (e.g. @mynewschannel) or ID (e.g. -100123...)<br><br><strong>Bot Token:</strong><br>1. Search @BotFather<br>2. Type /newbot<br>3. Follow steps to create bot</div>
-                </span>
-              </label>
-              <input type="text" class="telegram-channel-field" id="telegram-channel-id-editor" placeholder="@yourchannel" readonly>
-              <button class="channel-edit-btn" id="edit-channel-btn-editor" title="Edit channel ID">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
-                  <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
-                </svg>
-              </button>
-            </div>
             <button class="btn btn-secondary" id="select-all-btn" style="display: none;">Select All</button>
             <button class="btn btn-primary" id="send-selected-btn" style="display: none;">Send Selected</button>
           </div>
         </div>
 
-        <!-- AI Summary Customization Bar (Horizontal) -->
-        <div class="ai-summary-bar" id="ai-summary-bar">
-          <div class="ai-summary-bar-left">
-            <div class="ai-indicator">
-              <span class="ai-pulse"></span>
-              Summary Customization
-              <span class="info-icon" style="margin-left: 8px; opacity: 0.6; cursor: help; font-size: 9px;">
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/>
-                </svg>
-                <div class="info-tooltip">Customize how the AI writes your summaries</div>
-              </span>
-            </div>
-            
-            <div class="ai-summary-controls">
-              <!-- Length -->
-              <div class="inline-control-group">
-                <label class="inline-label">Summary Length</label>
-                <select class="inline-select" id="regen-length" style="width: 110px;">
-                  <option value="short">Short</option>
-                  <option value="medium" selected>Medium</option>
-                  <option value="long">Long</option>
-                </select>
-              </div>
-
-              <!-- Tone -->
-              <div class="inline-control-group" style="flex: 1; min-width: 200px;">
-                <label class="inline-label">Tone / Style</label>
-                <input
-                  type="text"
-                  class="inline-input"
-                  id="regen-tone"
-                  placeholder="e.g. 'sharp, data-first' or 'casual, accessible'"
-                  style="width: 100%;"
-                >
-              </div>
-
-              <!-- Apply To -->
-              <div class="inline-control-group">
-                <label class="inline-label">Apply To</label>
-                <select class="inline-select" id="apply-to-select" style="width: 140px;">
-                  <option value="current">This article</option>
-                  <option value="checked">Selected (<span id="checked-count-inline">0</span>)</option>
-                  <option value="all">All (<span id="all-count-inline">0</span>)</option>
-                </select>
-              </div>
-            </div>
+        <!-- Sending To Indicator -->
+        <div style="
+          margin: 16px 32px 0;
+          padding: 10px 14px;
+          background: var(--bg-card);
+          border: 1px solid var(--border);
+          border-radius: 8px;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          font-size: 12px;
+          color: var(--text-secondary);
+        ">
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M22 2L11 13"></path>
+              <path d="M22 2L15 22L11 13L2 9L22 2Z"></path>
+            </svg>
+            <span style="font-family: 'Orbitron', sans-serif; font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-tertiary);">Sending to:</span>
+            <span id="editor-channel-display" style="color: var(--color-green); font-weight: 600;">@your_channel</span>
           </div>
-
-          <button class="regenerate-action-btn-horizontal" id="regenerate-action-btn">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
-            <span id="regenerate-btn-text">Regenerate</span>
-          </button>
+          <a href="#" onclick="event.preventDefault(); document.querySelector('[data-screen=settings]').click();" style="
+            font-size: 11px;
+            color: var(--color-green);
+            text-decoration: none;
+            font-weight: 600;
+            white-space: nowrap;
+          ">Edit →</a>
         </div>
 
         <!-- Main Editor Layout -->
@@ -2835,10 +3370,37 @@
                     </div>
                     <div class="editor-field-group">
                       <label class="editor-field-label">Source URL</label>
-                      <input type="text" class="editor-url" id="draft-url" placeholder="Enter article URL..." disabled>
+                      <div style="display: flex; gap: 8px; align-items: center;">
+                        <input type="text" class="editor-url" id="draft-url" placeholder="Enter article URL..." disabled style="flex: 1;">
+                        <a href="#" id="visit-source-link" target="_blank" rel="noopener noreferrer" style="
+                          display: none;
+                          padding: 8px 14px;
+                          background: var(--color-green);
+                          color: #001a0d;
+                          text-decoration: none;
+                          border-radius: 6px;
+                          font-size: 11px;
+                          font-weight: 600;
+                          font-family: 'Orbitron', sans-serif;
+                          text-transform: uppercase;
+                          letter-spacing: 0.05em;
+                          white-space: nowrap;
+                          transition: all 0.2s ease;
+                        " onmouseover="this.style.background='#04e87a'" onmouseout="this.style.background='var(--color-green)'">
+                          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 4px; vertical-align: middle;">
+                            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                            <polyline points="15 3 21 3 21 9"></polyline>
+                            <line x1="10" y1="14" x2="21" y2="3"></line>
+                          </svg>
+                          Visit
+                        </a>
+                      </div>
                     </div>
                     <div class="editor-field-group" style="flex: 1; display: flex; flex-direction: column;">
-                      <label class="editor-field-label">Summary</label>
+                      <label class="editor-field-label">
+                        Summary
+                        <span style="font-size: 11px; font-weight: 400; color: var(--text-tertiary); margin-left: 8px; font-family: 'Inter', sans-serif;">(Edit directly here)</span>
+                      </label>
                       <textarea class="editor-content" id="draft-content" placeholder="Summary will appear here..." disabled></textarea>
                     </div>
                   </div>
@@ -2864,28 +3426,28 @@
       <div class="screen" id="screen-sent">
         <div class="header">
           <h1>Already Sent</h1>
-          <div class="header-actions">
-            <!-- Telegram Channel ID -->
-            <div class="telegram-channel-input">
-              <label class="inline-label">
-                Channel ID
-                <span class="info-icon" style="margin-left: 4px; opacity: 0.6; cursor: help; font-size: 9px;">
-                  <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/>
-                  </svg>
-                  <div class="info-tooltip"><strong>Channel ID:</strong><br>1. Open Telegram<br>2. Search for your channel<br>3. Tap channel name<br>4. Copy username (e.g. @mynewschannel) or ID (e.g. -100123...)<br><br><strong>Bot Token:</strong><br>1. Search @BotFather<br>2. Type /newbot<br>3. Follow steps to create bot</div>
-                </span>
-              </label>
-              <input type="text" class="telegram-channel-field" id="telegram-channel-id-sent" placeholder="@yourchannel" readonly>
-              <button class="channel-edit-btn" id="edit-channel-btn-sent" title="Edit channel ID">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
-                  <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
-                </svg>
-              </button>
-            </div>
-          </div>
         </div>
+
+        <!-- Sent To Indicator -->
+        <div style="
+          margin: 16px 32px 0;
+          padding: 10px 14px;
+          background: var(--bg-card);
+          border: 1px solid var(--border);
+          border-radius: 8px;
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          font-size: 12px;
+          color: var(--text-secondary);
+        ">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="20 6 9 17 4 12"></polyline>
+          </svg>
+          <span style="font-family: 'Orbitron', sans-serif; font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-tertiary);">Sent to:</span>
+          <span id="sent-channel-display" style="color: var(--color-green); font-weight: 600;">@your_channel</span>
+        </div>
+
         <div class="content">
           <div id="sent-list">
             <!-- Sent items will be populated here -->
@@ -2918,17 +3480,20 @@
   <!-- Channel Setup Modal -->
   <div class="modal-overlay" id="channel-setup-modal">
     <div class="modal">
-      <h3>Set Up Telegram</h3>
-      <p style="color: var(--text-secondary); margin-bottom: 20px;">Enter your bot token and channel ID. Credentials are saved locally in your browser.</p>
-      <div class="inline-control-group" style="margin-bottom: 16px;">
-        <label class="inline-label">Bot Token</label>
-        <input type="password" class="telegram-channel-field" id="bot-token-setup-input" placeholder="123456789:ABCdef..." style="width: 100%;">
-      </div>
+      <h3>Set Up Telegram Channel</h3>
+      <p style="color: var(--text-secondary); margin-bottom: 16px;">Please enter your Telegram channel ID before sending.</p>
       <div class="inline-control-group" style="margin-bottom: 20px;">
-        <label class="inline-label">Channel ID</label>
+        <label class="inline-label">
+          Channel ID
+          <span class="info-icon" style="margin-left: 4px; opacity: 0.6; cursor: help; font-size: 9px;">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/>
+            </svg>
+            <div class="info-tooltip"><strong>Channel ID:</strong><br>1. Open Telegram<br>2. Search for your channel<br>3. Tap channel name<br>4. Copy username (e.g. @mynewschannel) or ID (e.g. -100123...)<br><br><strong>Bot Token:</strong><br>1. Search @BotFather<br>2. Type /newbot<br>3. Follow steps to create bot</div>
+          </span>
+        </label>
         <input type="text" class="telegram-channel-field" id="channel-setup-input" placeholder="@yourchannel or -1001234567890" style="width: 100%;">
       </div>
-      <p id="channel-setup-error" style="color: var(--error); font-size: 12px; margin-bottom: 12px; display: none;"></p>
       <div class="modal-actions">
         <button class="btn btn-secondary" id="cancel-channel-setup">Cancel</button>
         <button class="btn btn-primary" id="save-channel-setup">Save & Continue</button>
@@ -2977,6 +3542,16 @@
       articleCount: 10,
       summaryLength: 'medium',
       customTone: '',
+      // Summary Generation settings
+      stylePreset: 'custom',
+      customStyleDescription: '',
+      exampleArticles: '',
+      defaultLength: 'medium',
+      defaultTone: 'objective',
+      // AI Configuration (optional)
+      aiProvider: 'claude',
+      anthropicApiKey: '',
+      googleApiKey: ''
     };
 
     // Persistent manual articles
@@ -2990,48 +3565,27 @@
       } catch(e) {}
     }
 
-    // Theme Toggle
-    const themeToggle = document.getElementById('theme-toggle');
-    const sunIcon = themeToggle.querySelector('.sun-icon');
-    const moonIcon = themeToggle.querySelector('.moon-icon');
-    
+    // Theme Initialization (toggle moved to Settings)
     // Load saved theme or default to dark
     const savedTheme = localStorage.getItem('distro-theme') || 'dark';
     if (savedTheme === 'dark') {
       document.body.classList.add('dark-mode');
-      sunIcon.style.display = 'block';
-      moonIcon.style.display = 'none';
     } else {
       document.body.classList.remove('dark-mode');
-      sunIcon.style.display = 'none';
-      moonIcon.style.display = 'block';
     }
-    
-    themeToggle.addEventListener('click', () => {
-      document.body.classList.toggle('dark-mode');
-      const isDark = document.body.classList.contains('dark-mode');
-      
-      // Toggle icons
-      if (isDark) {
-        sunIcon.style.display = 'block';
-        moonIcon.style.display = 'none';
-        localStorage.setItem('distro-theme', 'dark');
-      } else {
-        sunIcon.style.display = 'none';
-        moonIcon.style.display = 'block';
-        localStorage.setItem('distro-theme', 'light');
-      }
-    });
+
+    // Font Initialization
+    // Load saved font or default to tech
+    const savedFont = localStorage.getItem('distro-font') || 'tech';
+    if (savedFont === 'standard') {
+      document.body.classList.add('standard-font');
+    } else {
+      document.body.classList.remove('standard-font');
+    }
 
     // Populate controls from saved settings
     document.getElementById('article-count-input').value = settings.articleCount || 10;
     document.getElementById('custom-tone-input').value = settings.customTone || '';
-
-    // Populate Telegram credentials from settings
-    const telegramChannelId = settings.telegramChannelId || '';
-    document.getElementById('telegram-channel-id').value = telegramChannelId;
-    document.getElementById('telegram-channel-id-editor').value = telegramChannelId;
-    document.getElementById('telegram-channel-id-sent').value = telegramChannelId;
 
     // Highlight active tag if matches saved topic
     if (settings.topic) {
@@ -3046,34 +3600,633 @@
     function saveSettings() {
       settings.articleCount = parseInt(document.getElementById('article-count-input').value) || 10;
       settings.customTone = document.getElementById('custom-tone-input').value.trim();
-      // telegramChannelId and telegramBotToken are set directly on the settings object
-      // before saveSettings() is called — don't re-read from DOM to avoid clobbering them
+      // Telegram Channel ID now saved only from Settings page
       localStorage.setItem('newsAppSettings', JSON.stringify(settings));
     }
 
     document.getElementById('article-count-input').addEventListener('input', saveSettings);
     document.getElementById('custom-tone-input').addEventListener('input', saveSettings);
 
-    // Sync Telegram Channel ID across all three fields
-    // Topic tag clicks - update settings.topic when clicked
+    // Topic tag clicks - auto-fill the AI prompt input
+    const customToneInput = document.getElementById('custom-tone-input');
+    
     document.querySelectorAll('.topic-tag').forEach(tag => {
       tag.addEventListener('click', () => {
         if (tag.classList.contains('active')) {
           // Deselect
           tag.classList.remove('active');
           settings.topic = '';
+          customToneInput.value = '';
         } else {
           document.querySelectorAll('.topic-tag').forEach(t => t.classList.remove('active'));
           tag.classList.add('active');
-          settings.topic = tag.dataset.topic;
+          const topic = tag.dataset.topic;
+          settings.topic = topic;
+          // Auto-fill the prompt with the category
+          customToneInput.value = `Latest ${topic} news and developments`;
+          customToneInput.focus();
         }
         saveSettings();
       });
     });
 
+    // Clear active tag when user types in the prompt
+    customToneInput.addEventListener('input', () => {
+      if (customToneInput.value.trim()) {
+        document.querySelectorAll('.topic-tag').forEach(t => t.classList.remove('active'));
+        settings.topic = '';
+      }
+    });
+
+    // Settings Page Handlers
+    function loadSettingsUI() {
+      // Load style preset
+      const stylePreset = settings.stylePreset || 'custom';
+      document.querySelector(`input[name="style-preset"][value="${stylePreset}"]`).checked = true;
+      
+      // Load custom style description
+      document.getElementById('custom-style-description').value = settings.customStyleDescription || '';
+      
+      // Load example articles
+      document.getElementById('example-articles').value = settings.exampleArticles || '';
+      
+      // Load default length
+      const defaultLength = settings.defaultLength || 'medium';
+      document.querySelector(`input[name="default-length"][value="${defaultLength}"]`).checked = true;
+      
+      // Load default tone
+      document.getElementById('default-tone').value = settings.defaultTone || 'objective';
+      
+      // Load AI configuration
+      const aiProvider = settings.aiProvider || 'claude';
+      document.querySelector(`input[name="ai-provider"][value="${aiProvider}"]`).checked = true;
+      document.getElementById('anthropic-api-key').value = settings.anthropicApiKey || '';
+      document.getElementById('google-api-key').value = settings.googleApiKey || '';
+      
+      // Load Telegram configuration
+      document.getElementById('settings-channel-id').value = settings.telegramChannelId || '';
+      document.getElementById('settings-bot-token').value = settings.telegramBotToken || '';
+      
+      // Load theme
+      const savedTheme = localStorage.getItem('distro-theme') || 'dark';
+      document.querySelector(`input[name="theme-setting"][value="${savedTheme}"]`).checked = true;
+      
+      // Load font
+      const savedFont = localStorage.getItem('distro-font') || 'tech';
+      document.querySelector(`input[name="font-setting"][value="${savedFont}"]`).checked = true;
+      
+      // Show/hide custom style group based on preset
+      toggleCustomStyleGroup();
+      
+      // Update preview badges
+      updateSettingsPreview();
+    }
+
+    function updateSettingsPreview() {
+      // Update style badge
+      const styleBadge = document.getElementById('style-badge');
+      if (styleBadge) {
+        const stylePreset = settings.stylePreset || 'custom';
+        const styleLabels = {
+          'professional': 'Professional',
+          'casual': 'Casual',
+          'technical': 'Technical',
+          'custom': 'Custom'
+        };
+        styleBadge.textContent = `Style: ${styleLabels[stylePreset] || 'Custom'}`;
+      }
+      
+      // Update length badge
+      const lengthBadge = document.getElementById('length-badge');
+      if (lengthBadge) {
+        const length = settings.defaultLength || 'medium';
+        lengthBadge.textContent = `Length: ${length.charAt(0).toUpperCase() + length.slice(1)}`;
+      }
+      
+      // Update tone badge
+      const toneBadge = document.getElementById('tone-badge');
+      if (toneBadge) {
+        const tone = settings.defaultTone || 'objective';
+        const toneLabels = {
+          'objective': 'Objective',
+          'analytical': 'Analytical',
+          'enthusiastic': 'Enthusiastic',
+          'skeptical': 'Skeptical'
+        };
+        toneBadge.textContent = `Tone: ${toneLabels[tone] || 'Objective'}`;
+      }
+    }
+
+    function updateChannelDisplays() {
+      // Update channel displays on Editor and Already Sent pages
+      const channelId = settings.telegramChannelId || '@your_channel';
+      const editorDisplay = document.getElementById('editor-channel-display');
+      const sentDisplay = document.getElementById('sent-channel-display');
+      
+      if (editorDisplay) {
+        editorDisplay.textContent = channelId;
+      }
+      if (sentDisplay) {
+        sentDisplay.textContent = channelId;
+      }
+    }
+
+    function toggleCustomStyleGroup() {
+      const customSelected = document.getElementById('style-custom').checked;
+      const customStyleGroup = document.getElementById('custom-style-group');
+      customStyleGroup.style.display = customSelected ? 'block' : 'none';
+    }
+
+    // Style preset change handler
+    document.querySelectorAll('input[name="style-preset"]').forEach(radio => {
+      radio.addEventListener('change', toggleCustomStyleGroup);
+    });
+
+    // Theme toggle - instant apply without save
+    document.querySelectorAll('input[name="theme-setting"]').forEach(radio => {
+      radio.addEventListener('change', (e) => {
+        const theme = e.target.value;
+        if (theme === 'dark') {
+          document.body.classList.add('dark-mode');
+        } else {
+          document.body.classList.remove('dark-mode');
+        }
+        localStorage.setItem('distro-theme', theme);
+      });
+    });
+
+    // Font toggle - instant apply without save
+    const fontRadios = document.querySelectorAll('input[name="font-setting"]');
+    if (fontRadios.length > 0) {
+      fontRadios.forEach(radio => {
+        radio.addEventListener('change', (e) => {
+          const font = e.target.value;
+          if (font === 'standard') {
+            document.body.classList.add('standard-font');
+          } else {
+            document.body.classList.remove('standard-font');
+          }
+          localStorage.setItem('distro-font', font);
+        });
+      });
+    }
+
+    // API Key show/hide toggles
+    document.getElementById('toggle-anthropic-key')?.addEventListener('click', function() {
+      const input = document.getElementById('anthropic-api-key');
+      input.type = input.type === 'password' ? 'text' : 'password';
+    });
+
+    document.getElementById('toggle-google-key')?.addEventListener('click', function() {
+      const input = document.getElementById('google-api-key');
+      input.type = input.type === 'password' ? 'text' : 'password';
+    });
+
+    // Save settings button
+    document.getElementById('save-settings-btn').addEventListener('click', () => {
+      // Get all values
+      const stylePreset = document.querySelector('input[name="style-preset"]:checked').value;
+      const customStyleDescription = document.getElementById('custom-style-description').value;
+      const exampleArticles = document.getElementById('example-articles').value;
+      const defaultLength = document.querySelector('input[name="default-length"]:checked').value;
+      const defaultTone = document.getElementById('default-tone').value;
+      
+      // Get AI configuration
+      const aiProvider = document.querySelector('input[name="ai-provider"]:checked').value;
+      const anthropicApiKey = document.getElementById('anthropic-api-key').value;
+      const googleApiKey = document.getElementById('google-api-key').value;
+      
+      // Get Telegram configuration
+      const telegramChannelId = document.getElementById('settings-channel-id').value;
+      const telegramBotToken = document.getElementById('settings-bot-token').value;
+      
+      // Get theme
+      const selectedTheme = document.querySelector('input[name="theme-setting"]:checked').value;
+      
+      // Update settings
+      settings.stylePreset = stylePreset;
+      settings.customStyleDescription = customStyleDescription;
+      settings.exampleArticles = exampleArticles;
+      settings.defaultLength = defaultLength;
+      settings.defaultTone = defaultTone;
+      settings.aiProvider = aiProvider;
+      settings.anthropicApiKey = anthropicApiKey;
+      settings.googleApiKey = googleApiKey;
+      settings.telegramChannelId = telegramChannelId;
+      settings.telegramBotToken = telegramBotToken;
+      
+      // Also update the summaryLength to match defaultLength
+      settings.summaryLength = defaultLength;
+      
+      // Apply theme change
+      if (selectedTheme === 'dark') {
+        document.body.classList.add('dark-mode');
+      } else {
+        document.body.classList.remove('dark-mode');
+      }
+      localStorage.setItem('distro-theme', selectedTheme);
+      
+      // Save to localStorage
+      saveSettings();
+      
+      // Update preview badges
+      updateSettingsPreview();
+      
+      // Update channel displays
+      updateChannelDisplays();
+      
+      // Show confirmation
+      const btn = document.getElementById('save-settings-btn');
+      const originalText = btn.innerHTML;
+      btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 8px;"><polyline points="20 6 9 17 4 12"></polyline></svg>Settings Saved!';
+      btn.style.background = 'var(--color-green)';
+      
+      setTimeout(() => {
+        btn.innerHTML = originalText;
+        btn.style.background = '';
+      }, 2000);
+    });
+
+    // Load settings UI when switching to settings screen
+    document.querySelectorAll('.nav-item').forEach(item => {
+      const originalClickHandler = item.onclick;
+      item.addEventListener('click', () => {
+        if (item.dataset.screen === 'settings') {
+          loadSettingsUI();
+        }
+      });
+    });
+
+    // Generate AI summary based on settings
+    function generateAISummary(article) {
+      const { stylePreset, customStyleDescription, exampleArticles, defaultLength, defaultTone } = settings;
+      
+      // Build style instruction
+      let styleInstruction = '';
+      if (stylePreset === 'professional') {
+        styleInstruction = 'Write in a professional, formal tone. Focus on facts and data. Be objective and clear.';
+      } else if (stylePreset === 'casual') {
+        styleInstruction = 'Write in a casual, conversational tone. Be approachable and friendly. Easy to read.';
+      } else if (stylePreset === 'technical') {
+        styleInstruction = 'Write in a technical, data-driven tone. Include numbers and metrics. Be detailed and analytical.';
+      } else if (stylePreset === 'custom' && customStyleDescription) {
+        styleInstruction = customStyleDescription;
+      }
+      
+      // Add example articles if provided
+      if (exampleArticles && exampleArticles.trim()) {
+        styleInstruction += `\n\nWrite in this style, based on these examples:\n${exampleArticles}`;
+      }
+      
+      // Build length instruction
+      let lengthInstruction = '';
+      if (defaultLength === 'short') {
+        lengthInstruction = '2-3 short bullet points maximum.';
+      } else if (defaultLength === 'medium') {
+        lengthInstruction = '3-4 bullet points with moderate detail.';
+      } else if (defaultLength === 'long') {
+        lengthInstruction = '4-5 detailed bullet points with comprehensive analysis.';
+      }
+      
+      // Build tone instruction
+      let toneInstruction = '';
+      if (defaultTone === 'objective') {
+        toneInstruction = 'Maintain an objective, neutral perspective.';
+      } else if (defaultTone === 'analytical') {
+        toneInstruction = 'Provide analytical, critical insights.';
+      } else if (defaultTone === 'enthusiastic') {
+        toneInstruction = 'Be enthusiastic and positive about the developments.';
+      } else if (defaultTone === 'skeptical') {
+        toneInstruction = 'Take a skeptical, questioning approach.';
+      }
+      
+      // For now, generate a mock summary that reflects the settings
+      // In a real implementation, this would call an AI API with these instructions
+      const summaryPoints = [];
+      
+      if (defaultLength === 'short') {
+        summaryPoints.push(`• ${article.description}`);
+        summaryPoints.push(`• Key development in the ${article.source.toLowerCase()} space`);
+      } else if (defaultLength === 'medium') {
+        summaryPoints.push(`• ${article.description}`);
+        summaryPoints.push(`• This development represents a significant shift in the industry`);
+        summaryPoints.push(`• Market implications and competitive analysis suggest further growth`);
+      } else {
+        summaryPoints.push(`• ${article.description}`);
+        summaryPoints.push(`• Deep analysis of the underlying technology and market dynamics`);
+        summaryPoints.push(`• Strategic implications for industry stakeholders and competitors`);
+        summaryPoints.push(`• Long-term outlook and potential disruption to existing markets`);
+      }
+      
+      return summaryPoints.join('\n\n');
+    }
+
+    // Mock data - expanded pool of articles
+    const articlePool = [
+      {
+        source: 'TechCrunch',
+        date: 'Jan 28, 2026',
+        title: 'OpenAI announces GPT-5 with breakthrough reasoning capabilities',
+        description: 'The latest model shows significant improvements in complex problem-solving and multi-step reasoning tasks.',
+        url: 'https://techcrunch.com/2026/01/28/openai-gpt5-breakthrough'
+      },
+      {
+        source: 'The Verge',
+        date: 'Jan 28, 2026',
+        title: 'Apple Vision Pro 2 to launch in March with improved comfort',
+        description: 'Sources say the next iteration will be 30% lighter with better battery life and enhanced passthrough.',
+        url: 'https://theverge.com/2026/01/28/apple-vision-pro-2-launch'
+      },
+      {
+        source: 'Wired',
+        date: 'Jan 27, 2026',
+        title: 'Quantum computing breakthrough enables room-temperature qubits',
+        description: 'Researchers at MIT have developed a new material that maintains quantum coherence at 20°C.',
+        url: 'https://wired.com/story/quantum-computing-room-temperature'
+      },
+      {
+        source: 'Bloomberg',
+        date: 'Jan 27, 2026',
+        title: 'Tesla unveils fully autonomous robotaxi fleet for select cities',
+        description: 'The service will launch in Phoenix and Austin, with plans to expand to 10 more cities by year-end.',
+        url: 'https://bloomberg.com/news/tesla-robotaxi-fleet-launch'
+      },
+      {
+        source: 'Ars Technica',
+        date: 'Jan 26, 2026',
+        title: 'SpaceX Starship completes first Mars sample return mission',
+        description: 'The uncrewed mission successfully brought back 50kg of Martian soil and rock samples.',
+        url: 'https://arstechnica.com/space/spacex-mars-sample-return'
+      },
+      {
+        source: 'MIT Technology Review',
+        date: 'Jan 28, 2026',
+        title: 'New battery technology promises 1000-mile electric vehicle range',
+        description: 'Solid-state batteries using lithium-metal anodes achieve unprecedented energy density.',
+        url: 'https://technologyreview.com/battery-breakthrough-1000-mile'
+      },
+      {
+        source: 'Nature',
+        date: 'Jan 27, 2026',
+        title: 'CRISPR gene therapy shows promise in treating sickle cell disease',
+        description: 'Clinical trials demonstrate 95% success rate in eliminating symptoms after single treatment.',
+        url: 'https://nature.com/articles/crispr-sickle-cell-therapy'
+      },
+      {
+        source: 'Reuters',
+        date: 'Jan 27, 2026',
+        title: 'Global semiconductor production reaches record high in Q4 2025',
+        description: 'New fab openings in US and Europe help ease supply chain constraints.',
+        url: 'https://reuters.com/technology/semiconductor-production-record'
+      },
+      {
+        source: 'The Guardian',
+        date: 'Jan 26, 2026',
+        title: 'Fusion reactor achieves net positive energy for sustained period',
+        description: 'ITER facility maintains fusion reaction producing 150% energy output for 5 minutes.',
+        url: 'https://theguardian.com/science/fusion-energy-breakthrough'
+      },
+      {
+        source: 'VentureBeat',
+        date: 'Jan 26, 2026',
+        title: 'AI coding assistants now write 40% of professional code',
+        description: 'Study shows dramatic increase in developer productivity with GitHub Copilot and competitors.',
+        url: 'https://venturebeat.com/ai-coding-assistants-adoption'
+      },
+      {
+        source: 'TechCrunch',
+        date: 'Jan 25, 2026',
+        title: 'Meta releases open-source Llama 4 with 500B parameters',
+        description: 'New model matches GPT-4 performance while remaining fully open for research and commercial use.',
+        url: 'https://techcrunch.com/meta-llama-4-release'
+      },
+      {
+        source: 'CNBC',
+        date: 'Jan 25, 2026',
+        title: 'Apple announces $10B investment in Indian manufacturing',
+        description: 'Company plans to produce 25% of iPhones in India by 2027 as part of supply chain diversification.',
+        url: 'https://cnbc.com/apple-india-manufacturing-investment'
+      },
+      {
+        source: 'The Verge',
+        date: 'Jan 25, 2026',
+        title: 'Steam Deck 2 launches with OLED display and 8-hour battery life',
+        description: 'Valve\'s updated handheld gaming PC features AMD\'s latest APU and improved cooling system.',
+        url: 'https://theverge.com/steam-deck-2-review'
+      },
+      {
+        source: 'Science',
+        date: 'Jan 24, 2026',
+        title: 'Telescope discovers potentially habitable exoplanet 40 light-years away',
+        description: 'Planet orbiting red dwarf star shows signs of liquid water and stable atmosphere.',
+        url: 'https://science.org/exoplanet-habitable-discovery'
+      },
+      {
+        source: 'Financial Times',
+        date: 'Jan 24, 2026',
+        title: 'Quantum internet test network spans 500 miles between major cities',
+        description: 'Unhackable communication network demonstrates practical feasibility of quantum key distribution.',
+        url: 'https://ft.com/quantum-internet-network-test'
+      },
+      {
+        source: 'Wired',
+        date: 'Jan 24, 2026',
+        title: 'Brain-computer interface allows paralyzed patient to control robotic arm',
+        description: 'Neural implant enables precise movement control with thought alone, marking major BCI milestone.',
+        url: 'https://wired.com/brain-computer-interface-breakthrough'
+      },
+      {
+        source: 'BBC',
+        date: 'Jan 23, 2026',
+        title: 'Vertical farms produce 40% of Netherlands vegetable supply',
+        description: 'Indoor agriculture revolution reduces water usage by 95% compared to traditional farming.',
+        url: 'https://bbc.com/news/vertical-farming-netherlands'
+      },
+      {
+        source: 'Ars Technica',
+        date: 'Jan 23, 2026',
+        title: 'Linux kernel 7.0 brings major performance improvements',
+        description: 'New scheduler and memory management changes boost desktop and server workload efficiency.',
+        url: 'https://arstechnica.com/linux-kernel-7-release'
+      },
+      {
+        source: 'IEEE Spectrum',
+        date: 'Jan 23, 2026',
+        title: 'Graphene superconductor operates at room temperature',
+        description: 'Twisted bilayer graphene exhibits zero resistance at 20°C, revolutionizing electronics potential.',
+        url: 'https://spectrum.ieee.org/graphene-superconductor'
+      },
+      {
+        source: 'TechCrunch',
+        date: 'Jan 22, 2026',
+        title: 'Startup develops biodegradable plastic that dissolves in 6 months',
+        description: 'New polymer breaks down in ocean water, potentially solving marine pollution crisis.',
+        url: 'https://techcrunch.com/biodegradable-plastic-startup'
+      },
+      {
+        source: 'The Information',
+        date: 'Jan 22, 2026',
+        title: 'Google unveils Gemini 2.0 with multimodal reasoning breakthrough',
+        description: 'New AI model seamlessly processes text, images, video, and audio with unprecedented accuracy.',
+        url: 'https://theinformation.com/google-gemini-2-launch'
+      },
+      {
+        source: 'Protocol',
+        date: 'Jan 21, 2026',
+        title: 'Autonomous cargo ships begin transatlantic routes',
+        description: 'First fully autonomous container vessel completes journey from Rotterdam to New York.',
+        url: 'https://protocol.com/autonomous-cargo-ships-transatlantic'
+      },
+      {
+        source: 'MIT Technology Review',
+        date: 'Jan 21, 2026',
+        title: 'Researchers achieve 99.9% accuracy in early cancer detection AI',
+        description: 'Machine learning model detects 12 cancer types from blood samples years before symptoms.',
+        url: 'https://technologyreview.com/ai-cancer-detection-breakthrough'
+      },
+      {
+        source: 'Bloomberg',
+        date: 'Jan 20, 2026',
+        title: 'Bitcoin reaches $150K as institutions increase crypto holdings',
+        description: 'Major pension funds and sovereign wealth funds announce significant Bitcoin allocations.',
+        url: 'https://bloomberg.com/bitcoin-150k-institutional-adoption'
+      },
+      {
+        source: 'The Verge',
+        date: 'Jan 20, 2026',
+        title: 'Samsung Galaxy S26 features holographic display technology',
+        description: 'New flagship phone projects 3D images without glasses using advanced light-field display.',
+        url: 'https://theverge.com/samsung-galaxy-s26-holographic-display'
+      },
+      {
+        source: 'Nature Medicine',
+        date: 'Jan 19, 2026',
+        title: 'Universal flu vaccine shows 95% efficacy in Phase 3 trials',
+        description: 'One-time shot provides lifetime protection against all influenza strains.',
+        url: 'https://nature.com/articles/universal-flu-vaccine-trial'
+      },
+      {
+        source: 'WSJ',
+        date: 'Jan 19, 2026',
+        title: 'Flying taxi services launch in Dubai and Singapore',
+        description: 'Electric vertical takeoff aircraft begin commercial passenger operations in two cities.',
+        url: 'https://wsj.com/flying-taxi-commercial-launch'
+      },
+      {
+        source: 'TechCrunch',
+        date: 'Jan 18, 2026',
+        title: 'Neuralink receives FDA approval for consumer brain implants',
+        description: 'First non-medical brain-computer interface cleared for general use to enhance cognitive function.',
+        url: 'https://techcrunch.com/neuralink-fda-consumer-approval'
+      },
+      {
+        source: 'Reuters',
+        date: 'Jan 18, 2026',
+        title: 'Hydrogen-powered aircraft completes first commercial flight',
+        description: 'Zero-emission passenger plane flies 800 miles on liquid hydrogen fuel.',
+        url: 'https://reuters.com/hydrogen-aircraft-commercial-flight'
+      },
+      {
+        source: 'Wired',
+        date: 'Jan 17, 2026',
+        title: 'Quantum computer solves protein folding in seconds',
+        description: 'Breakthrough could accelerate drug discovery and disease treatment development.',
+        url: 'https://wired.com/quantum-protein-folding-breakthrough'
+      },
+      {
+        source: 'The Guardian',
+        date: 'Jan 17, 2026',
+        title: 'Ocean cleanup project removes 10 million tons of plastic',
+        description: 'Automated systems successfully clear Great Pacific Garbage Patch ahead of schedule.',
+        url: 'https://theguardian.com/ocean-cleanup-milestone'
+      },
+      {
+        source: 'Ars Technica',
+        date: 'Jan 16, 2026',
+        title: 'Breakthrough material harvests electricity from humidity',
+        description: 'New generator produces continuous power from atmospheric moisture in any climate.',
+        url: 'https://arstechnica.com/humidity-electricity-generator'
+      },
+      {
+        source: 'CNBC',
+        date: 'Jan 16, 2026',
+        title: 'Amazon announces carbon-neutral delivery in 100 major cities',
+        description: 'Electric vehicles and drones achieve zero-emission last-mile delivery milestone.',
+        url: 'https://cnbc.com/amazon-carbon-neutral-delivery'
+      },
+      {
+        source: 'Science',
+        date: 'Jan 15, 2026',
+        title: 'Asteroid mining company extracts first platinum payload',
+        description: 'Space Resources Inc. returns $2B worth of rare metals from near-Earth asteroid.',
+        url: 'https://science.org/asteroid-mining-first-payload'
+      },
+      {
+        source: 'Financial Times',
+        date: 'Jan 15, 2026',
+        title: 'AI-designed drug cures antibiotic-resistant infections',
+        description: 'Machine learning creates novel compound effective against superbugs in clinical trials.',
+        url: 'https://ft.com/ai-designed-antibiotic-breakthrough'
+      },
+      {
+        source: 'IEEE Spectrum',
+        date: 'Jan 14, 2026',
+        title: 'Photonic chips achieve 1000x faster AI processing',
+        description: 'Light-based processors eliminate heat and power constraints of traditional semiconductors.',
+        url: 'https://spectrum.ieee.org/photonic-chip-ai-processing'
+      },
+      {
+        source: 'VentureBeat',
+        date: 'Jan 14, 2026',
+        title: 'Voice cloning technology banned in 50 countries',
+        description: 'International agreement restricts deepfake audio after fraud epidemic.',
+        url: 'https://venturebeat.com/voice-cloning-international-ban'
+      },
+      {
+        source: 'BBC',
+        date: 'Jan 13, 2026',
+        title: 'Smart contact lenses with AR displays enter mass production',
+        description: 'Augmented reality eyewear becomes invisible with micro-LED contact lens technology.',
+        url: 'https://bbc.com/smart-contact-lenses-ar-production'
+      },
+      {
+        source: 'TechCrunch',
+        date: 'Jan 13, 2026',
+        title: 'Generative AI creates first Oscar-nominated animated film',
+        description: 'AI-assisted production tools revolutionize animation industry workflow.',
+        url: 'https://techcrunch.com/ai-animated-film-oscar-nomination'
+      }
+    ];
+
     let mockArticles = [];
     let nextArticleId = 1;
 
+    function generateMockArticles(count) {
+      const newArticles = [];
+      const availableArticles = articlePool.filter(article => 
+        !mockArticles.some(existing => existing.title === article.title)
+      );
+      
+      // If we've used all unique articles, start recycling with modified titles
+      const articlesToUse = availableArticles.length >= count 
+        ? availableArticles.slice(0, count)
+        : [
+            ...availableArticles,
+            ...articlePool.slice(0, count - availableArticles.length).map(a => ({
+              ...a,
+              title: `[Update] ${a.title}`
+            }))
+          ];
+      
+      articlesToUse.forEach(article => {
+        newArticles.push({
+          ...article,
+          id: nextArticleId++
+        });
+      });
+      
+      return newArticles;
+    }
 
     let selectedArticles = new Set();
 
@@ -3170,38 +4323,27 @@
       }
     }
 
-    fetchBtn.addEventListener('click', async () => {
+    fetchBtn.addEventListener('click', () => {
       fetchBtn.innerHTML = '<span class="fetch-pulse-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></span>Fetching...';
       fetchBtn.disabled = true;
       if (fetchStatus) { fetchStatus.innerHTML = '<span class="status-dot"></span>Fetching'; fetchStatus.classList.add('fetching'); }
 
-      try {
+      setTimeout(() => {
+        // Generate fresh articles based on settings count
         const count = parseInt(document.getElementById('article-count-input').value) || 10;
-        const customPrompt = document.getElementById('custom-tone-input').value.trim();
-        const activeTag = settings.topic;
-        const topic = [activeTag, customPrompt].filter(Boolean).join(' — ') || 'latest technology and AI news';
-
-        const res = await fetch('/api/fetch-news', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ topic, count })
-        });
-
-        const data = await res.json();
-        if (!data.success) throw new Error(data.error || 'Failed to fetch articles');
-
-        const newArticles = data.articles.map(a => ({ ...a, id: nextArticleId++ }));
+        const newArticles = generateMockArticles(count);
+        
+        // Keep only the selected articles, discard all unselected
         const selectedArticlesList = mockArticles.filter(a => selectedArticles.has(a.id));
+        
+        // Selected articles stay at top, fresh articles replace everything else
         mockArticles = [...selectedArticlesList, ...newArticles];
+        
         renderArticles();
+        fetchBtn.innerHTML = '<span class="fetch-pulse-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></span>Fetch News';
+        fetchBtn.disabled = false;
         if (fetchStatus) { fetchStatus.innerHTML = '<span class="status-dot"></span>Idle'; fetchStatus.classList.remove('fetching'); }
-      } catch (err) {
-        console.error('Fetch error:', err);
-        if (fetchStatus) { fetchStatus.innerHTML = `<span class="status-dot" style="background:var(--error)"></span>Error: ${err.message}`; fetchStatus.classList.remove('fetching'); }
-      }
-
-      fetchBtn.innerHTML = '<span class="fetch-pulse-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></span>Fetch News';
-      fetchBtn.disabled = false;
+      }, 2000);
     });
 
     // Fetch Select All functionality
@@ -3229,6 +4371,21 @@
     // Add URL manually
     const manualUrlInput = document.getElementById('manual-url');
     const addUrlBtn = document.getElementById('add-url-btn');
+    const addManualArticleBtn = document.getElementById('add-manual-article-btn');
+    const manualArticleInput = document.getElementById('manual-article-input');
+    const cancelManualUrl = document.getElementById('cancel-manual-url');
+    
+    // Toggle manual article input
+    addManualArticleBtn.addEventListener('click', () => {
+      manualArticleInput.style.display = 'block';
+      manualUrlInput.focus();
+    });
+    
+    // Cancel manual article input
+    cancelManualUrl.addEventListener('click', () => {
+      manualArticleInput.style.display = 'none';
+      manualUrlInput.value = '';
+    });
     
     function addManualArticle() {
       const url = manualUrlInput.value.trim();
@@ -3261,7 +4418,8 @@
         updateFetchSelectAllBtn();
         manualUrlInput.value = '';
         
-        // Scroll to top to show new article
+        // Hide the input and scroll to top
+        manualArticleInput.style.display = 'none';
         articlesGrid.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }
     }
@@ -3306,44 +4464,15 @@
       }
     }
 
-    document.getElementById('generate-btn').addEventListener('click', async () => {
-  if (selectedArticles.size === 0) return;
+    document.getElementById('generate-btn').addEventListener('click', () => {
+      if (selectedArticles.size === 0) return;
+      
+      const statusSelect = document.getElementById('draft-status-select');
+      if (statusSelect) {
+        statusSelect.value = 'draft';
+      }
 
-  const generateBtn = document.getElementById('generate-btn');
-  generateBtn.textContent = 'Generating...';
-  generateBtn.disabled = true;
-
-  const selectedData = mockArticles.filter(a => selectedArticles.has(a.id));
-
-  try {
-    const res = await fetch('/api/generate-summaries', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        articles: selectedData,
-        tone: 'professional',
-        summaryLength: document.getElementById('regen-length')?.value || 'medium',
-        customInstructions: ''
-      })
-    });
-    const data = await res.json();
-    if (data.success) {
-      data.summaries.forEach(s => {
-        const article = selectedData.find(a => a.id === s.id);
-        if (article) article.summary = s.summary;
-      });
-    }
-  } catch (err) {
-    console.error('Summary generation failed:', err);
-  }
-
-  generateBtn.textContent = 'Generate Article Summaries';
-  generateBtn.disabled = false;
-
-  const statusSelect = document.getElementById('draft-status-select');
-  if (statusSelect) statusSelect.value = 'draft';
-
-  setTimeout(() => {
+      setTimeout(() => {
         // Switch to drafts screen
         document.querySelector('[data-screen="drafts"]').click();
         
@@ -3487,7 +4616,14 @@
       
       titleInput.value = article.title;
       urlInput.value = article.url || `https://example.com/article/${article.id}`;
-      contentInput.value = article.summary || article.description || '';
+      contentInput.value = generateAISummary(article);
+      
+      // Update Visit link
+      const visitLink = document.getElementById('visit-source-link');
+      if (visitLink) {
+        visitLink.href = urlInput.value;
+        visitLink.style.display = urlInput.value ? 'inline-flex' : 'none';
+      }
       
       // Set status
       statusSelect.value = draftStatuses[article.id] || 'draft';
@@ -3519,7 +4655,17 @@
       const url = document.getElementById('draft-url').value;
       const content = document.getElementById('draft-content').value;
       document.getElementById('preview-text').textContent = `${title}\n\n${content}\n\n${url}`;
+      
+      // Update Visit link when URL changes
+      const visitLink = document.getElementById('visit-source-link');
+      if (visitLink) {
+        visitLink.href = url;
+        visitLink.style.display = url ? 'inline-flex' : 'none';
+      }
     }
+
+    // Listen for URL changes
+    document.getElementById('draft-url').addEventListener('input', updatePreview);
 
     // Send confirmation
     const confirmModal = document.getElementById('confirm-modal');
@@ -3532,15 +4678,13 @@
     let sendMode = null; // 'single', 'batch', or null
 
     sendNowBtn.addEventListener('click', () => {
-      // Check credentials are set
-      if (!settings.telegramChannelId || !settings.telegramBotToken) {
-        channelSetupInput.value = settings.telegramChannelId || '';
-        document.getElementById('bot-token-setup-input').value = settings.telegramBotToken || '';
-        document.getElementById('channel-setup-error').style.display = 'none';
+      // Check if channel ID is set
+      if (!settings.telegramChannelId || settings.telegramChannelId.trim() === '') {
+        // Show channel setup modal
         document.getElementById('channel-setup-modal').classList.add('visible');
         return;
       }
-
+      
       sendMode = 'single';
       const channelId = settings.telegramChannelId;
       modalMessage.textContent = `This will post the summary to Telegram Channel: ${channelId}. This action cannot be undone.`;
@@ -3548,11 +4692,9 @@
     });
 
     sendSelectedBtn.addEventListener('click', () => {
-      // Check credentials are set
-      if (!settings.telegramChannelId || !settings.telegramBotToken) {
-        channelSetupInput.value = settings.telegramChannelId || '';
-        document.getElementById('bot-token-setup-input').value = settings.telegramBotToken || '';
-        document.getElementById('channel-setup-error').style.display = 'none';
+      // Check if channel ID is set
+      if (!settings.telegramChannelId || settings.telegramChannelId.trim() === '') {
+        // Show channel setup modal
         document.getElementById('channel-setup-modal').classList.add('visible');
         return;
       }
@@ -3573,72 +4715,103 @@
       }
     });
 
-    confirmSendBtn.addEventListener('click', async () => {
+    confirmSendBtn.addEventListener('click', () => {
+      statusSelect.value = 'in-progress';
+      const draftStatus = document.getElementById('draft-status');
+      draftStatus.classList.add('sending');
       confirmModal.classList.remove('visible');
-      confirmSendBtn.disabled = true;
 
-      const chatId    = settings.telegramChannelId;
-      const botToken  = settings.telegramBotToken;
-
-      // Build articles list
-      let articles = [];
-      if (sendMode === 'single') {
-        articles = [{
-          title:   document.getElementById('draft-title').value,
-          summary: document.getElementById('draft-content').value,
-          url:     document.getElementById('draft-url').value,
-          source:  ''
-        }];
-      } else {
-        articles = draftData
-          .filter(a => selectedDrafts.has(a.id))
-          .map(a => ({ title: a.title, summary: a.summary || a.description || '', url: a.url || '', source: a.source || '' }));
-      }
-
-      try {
-        const res = await fetch('/api/send-telegram', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ articles, chatId, botToken })
-        });
-        const data = await res.json();
-
+      setTimeout(() => {
         const sentList = document.getElementById('sent-list');
-        const now = new Date().toLocaleString('en-US', { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' });
+        const now = new Date().toLocaleString('en-US', { 
+          month: 'short', 
+          day: 'numeric', 
+          hour: 'numeric', 
+          minute: '2-digit' 
+        });
 
-        if (!data.success) throw new Error(data.error || 'Send failed');
+        if (sendMode === 'single') {
+          // Send current draft
+          const title = document.getElementById('draft-title').value;
+          const content = document.getElementById('draft-content').value;
 
-        articles.forEach(article => {
-          const preview = (article.summary || '').substring(0, 150);
-          sentList.insertAdjacentHTML('afterbegin', `
+          const sentItem = `
             <div class="sent-item">
               <div class="sent-header">
-                <div class="sent-title">${article.title}</div>
+                <div class="sent-title">${title}</div>
                 <div class="sent-time">${now}</div>
               </div>
-              <div class="sent-preview">${preview}${preview.length === 150 ? '...' : ''}</div>
-              <button class="copy-btn" onclick="copyText(\`${article.title}\\n\\n${article.summary}\`)">Copy Text</button>
+              <div class="sent-preview">${content.substring(0, 150)}...</div>
+              <div class="sent-footer">
+                <button class="copy-btn" onclick="copyText(\`${title}\\n\\n${content}\`)">Copy Text</button>
+                <div class="sent-to-channel">
+                  <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M22 2L11 13"></path>
+                    <path d="M22 2L15 22L11 13L2 9L22 2Z"></path>
+                  </svg>
+                  <span class="channel-name">${settings.telegramChannelId || '@your_channel'}</span>
+                </div>
+              </div>
             </div>
-          `);
-        });
+          `;
 
-        if (sendMode === 'batch') {
+          sentList.insertAdjacentHTML('afterbegin', sentItem);
+          
+          // Remove sent item from drafts if it was selected
+          if (currentEditingId) {
+            selectedDrafts.delete(currentEditingId);
+          }
+        } else {
+          // Send all selected drafts
+          const itemsToSend = draftData.filter(article => selectedDrafts.has(article.id));
+          
+          itemsToSend.forEach(article => {
+            const content = `• ${article.description}\n\n• Key insight about the development and its implications for the industry.\n\n• Analysis of how this will affect the market and competitors.`;
+            
+            const sentItem = `
+              <div class="sent-item">
+                <div class="sent-header">
+                  <div class="sent-title">${article.title}</div>
+                  <div class="sent-time">${now}</div>
+                </div>
+                <div class="sent-preview">${content.substring(0, 150)}...</div>
+                <div class="sent-footer">
+                  <button class="copy-btn" onclick="copyText(\`${article.title}\\n\\n${content}\`)">Copy Text</button>
+                  <div class="sent-to-channel">
+                    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M22 2L11 13"></path>
+                      <path d="M22 2L15 22L11 13L2 9L22 2Z"></path>
+                    </svg>
+                    <span class="channel-name">${settings.telegramChannelId || '@your_channel'}</span>
+                  </div>
+                </div>
+              </div>
+            `;
+
+            sentList.insertAdjacentHTML('afterbegin', sentItem);
+          });
+
+          // Clear selected drafts
           selectedDrafts.clear();
-          document.querySelectorAll('.article-list-item').forEach(item => item.classList.remove('selected-for-send'));
+          document.querySelectorAll('.article-list-item').forEach(item => {
+            item.classList.remove('selected-for-send');
+          });
           updateDraftSelectionUI();
         }
 
+        // Clear article selection from fetch page and update UI
         selectedArticles.clear();
-        document.querySelectorAll('.article-card').forEach(card => card.classList.remove('selected'));
+        document.querySelectorAll('.article-card').forEach(card => {
+          card.classList.remove('selected');
+        });
         updateSelectionBar();
+        
+        // Go to sent page to show results
         document.querySelector('[data-screen="sent"]').click();
 
-      } catch (err) {
-        alert(`Failed to send to Telegram: ${err.message}`);
-      }
-
-      confirmSendBtn.disabled = false;
-      if (statusSelect) statusSelect.value = 'ready';
+        statusSelect.value = 'ready';
+        draftStatus.classList.remove('sending');
+      }, 1500);
     });
 
     // Channel Setup Modal
@@ -3650,72 +4823,42 @@
     cancelChannelSetupBtn.addEventListener('click', () => {
       channelSetupModal.classList.remove('visible');
       channelSetupInput.value = '';
-      document.getElementById('bot-token-setup-input').value = '';
-      document.getElementById('channel-setup-error').style.display = 'none';
     });
 
     channelSetupModal.addEventListener('click', (e) => {
       if (e.target === channelSetupModal) {
         channelSetupModal.classList.remove('visible');
         channelSetupInput.value = '';
-        document.getElementById('bot-token-setup-input').value = '';
-        document.getElementById('channel-setup-error').style.display = 'none';
       }
     });
 
     saveChannelSetupBtn.addEventListener('click', () => {
       const channelId = channelSetupInput.value.trim();
-      const botToken  = document.getElementById('bot-token-setup-input').value.trim();
-      const errorEl   = document.getElementById('channel-setup-error');
-
-      if (!botToken || !channelId) {
-        errorEl.textContent = 'Both bot token and channel ID are required.';
-        errorEl.style.display = 'block';
-        return;
-      }
-      errorEl.style.display = 'none';
-
-      settings.telegramChannelId = channelId;
-      settings.telegramBotToken  = botToken;
-
-      // Update all three channel inputs before saving so DOM is in sync
-      document.getElementById('telegram-channel-id').value = channelId;
-      document.getElementById('telegram-channel-id-editor').value = channelId;
-      document.getElementById('telegram-channel-id-sent').value = channelId;
-      saveSettings();
-
-      // Close setup modal
-      channelSetupModal.classList.remove('visible');
-      channelSetupInput.value = '';
-      document.getElementById('bot-token-setup-input').value = '';
-
-      // Only trigger send action if we came from a send button
-      if (sendMode) {
-        if (sendMode === 'single') {
-          sendNowBtn.click();
-        } else {
-          sendSelectedBtn.click();
+      if (channelId) {
+        settings.telegramChannelId = channelId;
+        saveSettings();
+        
+        // Update all three channel inputs
+        document.getElementById('telegram-channel-id').value = channelId;
+        document.getElementById('telegram-channel-id-editor').value = channelId;
+        document.getElementById('telegram-channel-id-sent').value = channelId;
+        
+        // Close setup modal
+        channelSetupModal.classList.remove('visible');
+        channelSetupInput.value = '';
+        
+        // Only trigger send action if we came from a send button
+        // sendMode will be set if user clicked Send Now/Send Selected
+        if (sendMode) {
+          if (sendMode === 'single') {
+            sendNowBtn.click();
+          } else {
+            sendSelectedBtn.click();
+          }
+          // Reset sendMode after triggering
+          sendMode = null;
         }
-        sendMode = null;
       }
-    });
-
-    // Edit Channel ID Buttons
-    const editButtons = [
-      { btn: document.getElementById('edit-channel-btn'), input: document.getElementById('telegram-channel-id') },
-      { btn: document.getElementById('edit-channel-btn-editor'), input: document.getElementById('telegram-channel-id-editor') },
-      { btn: document.getElementById('edit-channel-btn-sent'), input: document.getElementById('telegram-channel-id-sent') }
-    ];
-
-    editButtons.forEach(({ btn, input }) => {
-      btn.addEventListener('click', () => {
-        sendMode = null;
-        channelSetupInput.value = settings.telegramChannelId || '';
-        document.getElementById('bot-token-setup-input').value = settings.telegramBotToken || '';
-        document.getElementById('channel-setup-error').style.display = 'none';
-        channelSetupModal.classList.add('visible');
-        channelSetupInput.focus();
-      });
     });
 
     // Status change handler
@@ -3738,192 +4881,9 @@
       });
     };
 
-    // ── AI Summary Customization (Horizontal Bar) ───────────────────────
-
-    const applyToSelect = document.getElementById('apply-to-select');
-    const regenerateBtn = document.getElementById('regenerate-action-btn');
-    const regenerateBtnText = document.getElementById('regenerate-btn-text');
-    const checkedCountInline = document.getElementById('checked-count-inline');
-    const allCountInline = document.getElementById('all-count-inline');
-
-    let selectedScope = 'current'; // 'current', 'checked', 'all'
-
-    const REGEN_SVG = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>`;
-
-    // Dropdown selection
-    if (applyToSelect) {
-      applyToSelect.addEventListener('change', () => {
-        selectedScope = applyToSelect.value;
-        updateRegenerateButton();
-      });
-    }
-
-    // Update button text and counts based on selection state
-    function updateRegenerateButton() {
-      const checkedCount = selectedDrafts.size;
-      const totalCount = draftData.length;
-      
-      // Update dropdown counts
-      if (checkedCountInline) checkedCountInline.textContent = checkedCount;
-      if (allCountInline) allCountInline.textContent = totalCount;
-      
-      // Update button text and state
-      if (selectedScope === 'current') {
-        regenerateBtnText.textContent = 'Regenerate';
-        regenerateBtn.disabled = !currentEditingId;
-      } else if (selectedScope === 'checked') {
-        regenerateBtnText.textContent = `Regenerate ${checkedCount}`;
-        regenerateBtn.disabled = checkedCount === 0;
-      } else {
-        regenerateBtnText.textContent = `Regenerate All`;
-        regenerateBtn.disabled = totalCount === 0;
-      }
-    }
-
-    // Call this whenever selection changes
-    function syncSummaryBox() {
-      updateRegenerateButton();
-    }
-
-    function getRegenSettings() {
-      return {
-        length: document.getElementById('regen-length').value,
-        tone: document.getElementById('regen-tone').value.trim()
-      };
-    }
-
-    // Generate a mock summary (replace with real API call)
-    function makeSummary(title, length, tone) {
-      const counts = { short: 2, medium: 3, long: 5 };
-      const n = counts[length] || 3;
-      const bank = [
-        `${title} represents a pivotal shift in the current landscape.`,
-        `Early data shows strong momentum, with analysts revising forecasts upward.`,
-        `Key players are repositioning ahead of the next major development.`,
-        `Market sentiment remains cautious but optimistic on long-term prospects.`,
-        `Downstream implications could reshape the competitive dynamics through Q3.`
-      ];
-      const lines = bank.slice(0, n).join(' ');
-      return tone ? `${lines}\n\n[Style: ${tone.slice(0, 50)}]` : lines;
-    }
-
-    function flashGreen(el) {
-      el.style.transition = 'border-color 0.2s, box-shadow 0.2s';
-      el.style.borderColor = 'var(--color-green)';
-      el.style.boxShadow = '0 0 16px rgba(3, 210, 111, 0.3)';
-      setTimeout(() => {
-        el.style.borderColor = '';
-        el.style.boxShadow = '';
-        el.style.boxShadow = '';
-      }, 900);
-    }
-
-    function regenerateSingleArticle(id, length, tone) {
-      const listItem = document.querySelector(`[data-draft-id="${id}"]`);
-      if (listItem) listItem.classList.add('regenerating');
-      regenerateBtn.classList.add('spinning');
-      regenerateBtn.disabled = true;
-      
-      // Update button text
-      regenerateBtnText.textContent = 'Regenerating...';
-
-      setTimeout(() => {
-        const title = document.getElementById('draft-title').value;
-        const newContent = makeSummary(title, length, tone);
-        const draft = draftData.find(d => d.id === id);
-        if (draft) draft.content = newContent;
-        
-        const contentEl = document.getElementById('draft-content');
-        contentEl.value = newContent;
-        flashGreen(contentEl);
-
-        // Show completion state
-        if (listItem) {
-          listItem.classList.remove('regenerating');
-          listItem.classList.add('regen-complete');
-          setTimeout(() => listItem.classList.remove('regen-complete'), 600);
-        }
-        
-        regenerateBtn.classList.remove('spinning');
-        regenerateBtn.disabled = false;
-        updateRegenerateButton(); // Reset button text
-      }, 1000);
-    }
-
-    function regenerateMultipleArticles(ids, length, tone) {
-      regenerateBtn.classList.add('spinning');
-      regenerateBtn.disabled = true;
-      
-      // Update button text with count
-      regenerateBtnText.textContent = `Regenerating ${ids.length}...`;
-      
-      document.querySelectorAll('.article-list-item').forEach(el => {
-        const id = parseInt(el.dataset.draftId);
-        if (ids.includes(id)) {
-          el.classList.add('regenerating');
-        }
-      });
-
-      let completed = 0;
-      ids.forEach((id, i) => {
-        setTimeout(() => {
-          const draft = draftData.find(d => d.id === id);
-          if (draft) {
-            draft.content = makeSummary(draft.title, length, tone);
-            
-            if (id === currentEditingId) {
-              const contentEl = document.getElementById('draft-content');
-              contentEl.value = draft.content;
-              flashGreen(contentEl);
-            }
-          }
-
-          const listItem = document.querySelector(`[data-draft-id="${id}"]`);
-          if (listItem) {
-            listItem.classList.remove('regenerating');
-            listItem.classList.add('regen-complete');
-            setTimeout(() => listItem.classList.remove('regen-complete'), 600);
-          }
-
-          completed++;
-          
-          // Update progress in button text
-          regenerateBtnText.textContent = `Regenerating ${completed}/${ids.length}`;
-          
-          if (completed === ids.length) {
-            regenerateBtn.classList.remove('spinning');
-            regenerateBtn.disabled = false;
-            updateRegenerateButton(); // Reset button text
-            syncSummaryBox();
-          }
-        }, i * 500);
-      });
-    }
-
-    function performRegeneration() {
-      const { length, tone } = getRegenSettings();
-      
-      if (selectedScope === 'current') {
-        regenerateSingleArticle(currentEditingId, length, tone);
-      } else if (selectedScope === 'checked') {
-        regenerateMultipleArticles([...selectedDrafts], length, tone);
-      } else {
-        const allIds = draftData.map(d => d.id);
-        regenerateMultipleArticles(allIds, length, tone);
-      }
-    }
-
-    regenerateBtn.addEventListener('click', () => {
-      if (selectedScope === 'all') {
-        // TODO: Show confirmation modal in Step 6
-        performRegeneration();
-      } else {
-        performRegeneration();
-      }
-    });
-
     // Initialize
-    syncSummaryBox();
+    updateSettingsPreview(); // Load initial preview badges
+    updateChannelDisplays(); // Load initial channel displays
 
     // Initialize with some sent items
     const sentList = document.getElementById('sent-list');
@@ -3934,7 +4894,16 @@
           <div class="sent-time">Jan 27, 3:42 PM</div>
         </div>
         <div class="sent-preview">• Revolutionary brain-computer interface allows hands-free control of digital content through thought patterns...</div>
-        <button class="copy-btn">Copy Text</button>
+        <div class="sent-footer">
+          <button class="copy-btn">Copy Text</button>
+          <div class="sent-to-channel">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M22 2L11 13"></path>
+              <path d="M22 2L15 22L11 13L2 9L22 2Z"></path>
+            </svg>
+            <span class="channel-name">${settings.telegramChannelId || '@your_channel'}</span>
+          </div>
+        </div>
       </div>
       <div class="sent-item">
         <div class="sent-header">
@@ -3942,7 +4911,16 @@
           <div class="sent-time">Jan 26, 11:15 AM</div>
         </div>
         <div class="sent-preview">• New model supports up to 2 million tokens, enabling analysis of entire codebases and long documents...</div>
-        <button class="copy-btn">Copy Text</button>
+        <div class="sent-footer">
+          <button class="copy-btn">Copy Text</button>
+          <div class="sent-to-channel">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M22 2L11 13"></path>
+              <path d="M22 2L15 22L11 13L2 9L22 2Z"></path>
+            </svg>
+            <span class="channel-name">${settings.telegramChannelId || '@your_channel'}</span>
+          </div>
+        </div>
       </div>
     `;
 
